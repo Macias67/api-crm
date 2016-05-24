@@ -7,14 +7,14 @@ Route::get('/', function ()
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1'], function ($api)
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1',  'middleware' => 'api'], function ($api)
 {
 	/**
 	 * Auth
 	 */
-	$api->post('auth', ['uses' => 'Auth@authenticate', 'middleware' => 'cors']);
+	$api->post('auth', ['uses' => 'Auth@authenticate']);
 	
-	$api->group(['middleware' => 'jwt.auth', 'prefix' => 'v1'], function ($api)
+	$api->group(['middleware' => 'jwt.auth'], function ($api)
 	{
 		$api->get('/me', 'Auth@me');
 		//$api->get('validatetoken', 'Auth@validateToken');

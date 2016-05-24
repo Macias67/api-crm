@@ -47,8 +47,10 @@ class Auth extends Controller
 			// something went wrong whilst attempting to encode the token
 			throw new HttpException($e->getStatusCode(), $e->getMessage());
 		}
+
+		return response()->json(array('token' => $ejecutivo->token));
 		
 		// all good so return the token
-		return $this->response->item($ejecutivo, new EjecutivoTransformer());
+		//return $this->response->item($ejecutivo, new EjecutivoTransformer());
 	}
 }
