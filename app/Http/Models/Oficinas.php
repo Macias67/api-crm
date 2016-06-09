@@ -2,10 +2,13 @@
 
 namespace App\Http\Models;
 
+use App\Http\Models\Mutators\MOficinas;
 use Illuminate\Database\Eloquent\Model;
 
 class Oficinas extends Model
 {
+	use MOficinas;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -14,6 +17,20 @@ class Oficinas extends Model
 	protected $table = 'ec_oficinas';
 	
 	protected $primaryKey = 'id';
+
+	protected $fillable = [
+		'id',
+		'calle',
+		'numero',
+		'colonia',
+		'cp',
+		'ciudad',
+		'estado',
+		'latitud',
+		'longitud',
+	        'telefonos',
+	        'email'
+	];
 	
 	/**
 	 * La oficina tiene muchos ejecutivos

@@ -38,5 +38,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1',  'middleware'
 		 * Tags
 		 */
 		//$api->resource('tags', 'Tags');
+		
+		/**
+		 * Oficinas
+		 */
+		$api->resource('oficinas', 'Oficinas');
 	});
 });
