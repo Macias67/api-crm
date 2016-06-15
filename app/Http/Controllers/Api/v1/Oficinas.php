@@ -9,6 +9,7 @@ use App\Http\Requests\create\OficinaRequest;
 use App\Transformers\OficinaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Oficinas extends Controller
 {
@@ -69,7 +70,16 @@ class Oficinas extends Controller
 	 */
 	public function show($id)
 	{
-		//
+		$oficina = OficinaModel::find($id);
+
+		if ($oficina)
+		{
+			return $this->response->item($oficina, new OficinaTransformer());
+		}
+		else
+		{
+			return $this->response->errorNotFound('Oficina no econtrada');
+		}
 	}
 	
 	/**
@@ -87,14 +97,17 @@ class Oficinas extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @param  int                      $id
+	 * @param \App\Http\Requests\create\OficinaRequest $request
+	 * @param  int                                     $id
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(OficinaRequest $request, $id)
 	{
-		//
+		$oficina = OficinaModel::find($id);
+		$oficina->update($request->all());
+
+		return $this->response->item($oficina, new OficinaTransformer());
 	}
 	
 	/**
