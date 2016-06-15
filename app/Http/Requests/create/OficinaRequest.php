@@ -23,7 +23,8 @@ class OficinaRequest extends Request
 	 */
 	public function rules()
 	{
-		return [
+
+		$rules = [
 			'calle'     => 'required|max:45',
 			'numero'    => 'required|max:45',
 			'colonia'   => 'required|max:45',
@@ -33,7 +34,13 @@ class OficinaRequest extends Request
 			'latitud'   => 'required|max:150',
 			'longitud'  => 'required|max:150',
 			'telefonos' => 'required|max:200',
-			'email'     => 'required|email|max:60|unique:ec_oficinas,email'
 		];
+		
+		if ($this->getMethod() === "POST")
+		{
+			$rules['email'] = 'required|email|max:60|unique:ec_oficinas,email';
+		}
+
+		return $rules;
 	}
 }
