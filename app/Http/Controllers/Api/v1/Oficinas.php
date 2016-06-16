@@ -8,8 +8,6 @@ use App\Http\Requests;
 use App\Http\Requests\create\OficinaRequest;
 use App\Transformers\OficinaTransformer;
 use Dingo\Api\Routing\Helpers;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Oficinas extends Controller
 {
@@ -71,7 +69,7 @@ class Oficinas extends Controller
 	public function show($id)
 	{
 		$oficina = OficinaModel::find($id);
-
+		
 		if ($oficina)
 		{
 			return $this->response->item($oficina, new OficinaTransformer());
@@ -106,7 +104,7 @@ class Oficinas extends Controller
 	{
 		$oficina = OficinaModel::find($id);
 		$oficina->update($request->all());
-
+		
 		return $this->response->item($oficina, new OficinaTransformer());
 	}
 	

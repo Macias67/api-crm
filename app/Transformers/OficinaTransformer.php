@@ -25,7 +25,7 @@ class OficinaTransformer extends TransformerAbstract
 			'estado'     => $oficina->estado,
 			'latitud'    => (float)$oficina->latitud,
 			'longitud'   => (float)$oficina->longitud,
-			'telefonos'  => explode(',', $oficina->telefonos),
+			'telefonos'  => array_map('trim', explode(',', $oficina->telefonos)),
 			'email'      => $oficina->email,
 			'created_at' => $oficina->created_at,
 			'updated_at' => $oficina->updated_at

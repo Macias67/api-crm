@@ -10,5 +10,5 @@ namespace App\Http\Models\Mutators;
 
 trait MOficinas
 {
-	
+
 }
