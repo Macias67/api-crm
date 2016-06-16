@@ -20,7 +20,7 @@ class Oficinas extends Controller
 	 */
 	public function index()
 	{
-		return $this->response->collection(OficinaModel::all(), new OficinaTransformer());
+		return $this->response->collection(OficinaModel::isOnline()->get(), new OficinaTransformer());
 	}
 	
 	/**
@@ -117,6 +117,6 @@ class Oficinas extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+
 	}
 }

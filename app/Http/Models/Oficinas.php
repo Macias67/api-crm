@@ -28,8 +28,9 @@ class Oficinas extends Model
 		'estado',
 		'latitud',
 		'longitud',
-	        'telefonos',
-	        'email'
+		'telefonos',
+		'email',
+		'online'
 	];
 	
 	/**
@@ -40,5 +41,10 @@ class Oficinas extends Model
 	public function ejecutivos()
 	{
 		return $this->hasMany(Ejecutivo::class, 'id');
+	}
+
+	public function scopeIsOnline($query)
+	{
+		return $query->where('online', TRUE);
 	}
 }
