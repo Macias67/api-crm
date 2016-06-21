@@ -32,7 +32,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1',  'middleware'
 		/**
 		 * Clientes
 		 */
-		//$api->resource('clientes', 'Clientes');
+		$api->resource('clientes', 'Clientes');
 		
 		/**
 		 * Tags

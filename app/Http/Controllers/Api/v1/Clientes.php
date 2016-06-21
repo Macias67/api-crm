@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Oficinas as OficinaModel;
+use App\Http\Models\Clientes as ClienteModel;
 use App\Http\Requests;
-use App\Http\Requests\create\OficinaRequest;
-use App\Transformers\OficinaTransformer;
+use App\Http\Requests\create\ClienteRequest;
+use App\Transformers\ClienteTransformer;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 
-class Oficinas extends Controller
+class Clientes extends Controller
 {
 	use Helpers;
 	
@@ -20,7 +21,7 @@ class Oficinas extends Controller
 	 */
 	public function index()
 	{
-		return $this->response->collection(OficinaModel::isOnline()->get(), new OficinaTransformer());
+		return $this->response->collection(ClienteModel::isOnline()->get(), new ClienteTransformer());
 	}
 	
 	/**
@@ -36,27 +37,31 @@ class Oficinas extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 *
-	 * @param \App\Http\Requests\create\OficinaRequest $request
+	 * @param \App\Http\Requests\create\ClienteRequest $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(OficinaRequest $request)
+	public function store(ClienteRequest $request)
 	{
-		$oficina = OficinaModel::create($request->only([
+		$cliente = ClienteModel::create($request->only([
+			'razonsocial',
+			'rfc',
+			'email',
+			'telefono',
+			'telefono2',
+			'tipo',
 			'calle',
-			'numero',
+			'noexterior',
+			'nointerior',
 			'colonia',
 			'cp',
 			'ciudad',
+			'municipio',
 			'estado',
-			'latitud',
-			'longitud',
-			'telefonos',
-			'email'
+			'pais'
 		]));
-		
-		return $this->response->item($oficina, new OficinaTransformer());
+
+		return $this->response->item($cliente, new ClienteTransformer());
 	}
 	
 	/**
@@ -68,16 +73,7 @@ class Oficinas extends Controller
 	 */
 	public function show($id)
 	{
-		$oficina = OficinaModel::find($id);
-		
-		if ($oficina)
-		{
-			return $this->response->item($oficina, new OficinaTransformer());
-		}
-		else
-		{
-			return $this->response->errorNotFound('Oficina no econtrada');
-		}
+		//
 	}
 	
 	/**
@@ -95,17 +91,14 @@ class Oficinas extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param \App\Http\Requests\create\OficinaRequest $request
-	 * @param  int                                     $id
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  int                      $id
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(OficinaRequest $request, $id)
+	public function update(Request $request, $id)
 	{
-		$oficina = OficinaModel::find($id);
-		$oficina->update($request->all());
-		
-		return $this->response->item($oficina, new OficinaTransformer());
+		//
 	}
 	
 	/**
@@ -117,6 +110,6 @@ class Oficinas extends Controller
 	 */
 	public function destroy($id)
 	{
-		
+		//
 	}
 }
