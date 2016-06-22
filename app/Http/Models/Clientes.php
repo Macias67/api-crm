@@ -19,10 +19,11 @@ class Clientes extends Model
 		'id',
 		'razonsocial',
 		'rfc',
+		'prospecto',
+		'distribuidor',
 		'email',
 		'telefono',
 		'telefono2',
-		'tipo',
 		'calle',
 		'noexterior',
 		'nointerior',
@@ -38,5 +39,10 @@ class Clientes extends Model
 	public function scopeIsOnline($query)
 	{
 		return $query->where('online', true);
+	}
+	
+	public function scopeIsProspecto($query)
+	{
+		return $query->where('prospecto', true);
 	}
 }
