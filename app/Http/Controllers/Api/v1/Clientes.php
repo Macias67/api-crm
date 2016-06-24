@@ -9,6 +9,7 @@ use App\Http\Requests\create\ClienteRequest;
 use App\Transformers\ClienteTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class Clientes extends Controller
 {
