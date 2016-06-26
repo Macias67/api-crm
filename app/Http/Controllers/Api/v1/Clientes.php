@@ -22,7 +22,24 @@ class Clientes extends Controller
 	 */
 	public function index()
 	{
-		return $this->response->collection(ClienteModel::isOnline()->get(), new ClienteTransformer());
+		if (Input::exists('q'))
+		{
+			$value = Input::get('q');
+			//$cliente = DB::table(ClienteModel::table())->where('razonsocial', $value)->first();
+
+			$cliente = ClienteModel::where('razonsocial', 'like', '%' . $value . '%')
+			                       ->orWhere('rfc', 'like', '%' . $value . '%')
+			                       ->get();
+
+			return $this->response->collection($cliente, new ClienteTransformer());
+			//dd($cliente);
+
+			//return $this->response->item($cliente, new ClienteTransformer());
+		}
+		else
+		{
+			return $this->response->collection(ClienteModel::isOnline()->get(), new ClienteTransformer());
+		}
 	}
 	
 	/**
@@ -61,7 +78,7 @@ class Clientes extends Controller
 			'estado',
 			'pais'
 		]));
-
+		
 		return $this->response->item($cliente, new ClienteTransformer());
 	}
 	

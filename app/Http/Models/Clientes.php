@@ -14,7 +14,7 @@ class Clientes extends Model
 	protected $table = 'cl_clientes';
 	
 	protected $primaryKey = 'id';
-
+	
 	protected $fillable = [
 		'id',
 		'razonsocial',
@@ -35,6 +35,11 @@ class Clientes extends Model
 		'pais',
 		'online'
 	];
+	
+	public static function table()
+	{
+		return with(new static)->getTable();
+	}
 	
 	public function scopeIsOnline($query)
 	{
