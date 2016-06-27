@@ -50,4 +50,9 @@ class Clientes extends Model
 	{
 		return $query->where('prospecto', true);
 	}
+
+	public function scopeIsDistribuidor($query)
+	{
+		return $query->where('distribuidor', true);
+	}
 }
