@@ -36,6 +36,16 @@ class Clientes extends Model
 		'online'
 	];
 	
+	/**
+	 * Un Cliente tiene muchos contactos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function contactos()
+	{
+		return $this->hasMany(Contactos::class, 'id');
+	}
+	
 	public static function table()
 	{
 		return with(new static)->getTable();
@@ -50,7 +60,7 @@ class Clientes extends Model
 	{
 		return $query->where('prospecto', true);
 	}
-
+	
 	public function scopeIsDistribuidor($query)
 	{
 		return $query->where('distribuidor', true);

@@ -16,7 +16,7 @@ class Departamentos extends Model
 	protected $primaryKey = 'id';
 	
 	/**
-	 * Un Departamento  tiene muchos ejecutivos
+	 * Un Departamento tiene muchos ejecutivos
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */

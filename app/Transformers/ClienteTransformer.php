@@ -32,6 +32,7 @@ class ClienteTransformer extends TransformerAbstract
 			'municipio'    => $cliente->municipio,
 			'estado'       => $cliente->estado,
 			'pais'         => $cliente->pais,
+			'contactos' => $cliente->contactos->toArray(),
 			'created_at'   => $cliente->created_at,
 			'updated_at'   => $cliente->updated_at
 		];

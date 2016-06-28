@@ -1,6 +1,6 @@
 <?php
 
-namespace App\App\Http\Models;
+namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +24,16 @@ class Contactos extends Model
 		'telefono',
 		'online'
 	];
+
+	/**
+	 * Contacto pertenece a un Cliente
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function oficina()
+	{
+		return $this->belongsTo(Clientes::class, 'id_cliente');
+	}
 	
 	public static function table()
 	{

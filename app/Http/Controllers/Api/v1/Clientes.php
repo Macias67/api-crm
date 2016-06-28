@@ -91,7 +91,16 @@ class Clientes extends Controller
 	 */
 	public function show($id)
 	{
-		//
+		$cliente = ClienteModel::find($id);
+
+		if (is_null($cliente))
+		{
+			return $this->response->errorNotFound('El ID del cliente no existe.');
+		}
+		else
+		{
+			return $this->response->item($cliente, new ClienteTransformer());
+		}
 	}
 	
 	/**
