@@ -7,7 +7,7 @@ Route::get('/', function ()
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1',  'middleware' => 'api'], function ($api)
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' => 'api'], function ($api)
 {
 	/**
 	 * Auth
@@ -23,17 +23,20 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1',  'middleware'
 		 * Ejecutivo
 		 */
 		$api->resource('ejecutivos', 'Ejecutivos');
-//		$api->resource('usuarios', 'Usuarios');
-//		$api->group(['prefix' => 'usuarios/{id}'], function ($api)
-//		{
-//			$api->resource('tags', 'UsuariosTags');
-//		});
 		
 		/**
 		 * Clientes
 		 */
 		$api->resource('clientes', 'Clientes');
+		$api->group(['prefix' => 'clientes/{id}'], function ($api)
+		{
+			/**
+			 * Contactos
+			 */
+			$api->resource('contactos', 'ClienteContactos');
+		});
 		
+
 		/**
 		 * Tags
 		 */

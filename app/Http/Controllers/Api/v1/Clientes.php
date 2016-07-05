@@ -26,14 +26,14 @@ class Clientes extends Controller
 		{
 			$value = Input::get('q');
 			//$cliente = DB::table(ClienteModel::table())->where('razonsocial', $value)->first();
-
+			
 			$cliente = ClienteModel::where('razonsocial', 'like', '%' . $value . '%')
 			                       ->orWhere('rfc', 'like', '%' . $value . '%')
 			                       ->get();
-
+			
 			return $this->response->collection($cliente, new ClienteTransformer());
 			//dd($cliente);
-
+			
 			//return $this->response->item($cliente, new ClienteTransformer());
 		}
 		else
@@ -92,7 +92,7 @@ class Clientes extends Controller
 	public function show($id)
 	{
 		$cliente = ClienteModel::find($id);
-
+		
 		if (is_null($cliente))
 		{
 			return $this->response->errorNotFound('El ID del cliente no existe.');
