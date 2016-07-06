@@ -14,6 +14,22 @@ class ClienteTransformer extends TransformerAbstract
 {
 	public function transform(Clientes $cliente)
 	{
+
+		$contactos = $cliente->contactos;
+		$dContactos = [];
+
+		foreach ($contactos as $index => $contacto)
+		{
+			$dContactos[$index] = [
+				'id'       => $contacto->id,
+				'nombre'   => $contacto->nombre,
+				'apellido' => $contacto->apellido,
+				'email'    => $contacto->email,
+				'telefono' => $contacto->telefono,
+				'online'   => (bool)$contacto->online
+			];
+		}
+
 		$data = [
 			'id'           => $cliente->id,
 			'razonsocial'  => $cliente->razonsocial,
@@ -32,8 +48,8 @@ class ClienteTransformer extends TransformerAbstract
 			'municipio'    => $cliente->municipio,
 			'estado'       => $cliente->estado,
 			'pais'         => $cliente->pais,
-			'online'         =>(bool)$cliente->online,
-			'contactos' => $cliente->contactos->toArray(),
+			'online'       => (bool)$cliente->online,
+			'contactos'    => $dContactos,
 			'created_at'   => $cliente->created_at,
 			'updated_at'   => $cliente->updated_at
 		];

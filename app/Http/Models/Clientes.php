@@ -43,7 +43,7 @@ class Clientes extends Model
 	 */
 	public function contactos()
 	{
-		return $this->hasMany(Contactos::class, 'id');
+		return $this->hasMany(Contactos::class, 'id_cliente');
 	}
 	
 	public static function table()

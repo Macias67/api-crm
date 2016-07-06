@@ -21,16 +21,31 @@ class ClienteContactos extends Model
 		'nombre',
 		'apellido',
 		'email',
+		'password',
 		'telefono',
 		'online'
 	];
+
+	protected $hidden = [
+		'password'
+	];
+	
+	/**
+	 * Contacto pertenece a un Cliente
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function cliente()
+	{
+		return $this->belongsTo(Clientes::class, 'id_cliente');
+	}
 	
 	public static function table()
 	{
 		return with(new static)->getTable();
 	}
 	
-	public function scopeCliente($query, $id_cliente)
+	public function scopeFromCliente($query, $id_cliente)
 	{
 		return $query->where('id_cliente', $id_cliente);
 	}

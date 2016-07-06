@@ -11,7 +11,7 @@ namespace App\Transformers;
 use App\Http\Models\ClienteContactos;
 use League\Fractal\TransformerAbstract;
 
-class ContactoTransformer extends TransformerAbstract
+class ClienteContactoTransformer extends TransformerAbstract
 {
 	public function transform(ClienteContactos $contacto)
 	{
@@ -22,7 +22,12 @@ class ContactoTransformer extends TransformerAbstract
 			'email'      => $contacto->email,
 			'telefono'   => $contacto->telefono,
 			'online'     => (bool)$contacto->online,
-			'cliente' => $contacto->cliente,
+			'cliente'    => [
+				'id'          => $contacto->cliente->id,
+				'razonsocial' => $contacto->cliente->razonsocial,
+				'rfc'         => $contacto->cliente->rfc,
+				'razonsocial' => $contacto->cliente->razonsocial,
+			],
 			'created_at' => $contacto->created_at,
 			'updated_at' => $contacto->updated_at
 		];

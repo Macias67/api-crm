@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Contactos as ContactosModel;
 use App\Http\Requests;
-use App\Http\Requests\create\ContactoRequest;
-use App\Transformers\ContactoTransformer;
-use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
 class Contactos extends Controller
 {
-	use Helpers;
-
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -37,24 +31,13 @@ class Contactos extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param \App\Http\Requests\create\ContactoRequest $request
+	 * @param  \Illuminate\Http\Request $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(ContactoRequest $request)
+	public function store(Request $request)
 	{
-		$request->merge([
-			'password' => bcrypt('olakace')
-		]);
-
-		$contacto = ContactosModel::create($request->only([
-			'id_cliente',
-			'nombre',
-			'apellido',
-			'email',
-		]));
-
-		return $this->response->item($contacto, new ContactoTransformer());
+		//
 	}
 	
 	/**

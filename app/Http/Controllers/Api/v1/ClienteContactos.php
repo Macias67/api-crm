@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Clientes;
 use App\Http\Models\ClienteContactos as ContactosModel;
+use App\Http\Models\Clientes as ClientesModel;
 use App\Http\Requests;
 use App\Http\Requests\create\ClienteContactoRequest;
-use App\Transformers\ContactoTransformer;
+use App\Transformers\ClienteContactoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class ClienteContactos extends Controller
 	 */
 	public function index($id_cliente)
 	{
-		return $this->response->collection(ContactosModel::isOnline()->cliente($id_cliente)->get(), new ContactoTransformer());
+		return $this->response->collection(ContactosModel::fromCliente($id_cliente)->get(), new ClienteContactoTransformer());
 	}
 	
 	/**
@@ -39,6 +39,7 @@ class ClienteContactos extends Controller
 	
 	/**
 	 * Store a newly created resource in storage.
+	 * @TODO Añadir funcionamiento de enviar email cuando el contacto es envíado
 	 *
 	 * @param \App\Http\Requests\create\ClienteContactoRequest $request
 	 * @param                                                  $id_cliente
@@ -47,21 +48,25 @@ class ClienteContactos extends Controller
 	 */
 	public function store(ClienteContactoRequest $request, $id_cliente)
 	{
-		if (Clientes::where('id', $id_cliente)->exists())
+		if (ClientesModel::where('id', $id_cliente)->exists())
 		{
 			$request->merge([
-				'password'   => bcrypt('olakace'),
 				'id_cliente' => $id_cliente,
+				'password'   => bcrypt('olakace'),
+				'online'     => true,
 			]);
-
+			
 			$contacto = ContactosModel::create($request->only([
 				'id_cliente',
 				'nombre',
 				'apellido',
 				'email',
+				'password',
+				'telefono',
+				'online'
 			]));
-
-			return $this->response->item($contacto, new ContactoTransformer());
+			
+			return $this->response->item($contacto, new ClienteContactoTransformer());
 		}
 		else
 		{
