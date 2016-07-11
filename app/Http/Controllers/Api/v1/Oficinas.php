@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Oficinas as OficinaModel;
 use App\Http\Requests;
-use App\Http\Requests\create\OficinaRequest;
+use App\Http\Requests\Create\OficinaRequest;
 use App\Transformers\OficinaTransformer;
 use Dingo\Api\Routing\Helpers;
 

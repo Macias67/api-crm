@@ -4,7 +4,7 @@ namespace App\Http\Requests\Create;
 
 use Dingo\Api\Http\FormRequest as Request;
 
-class ClienteContactoRequest extends Request
+class UnidadProductoRequest extends Request
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class ClienteContactoRequest extends Request
 	public function rules()
 	{
 		return [
-			'nombre'   => 'required|max:45',
-			'apellido' => 'required|max:45',
-			'email'    => 'required|email|max:60|unique:cl_contactos,email'
+			'unidad' => 'required|max:45|unique:ec_unidad_productos,unidad',
+		        'plural' => 'required|max:45|unique:ec_unidad_productos,plural',
+			'abreviatura' => 'required|max:45|unique:ec_unidad_productos,abreviatura'
 		];
 	}
 }

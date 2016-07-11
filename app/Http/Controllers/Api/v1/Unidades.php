@@ -2,29 +2,26 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Models\UnidadesProductos;
 use App\Http\Controllers\Controller;
-use App\Http\Models\ClienteContactos as ContactosModel;
-use App\Http\Models\Clientes as ClientesModel;
 use App\Http\Requests;
-use App\Http\Requests\Create\ClienteContactoRequest;
-use App\Transformers\ClienteContactoTransformer;
+use App\Http\Requests\Create\UnidadProductoRequest;
+use App\Transformers\UnidadTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
-class ClienteContactos extends Controller
+class Unidades extends Controller
 {
 	use Helpers;
 	
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @param $id_cliente
-	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index($id_cliente)
+	public function index()
 	{
-		return $this->response->collection(ContactosModel::fromCliente($id_cliente)->get(), new ClienteContactoTransformer());
+		return $this->response->collection(UnidadesProductos::all(), new UnidadTransformer());
 	}
 	
 	/**
@@ -39,39 +36,20 @@ class ClienteContactos extends Controller
 	
 	/**
 	 * Store a newly created resource in storage.
-	 * @TODO Añadir funcionamiento de enviar email cuando el contacto es envíado
 	 *
-	 * @param \App\Http\Requests\create\ClienteContactoRequest $request
-	 * @param                                                  $id_cliente
+	 * @param \App\Http\Requests\Create\UnidadProductoRequest $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(ClienteContactoRequest $request, $id_cliente)
+	public function store(UnidadProductoRequest $request)
 	{
-		if (ClientesModel::where('id', $id_cliente)->exists())
-		{
-			$request->merge([
-				'id_cliente' => $id_cliente,
-				'password'   => bcrypt('olakace'),
-				'online'     => true,
-			]);
-			
-			$contacto = ContactosModel::create($request->only([
-				'id_cliente',
-				'nombre',
-				'apellido',
-				'email',
-				'password',
-				'telefono',
-				'online'
-			]));
-			
-			return $this->response->item($contacto, new ClienteContactoTransformer());
-		}
-		else
-		{
-			return $this->response->errorNotFound('El ID del cliente no existe.');
-		}
+		$unidad = UnidadesProductos::create($request->only([
+			'unidad',
+			'plural',
+			'abreviatura'
+		]));
+		
+		return $this->response->item($unidad, new UnidadTransformer());
 	}
 	
 	/**

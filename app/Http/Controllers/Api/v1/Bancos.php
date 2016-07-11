@@ -3,28 +3,24 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\ClienteContactos as ContactosModel;
-use App\Http\Models\Clientes as ClientesModel;
+use App\Http\Models\Bancos as BancoModel;
 use App\Http\Requests;
-use App\Http\Requests\Create\ClienteContactoRequest;
-use App\Transformers\ClienteContactoTransformer;
+use App\Transformers\BancosTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
-class ClienteContactos extends Controller
+class Bancos extends Controller
 {
 	use Helpers;
-	
+
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @param $id_cliente
-	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index($id_cliente)
+	public function index()
 	{
-		return $this->response->collection(ContactosModel::fromCliente($id_cliente)->get(), new ClienteContactoTransformer());
+		return $this->response->collection(BancoModel::isOnline()->get(), new BancosTransformer());
 	}
 	
 	/**
@@ -39,39 +35,14 @@ class ClienteContactos extends Controller
 	
 	/**
 	 * Store a newly created resource in storage.
-	 * @TODO Añadir funcionamiento de enviar email cuando el contacto es envíado
 	 *
-	 * @param \App\Http\Requests\create\ClienteContactoRequest $request
-	 * @param                                                  $id_cliente
+	 * @param  \Illuminate\Http\Request $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(ClienteContactoRequest $request, $id_cliente)
+	public function store(Request $request)
 	{
-		if (ClientesModel::where('id', $id_cliente)->exists())
-		{
-			$request->merge([
-				'id_cliente' => $id_cliente,
-				'password'   => bcrypt('olakace'),
-				'online'     => true,
-			]);
-			
-			$contacto = ContactosModel::create($request->only([
-				'id_cliente',
-				'nombre',
-				'apellido',
-				'email',
-				'password',
-				'telefono',
-				'online'
-			]));
-			
-			return $this->response->item($contacto, new ClienteContactoTransformer());
-		}
-		else
-		{
-			return $this->response->errorNotFound('El ID del cliente no existe.');
-		}
+		//
 	}
 	
 	/**

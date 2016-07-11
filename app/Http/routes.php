@@ -36,15 +36,24 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			$api->resource('contactos', 'ClienteContactos');
 		});
 		
-
-		/**
-		 * Tags
-		 */
-		//$api->resource('tags', 'Tags');
-		
 		/**
 		 * Oficinas
 		 */
 		$api->resource('oficinas', 'Oficinas');
+		
+		/**
+		 * Productos
+		 */
+		$api->resource('productos', 'Productos');
+		
+		/**
+		 * Unidades
+		 */
+		$api->resource('unidades', 'Unidades');
+		
+		/**
+		 * Bancos
+		 */
+		$api->resource('bancos', 'Bancos');
 	});
 });
