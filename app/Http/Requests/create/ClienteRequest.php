@@ -25,7 +25,7 @@ class ClienteRequest extends Request
 	{
 		return [
 			'razonsocial'  => 'required|max:100|unique:cl_clientes,razonsocial',
-			'rfc'          => 'required|max:13|unique:cl_clientes,rfc',
+			'rfc'          => 'required|max:13|alpha_num|unique:cl_clientes,rfc',
 			'prospecto'    => 'required|boolean',
 			'distribuidor' => 'required|boolean',
 			'email'        => 'required|email|max:60|unique:cl_clientes,email',

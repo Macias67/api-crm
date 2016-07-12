@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\Productos as ProductosModel;
 use App\Http\Requests;
+use App\Http\Requests\Create\ProductoRequest;
+use App\Transformers\ProductoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
@@ -18,7 +21,7 @@ class Productos extends Controller
 	 */
 	public function index()
 	{
-		//
+		return $this->response->collection(ProductosModel::get(), new ProductoTransformer());
 	}
 	
 	/**
@@ -34,13 +37,24 @@ class Productos extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Create\ProductoRequest $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(ProductoRequest $request)
 	{
-		//
+		$request->merge(['online' => true]);
+
+		$producto = ProductosModel::create($request->only([
+			'id_unidad',
+			'codigo',
+			'producto',
+			'descripcion',
+			'precio',
+			'online'
+		]));
+
+		return $this->response->item($producto, new ProductoTransformer());
 	}
 	
 	/**

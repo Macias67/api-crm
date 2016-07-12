@@ -24,9 +24,12 @@ class ProductoRequest extends Request
 	public function rules()
 	{
 		return [
-			'unidad'      => 'required',
-			'codigo'      => 'required|max:20|unique:ec_unidad_productos,plural',
-			'producto' => 'required|max:45|unique:ec_unidad_productos,abreviatura'
+			'id_unidad'   => 'required|integer|exists:ec_unidad_productos,id',
+			'codigo'   => 'required|max:20|unique:ec_productos,codigo',
+			'producto' => 'required|max:100|unique:ec_productos,producto',
+			'descripcion' => 'required',
+			'precio'   => 'required|max:45',
+			'online'   => 'boolean'
 		];
 	}
 }

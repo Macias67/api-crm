@@ -17,12 +17,23 @@ class Productos extends Model
 	
 	protected $fillable = [
 		'id',
-		'unidad',
+		'id_unidad',
 		'codigo',
 		'producto',
+		'descripcion',
 		'precio',
 		'online',
 	];
+	
+	/**
+	 * Un Producto tiene muchas unidades
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function unidad()
+	{
+		return $this->belongsTo(UnidadesProductos::class, 'id');
+	}
 	
 	public function scopeIsOnline($query)
 	{

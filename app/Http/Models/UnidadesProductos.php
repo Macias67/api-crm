@@ -21,4 +21,14 @@ class UnidadesProductos extends Model
 		'id',
 		'unidad'
 	];
+
+	/**
+	 * Unidad pertenece a un Producto
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function productos()
+	{
+		return $this->hasMany(Productos::class, 'id_unidad');
+	}
 }
