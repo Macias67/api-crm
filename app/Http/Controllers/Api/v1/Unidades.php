@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Models\UnidadesProductos;
 use App\Http\Controllers\Controller;
+use App\Http\Models\UnidadesProductos;
 use App\Http\Requests;
 use App\Http\Requests\Create\UnidadProductoRequest;
 use App\Transformers\UnidadTransformer;
@@ -43,10 +43,12 @@ class Unidades extends Controller
 	 */
 	public function store(UnidadProductoRequest $request)
 	{
+		$request->merge(['online' => true]);
 		$unidad = UnidadesProductos::create($request->only([
 			'unidad',
 			'plural',
-			'abreviatura'
+			'abreviatura',
+			'online'
 		]));
 		
 		return $this->response->item($unidad, new UnidadTransformer());

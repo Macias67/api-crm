@@ -19,7 +19,10 @@ class UnidadesProductos extends Model
 	
 	protected $fillable = [
 		'id',
-		'unidad'
+		'unidad',
+	        'plural',
+	        'abreviatura',
+	        'online'
 	];
 
 	/**
