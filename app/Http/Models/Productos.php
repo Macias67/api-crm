@@ -32,7 +32,7 @@ class Productos extends Model
 	 */
 	public function unidad()
 	{
-		return $this->belongsTo(UnidadesProductos::class, 'id');
+		return $this->belongsTo(UnidadesProductos::class, 'id_unidad');
 	}
 	
 	public function scopeIsOnline($query)

@@ -17,7 +17,13 @@ class ProductoTransformer extends TransformerAbstract
 	{
 		$data = [
 			'id'         => $producto->id,
-			'unidad'     => $producto->unidad,
+			'unidad'     => [
+				'id' => $producto->unidad->id,
+			        'unidad'  => $producto->unidad->unidad,
+			        'plural' =>$producto->unidad->plural,
+				'abreviatura' => $producto->unidad->abreviatura,
+				'online' => (bool)$producto->unidad->online
+			],
 			'codigo'     => $producto->codigo,
 			'producto'   => $producto->producto,
 			'descripcion' => $producto->descripcion,
