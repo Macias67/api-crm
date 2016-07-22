@@ -7,7 +7,6 @@
 
 namespace App\Transformers;
 
-
 use App\Http\Models\Ejecutivo;
 use League\Fractal\TransformerAbstract;
 

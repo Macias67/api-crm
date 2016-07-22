@@ -20,6 +20,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		//$api->get('validatetoken', 'Auth@validateToken');
 		
 		/**
+		 * Cotizacion
+		 */
+		$api->resource('cotizaciones', 'Cotizacion');
+		
+		/**
 		 * Ejecutivo
 		 */
 		$api->resource('ejecutivos', 'Ejecutivos');

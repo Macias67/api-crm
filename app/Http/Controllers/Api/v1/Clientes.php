@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Clientes as ClienteModel;
-use App\Http\Requests;
 use App\Http\Requests\Create\ClienteRequest;
 use App\Transformers\ClienteTransformer;
 use Dingo\Api\Routing\Helpers;
