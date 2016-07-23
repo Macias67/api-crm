@@ -23,4 +23,29 @@ class Cotizacion extends Model
 		'oficina_id',
 		'estatus_id'
 	];
+	
+	public static function table()
+	{
+		return with(new static)->getTable();
+	}
+	
+	/**
+	 * Una Cotizacion tiene muchos productos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function productos()
+	{
+		return $this->hasMany(CotizacionProductos::class, 'id_cotizacion');
+	}
+	
+	/**
+	 * Una Cotizacion tiene muchos bancos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function bancos()
+	{
+		return $this->hasMany(CotizacionBancos::class, 'id_cotizacion');
+	}
 }

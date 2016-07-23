@@ -23,8 +23,36 @@ class CotizacionRequest extends Request
 	 */
 	public function rules()
 	{
-		return [
-			
+		$productos = $this->get('productos');
+		$bancos = $this->get('bancos');
+		
+		$rules = [
+			'cliente_id'  => 'required|integer|exists:cl_clientes,id',
+			'contacto_id' => 'required|integer|exists:cl_contactos,id',
+			'productos'   => 'required|array',
+			'bancos'      => 'required|array',
+			'vencimiento' => 'required|date',
+			'cxc'         => 'required|boolean',
+			'subtotal'    => 'required|numeric',
+			'iva'         => 'required|numeric',
+			'total'       => 'required|numeric'
 		];
+		
+		foreach ($productos as $index => $producto)
+		{
+			$rules['productos.' . $index . '.id'] = 'required|integer|exists:ec_productos,id';
+			$rules['productos.' . $index . '.cantidad'] = 'required|integer';
+			$rules['productos.' . $index . '.precio'] = 'required|numeric';
+			$rules['productos.' . $index . '.descuento'] = 'required|numeric';
+			$rules['productos.' . $index . '.subtotal'] = 'required|numeric';
+			$rules['productos.' . $index . '.iva'] = 'required|numeric';
+			$rules['productos.' . $index . '.total'] = 'required|numeric';
+		}
+		foreach ($bancos as $index => $banco)
+		{
+			$rules['bancos.' . $index] = 'required|integer|exists:ec_bancos,id';
+		}
+		
+		return $rules;
 	}
 }

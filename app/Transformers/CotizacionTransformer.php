@@ -14,6 +14,10 @@ class CotizacionTransformer extends TransformerAbstract
 {
 	public function transform(Cotizacion $cotizacion)
 	{
+		$data = [
+			
+		];
 		
+		return $data;
 	}
 }

@@ -7,6 +7,7 @@ use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Requests\Create\CotizacionRequest;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Transformers\CotizacionTransformer;
 
 class Cotizacion extends Controller
 {
@@ -41,7 +42,26 @@ class Cotizacion extends Controller
 	 */
 	public function store(CotizacionRequest $request)
 	{
-		dd($request->all());
+		$request->merge([
+			'ejecutivo_id' => $request->user()->id,
+			'oficina_id'   => $request->user()->oficina_id,
+			'estatus_id'   => 1
+		]);
+		
+		$cotizacion = CotizacionModel::create($request->only([
+			'cliente_id',
+			'contacto_id',
+			'vencimiento',
+			'cxc',
+			'subtotal',
+			'iva',
+			'total'
+		]));
+		
+		$cotizacion->productos()->saveMany($request->get('productos'));
+		$cotizacion->bancos()->saveMany($request->get('bancos'));
+		
+		return $this->response->item($cotizacion, new CotizacionTransformer());
 	}
 	
 	/**

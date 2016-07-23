@@ -35,6 +35,16 @@ class Productos extends Model
 		return $this->belongsTo(UnidadesProductos::class, 'id_unidad');
 	}
 	
+	/**
+	 * Un Producto tiene muchos CotizacionProductos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function cotizacionProductos()
+	{
+		return $this->hasMany(CotizacionProductos::class, 'id_cotizacion');
+	}
+	
 	public function scopeIsOnline($query)
 	{
 		return $query->where('online', true);

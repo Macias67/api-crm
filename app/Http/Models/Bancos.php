@@ -25,6 +25,16 @@ class Bancos extends Model
 		'online',
 	];
 	
+	/**
+	 * Un Banco tiene muchos CotizacionBancos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function cotizacionBancos()
+	{
+		return $this->hasMany(CotizacionBancos::class, 'id_banco');
+	}
+	
 	public function scopeIsOnline($query)
 	{
 		return $query->where('online', TRUE);
