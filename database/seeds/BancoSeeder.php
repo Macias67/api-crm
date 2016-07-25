@@ -17,9 +17,9 @@ class BancoSeeder extends Seeder
 		for ($i = 0; $i < 3; $i++)
 		{
 			DB::table('ec_bancos')->insert([
-				'banco'      => $faker->company,
-				'sucursal'   => $faker->randomNumber(4),
-				'cta'        => $faker->randomNumber(4),
+				'banco'      => 'BANAMEX',
+				'sucursal'   => '2346',
+				'cta'        => '73919374019231',
 				'titular'    => $faker->firstName . ' ' . $faker->lastName,
 				'cib'        => $faker->creditCardNumber,
 				'online'     => 1,

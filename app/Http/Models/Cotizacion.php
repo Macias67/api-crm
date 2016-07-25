@@ -17,16 +17,71 @@ class Cotizacion extends Model
 	
 	protected $fillable = [
 		'id',
-		'ejecutivo_id',
 		'cliente_id',
+		'ejecutivo_id',
 		'contacto_id',
 		'oficina_id',
-		'estatus_id'
+		'estatus_id',
+		'vencimiento',
+		'cxc',
+		'subtotal',
+		'iva',
+		'total'
 	];
 	
 	public static function table()
 	{
 		return with(new static)->getTable();
+	}
+	
+	/**
+	 * Un Cotizacion pertenece a una Cliente
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function cliente()
+	{
+		return $this->belongsTo(Clientes::class, 'cliente_id');
+	}
+	
+	/**
+	 * Un Cotizacion pertenece a una CotizacionEstatus
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function estatus()
+	{
+		return $this->belongsTo(CotizacionEstatus::class, 'estatus_id');
+	}
+	
+	/**
+	 * Un Cotizacion pertenece a un Ejecutivo
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function ejecutivo()
+	{
+		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_id');
+	}
+	
+	/**
+	 * Un Cotizacion pertenece a un Contacto
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function contacto()
+	{
+		return $this->belongsTo(Contactos::class, 'contacto_id');
+	}
+	
+	/**
+	 * Un Cotizacion pertenece a una Oficina
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function oficina()
+	{
+		return $this->belongsTo(Oficinas::class, 'oficina_id');
 	}
 	
 	/**
