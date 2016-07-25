@@ -11,6 +11,7 @@ use App\Transformers\CotizacionTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class Cotizacion extends Controller
 {
@@ -23,7 +24,24 @@ class Cotizacion extends Controller
 	 */
 	public function index()
 	{
-		//
+		if (Input::exists('q'))
+		{
+			$value = Input::get('q');
+			//$cliente = DB::table(ClienteModel::table())->where('razonsocial', $value)->first();
+			
+			$cliente = CotizacionModel::where('razonsocial', 'like', '%' . $value . '%')
+			                       ->orWhere('rfc', 'like', '%' . $value . '%')
+			                       ->get();
+			
+			return $this->response->collection($cliente, new CotizacionTransformer());
+			//dd($cliente);
+			
+			//return $this->response->item($cliente, new ClienteTransformer());
+		}
+		else
+		{
+			return $this->response->collection(CotizacionModel::get(), new CotizacionTransformer());
+		}
 	}
 	
 	/**
@@ -73,13 +91,13 @@ class Cotizacion extends Controller
 			foreach ($productos as $index => $producto)
 			{
 				$cotizacion->productos()->save(new CotizacionProductos([
-					'id_producto'   => $producto['id'],
-					'cantidad'      => $producto['cantidad'],
-					'precio'        => $producto['precio'],
-					'descuento'     => $producto['descuento'],
-					'subtotal'      => $producto['subtotal'],
-					'iva'           => $producto['iva'],
-					'total'         => $producto['total']
+					'id_producto' => $producto['id'],
+					'cantidad'    => $producto['cantidad'],
+					'precio'      => $producto['precio'],
+					'descuento'   => $producto['descuento'],
+					'subtotal'    => $producto['subtotal'],
+					'iva'         => $producto['iva'],
+					'total'       => $producto['total']
 				]));
 			}
 			
@@ -87,7 +105,7 @@ class Cotizacion extends Controller
 			foreach ($bancos as $banco)
 			{
 				$cotizacion->bancos()->save(new CotizacionBancos([
-					'id_banco'      => $banco
+					'id_banco' => $banco
 				]));
 			}
 			
