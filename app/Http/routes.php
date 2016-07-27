@@ -22,6 +22,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		/**
 		 * Cotizacion
 		 */
+		$api->post('cotizaciones/datatable', 'Cotizacion@datatable');
 		$api->resource('cotizaciones', 'Cotizacion');
 		
 		/**

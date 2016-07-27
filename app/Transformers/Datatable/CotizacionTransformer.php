@@ -1,11 +1,11 @@
 <?php
 /**
- * User: Luis
- * Date: 22/07/2016
- * Time: 12:01 PM
+ * User: Luis Macias
+ * Date: 26/07/2016
+ * Time: 04:31 PM
  */
 
-namespace App\Transformers;
+namespace Transformers\Datatable;
 
 use App\Http\Models\Cotizacion;
 use League\Fractal\TransformerAbstract;
@@ -14,24 +14,6 @@ class CotizacionTransformer extends TransformerAbstract
 {
 	public function transform(Cotizacion $cotizacion)
 	{
-		
-		$productos = $cotizacion->productos;
-		$dProductos = [];
-		foreach ($productos as $index => $producto)
-		{
-			$dProductos[$index] = [
-				'id'        => $producto->id_producto,
-				'codigo'    => $producto->producto->codigo,
-				'nombre'    => $producto->producto->producto,
-				'cantidad'  => $producto->cantidad,
-				'precio'    => (float)$producto->precio,
-				'descuento' => (float)$producto->descuento,
-				'subtotal'  => (float)$producto->subtotal,
-				'iva'       => (float)$producto->iva,
-				'total'     => (float)$producto->total
-			];
-		}
-		
 		$data = [
 			'id'          => $cotizacion->id,
 			'cliente'     => [
@@ -60,7 +42,6 @@ class CotizacionTransformer extends TransformerAbstract
 				'estatus' => $cotizacion->estatus->estatus,
 				'color' => $cotizacion->estatus->color,
 			],
-			'productos'   => $dProductos,
 			'vencimiento' => $cotizacion->vencimiento,
 			'cxc'         => (bool)$cotizacion->cxc,
 			'subtotal'    => (float)$cotizacion->subtotal,
