@@ -44,4 +44,8 @@ class Contactos extends Model
 	{
 		return $query->where('online', true);
 	}
+	
+	public function nombreCompleto() {
+		return $this->nombre. ' '.$this->apellido;
+	}
 }

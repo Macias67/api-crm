@@ -26,7 +26,9 @@ class Cotizacion extends Model
 		'cxc',
 		'subtotal',
 		'iva',
-		'total'
+		'total',
+	        'created_at',
+	        'updated_at'
 	];
 	
 	public static function table()
@@ -102,5 +104,15 @@ class Cotizacion extends Model
 	public function bancos()
 	{
 		return $this->hasMany(CotizacionBancos::class, 'id_cotizacion');
+	}
+	
+	/**
+	 * Una Cotizacion tiene muchos pagos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function pagos()
+	{
+		return $this->hasMany(CotizacionPagos::class, 'cotizacion_id');
 	}
 }

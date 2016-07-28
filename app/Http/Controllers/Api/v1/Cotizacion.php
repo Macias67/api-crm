@@ -9,6 +9,7 @@ use App\Http\Models\CotizacionBancos;
 use App\Http\Models\CotizacionProductos;
 use App\Http\Requests\Create\CotizacionRequest;
 use App\Transformers\CotizacionTransformer;
+use App\Transformers\Datatable\CotizacionDataTableTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,18 @@ class Cotizacion extends Controller
 	public function index()
 	{
 //		return Datatables::eloquent(CotizacionModel::query())->make(true);
+		
+		$param = Input::all();
+		
+		if (count($param) > 0)
+		{
+			if (array_key_exists('estatus', $param))
+			{
+				$cotizaciones = CotizacionModel::where('estatus_id', '=', $param['estatus'])->orderBy('vencimiento', 'desc')->get();
+				
+				return $this->response->collection($cotizaciones, new CotizacionTransformer());
+			}
+		}
 		
 		if (Input::exists('q'))
 		{
@@ -48,22 +61,23 @@ class Cotizacion extends Controller
 		}
 	}
 	
-	public function datatable()
+	public function datatable(Request $request)
 	{
-		$cotizaciones = CotizacionModel::join(Clientes::table(), CotizacionModel::table() . '.cliente_id', '=', Clientes::table() . '.id');
+		$cotizaciones = CotizacionModel::select([CotizacionModel::table() . '.*', Clientes::table() . '.razonsocial'])
+		                               ->join(Clientes::table(), CotizacionModel::table() . '.cliente_id', '=', Clientes::table() . '.id');
 		
 		return Datatables::of($cotizaciones)
 		                 ->filterColumn(Clientes::table() . '.razonsocial', function ($query, $keyword)
 		                 {
-			                 $query->where(Clientes::table() . ".razonsocial like ?", ["%{$keyword}%"]);
+			                 dd($query);
+			                 $query->whereRaw(Clientes::table() . ".razonsocial like ?", ["%{$keyword}%"]);
 		                 })
-		               
 //		                 ->editColumn('razonsocial', function ($model)
 //		                 {
 //			                 return $model->cliente->razonsocial;
 //		                 })
-//			->setTransformer(new CotizacionTransformer())
-                                 ->make(true);
+                                 ->setTransformer(new CotizacionDataTableTransformer())
+		                 ->make(true);
 	}
 	
 	/**

@@ -5,21 +5,18 @@
  * Time: 04:31 PM
  */
 
-namespace Transformers\Datatable;
+namespace App\Transformers\Datatable;
 
 use App\Http\Models\Cotizacion;
 use League\Fractal\TransformerAbstract;
 
-class CotizacionTransformer extends TransformerAbstract
+class CotizacionDataTableTransformer extends TransformerAbstract
 {
 	public function transform(Cotizacion $cotizacion)
 	{
 		$data = [
 			'id'          => $cotizacion->id,
-			'cliente'     => [
-				'id'          => $cotizacion->cliente->id,
-				'razonsocial' => $cotizacion->cliente->razonsocial,
-			],
+			'razonsocial' => $cotizacion->cliente->razonsocial,
 			'ejecutivo'   => [
 				'id'       => $cotizacion->ejecutivo->id,
 				'nombre'   => $cotizacion->ejecutivo->nombre,

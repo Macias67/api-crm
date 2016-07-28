@@ -32,6 +32,23 @@ class CotizacionTransformer extends TransformerAbstract
 			];
 		}
 		
+		$pagos = $cotizacion->pagos()->orderBy('created_at', 'desc')->get();
+		$dtPagos = [];
+		if (count($pagos) > 0)
+		{
+			foreach ($pagos  as $index => $pago)
+			{
+				$dtPagos[$index] = [
+					'id' => $pago->id,
+					'contacto_id' => $pago->contacto->id,
+					'contacto' => $pago->contacto->nombreCompleto(),
+				        'cantidad' => (float)$pago->cantidad,
+				        'fecha' =>date('Y-m-d H:i:s', strtotime($pago->created_at)),
+				];
+			}
+			
+		}
+		
 		$data = [
 			'id'          => $cotizacion->id,
 			'cliente'     => [
@@ -55,12 +72,14 @@ class CotizacionTransformer extends TransformerAbstract
 				'ciudad' => $cotizacion->oficina->ciudad,
 				'estado' => $cotizacion->oficina->estado
 			],
-			'estatus' => [
-				'id' => $cotizacion->estatus->id,
+			'pagos'       => $dtPagos,
+			'estatus'     => [
+				'id'      => $cotizacion->estatus->id,
 				'estatus' => $cotizacion->estatus->estatus,
-				'color' => $cotizacion->estatus->color,
+				'color'   => $cotizacion->estatus->color,
 			],
 			'productos'   => $dProductos,
+			'fecha'       => date('Y-m-d H:i:s', strtotime($cotizacion->created_at)),
 			'vencimiento' => $cotizacion->vencimiento,
 			'cxc'         => (bool)$cotizacion->cxc,
 			'subtotal'    => (float)$cotizacion->subtotal,
