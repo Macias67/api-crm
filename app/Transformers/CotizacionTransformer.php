@@ -57,6 +57,7 @@ class CotizacionTransformer extends TransformerAbstract
 					'contacto_id'  => $pago->contacto->id,
 					'contacto'     => $pago->contacto->nombreCompleto(),
 					'cantidad'     => (float)$pago->cantidad,
+					'comentario'     => (is_null($pago->comentario)) ? '' : $pago->comentario,
 					'fecha'        => date('Y-m-d H:i:s', strtotime($pago->created_at)),
 					'valido' => (bool)$pago->valido,
 					'comprobantes' => $dtComprobantres
@@ -81,7 +82,8 @@ class CotizacionTransformer extends TransformerAbstract
 				'id'       => $cotizacion->contacto->id,
 				'nombre'   => $cotizacion->contacto->nombreCompleto(),
 				'telefono' => $cotizacion->contacto->telefono,
-				'email'    => $cotizacion->contacto->email
+				'email'    => $cotizacion->contacto->email,
+			        'online' => (bool)$cotizacion->contacto->online
 			],
 			'oficina'     => [
 				'id'     => $cotizacion->oficina->id,
