@@ -52,4 +52,8 @@ class Ejecutivo extends Authenticatable
 	{
 		return $this->belongsTo(Departamentos::class, 'departamento_id');
 	}
+	
+	public function nombreCompleto() {
+		return $this->nombre. ' '.$this->apellido;
+	}
 }

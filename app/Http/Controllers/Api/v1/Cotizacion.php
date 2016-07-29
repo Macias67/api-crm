@@ -27,15 +27,13 @@ class Cotizacion extends Controller
 	 */
 	public function index()
 	{
-//		return Datatables::eloquent(CotizacionModel::query())->make(true);
-		
-		$param = Input::all();
+				$param = Input::all();
 		
 		if (count($param) > 0)
 		{
 			if (array_key_exists('estatus', $param))
 			{
-				$cotizaciones = CotizacionModel::where('estatus_id', '=', $param['estatus'])->orderBy('vencimiento', 'desc')->get();
+				$cotizaciones = CotizacionModel::where('estatus_id', '=', $param['estatus'])->get();
 				
 				return $this->response->collection($cotizaciones, new CotizacionTransformer());
 			}
@@ -168,7 +166,16 @@ class Cotizacion extends Controller
 	 */
 	public function show($id)
 	{
-		//
+		$cotizacion = CotizacionModel::find($id);
+		
+		if (is_null($cotizacion))
+		{
+			return $this->response->errorNotFound('El ID de la cotización  no existe.');
+		}
+		else
+		{
+			return $this->response->item($cotizacion, new CotizacionTransformer());
+		}
 	}
 	
 	/**

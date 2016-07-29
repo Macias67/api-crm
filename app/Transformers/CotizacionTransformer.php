@@ -36,14 +36,30 @@ class CotizacionTransformer extends TransformerAbstract
 		$dtPagos = [];
 		if (count($pagos) > 0)
 		{
-			foreach ($pagos  as $index => $pago)
+			foreach ($pagos as $index => $pago)
 			{
+				$comprobantes = $pago->comprobantes;
+				$dtComprobantres = [];
+				
+				foreach ($comprobantes as $index => $comprobante)
+				{
+					$dtComprobantres[$index] = [
+						'id'       => $comprobante->id,
+						'archivo'  => $comprobante->archivo,
+						'nombre'   => $comprobante->nombre,
+						'extension' => $comprobante->extension,
+						'fecha'    => date('Y-m-d H:i:s', strtotime($comprobante->created_at))
+					];
+				}
+				
 				$dtPagos[$index] = [
-					'id' => $pago->id,
-					'contacto_id' => $pago->contacto->id,
-					'contacto' => $pago->contacto->nombreCompleto(),
-				        'cantidad' => (float)$pago->cantidad,
-				        'fecha' =>date('Y-m-d H:i:s', strtotime($pago->created_at)),
+					'id'           => $pago->id,
+					'contacto_id'  => $pago->contacto->id,
+					'contacto'     => $pago->contacto->nombreCompleto(),
+					'cantidad'     => (float)$pago->cantidad,
+					'fecha'        => date('Y-m-d H:i:s', strtotime($pago->created_at)),
+					'valido' => (bool)$pago->valido,
+					'comprobantes' => $dtComprobantres
 				];
 			}
 			
@@ -54,17 +70,17 @@ class CotizacionTransformer extends TransformerAbstract
 			'cliente'     => [
 				'id'          => $cotizacion->cliente->id,
 				'razonsocial' => $cotizacion->cliente->razonsocial,
+			        'distribuidor' => (boolean)$cotizacion->cliente->distribuidor,
 			],
 			'ejecutivo'   => [
 				'id'       => $cotizacion->ejecutivo->id,
-				'nombre'   => $cotizacion->ejecutivo->nombre,
-				'apellido' => $cotizacion->ejecutivo->apellido,
+				'nombre'   => $cotizacion->ejecutivo->nombreCompleto(),
 				'email'    => $cotizacion->ejecutivo->email
 			],
 			'contacto'    => [
 				'id'       => $cotizacion->contacto->id,
-				'nombre'   => $cotizacion->contacto->nombre,
-				'apellido' => $cotizacion->contacto->apellido,
+				'nombre'   => $cotizacion->contacto->nombreCompleto(),
+				'telefono' => $cotizacion->contacto->telefono,
 				'email'    => $cotizacion->contacto->email
 			],
 			'oficina'     => [

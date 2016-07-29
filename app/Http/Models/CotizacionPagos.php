@@ -20,12 +20,13 @@ class CotizacionPagos extends Model
 		'cotizacion_id',
 		'contacto_id',
 		'cantidad',
+		'valido',
 		'created_at',
 	        'updated_at'
 	];
 	
 	/**
-	 * Una CotizacionPago tiene muchas Cotizaciones
+	 * Una CotizacionPago pertence a una Cotizacion
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
@@ -35,12 +36,22 @@ class CotizacionPagos extends Model
 	}
 	
 	/**
-	 * Una CotizacionPago tiene muchas Cotizaciones
+	 * Una CotizacionPago pertence a un Contacto
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function contacto()
 	{
 		return $this->belongsTo(Contactos::class, 'contacto_id');
+	}
+	
+	/**
+	 * Una CotizacionPago tiene muchos CotizacionComprobantes
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function comprobantes()
+	{
+		return $this->hasMany(CotizacionComprobantes::class, 'pago_id');
 	}
 }
