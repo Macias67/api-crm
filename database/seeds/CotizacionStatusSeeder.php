@@ -37,6 +37,12 @@ class CotizacionStatusSeeder extends Seeder
 		]);
 		
 		DB::table('ct_cotizacion_estatus')->insert([
+			'estatus' => 'Abonada',
+			'color'   => '#8775A7',
+			'class'   => 'bg-purple-plum bg-font-purple-plum'
+		]);
+		
+		DB::table('ct_cotizacion_estatus')->insert([
 			'estatus' => 'Vencida',
 			'color'   => '#ACB5C3',
 			'class'   => 'bg-grey-salsa bg-font-grey-salsa'
