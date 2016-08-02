@@ -24,7 +24,8 @@ class CotizacionProductos extends Model
 		'descuento',
 		'subtotal',
 		'iva',
-		'total'
+		'total',
+	        'habilitado'
 	];
 	
 	/**
@@ -45,6 +46,11 @@ class CotizacionProductos extends Model
 	public function producto()
 	{
 		return $this->belongsTo(Productos::class, 'id_producto');
+	}
+	
+	public function scopeIsHabilitado($query)
+	{
+		return $query->where('habilitado', true);
 	}
 	
 	public static function table()

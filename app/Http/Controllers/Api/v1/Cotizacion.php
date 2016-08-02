@@ -27,7 +27,7 @@ class Cotizacion extends Controller
 	 */
 	public function index()
 	{
-				$param = Input::all();
+		$param = Input::all();
 		
 		if (count($param) > 0)
 		{

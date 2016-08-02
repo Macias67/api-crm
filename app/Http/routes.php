@@ -24,6 +24,15 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		 */
 		$api->post('cotizaciones/datatable', 'Cotizacion@datatable');
 		$api->resource('cotizaciones', 'Cotizacion');
+		$api->group(['prefix' => 'cotizaciones/{idCotizacion}'], function ($api)
+		{
+			$api->post('pagos/{idPago}/valida', 'Pagos@validaPago');
+			
+			/**
+			 * Pagos
+			 */
+			$api->resource('pagos', 'Pagos');
+		});
 		
 		/**
 		 * Ejecutivo
@@ -39,7 +48,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			/**
 			 * Contactos
 			 */
-			$api->resource('contactos', 'ClienteContactos');
+			$api->resource('contactos', 'Contactos');
 		});
 		
 		/**
