@@ -23,6 +23,7 @@ class CotizacionTransformer extends TransformerAbstract
 				'id'        => $producto->id_producto,
 				'codigo'    => $producto->producto->codigo,
 				'nombre'    => $producto->producto->producto,
+				'descripcion'    => $producto->producto->descripcion,
 				'cantidad'  => $producto->cantidad,
 				'precio'    => (float)$producto->precio,
 				'descuento' => (float)$producto->descuento,

@@ -30,7 +30,8 @@ class Ejecutivo extends Authenticatable
 		'password',
 		'avatar',
 		'oficina_id',
-		'departamento_id'
+		'departamento_id',
+	        'online'
 	];
 	
 	/**
