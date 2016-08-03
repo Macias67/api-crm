@@ -4,14 +4,14 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CotizacionEstatus extends Model
+class CasoEstatus extends Model
 {
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
-	protected $table = 'ct_cotizacion_estatus';
+	protected $table = 'cs_caso_estatus';
 	
 	protected $primaryKey = 'id';
 	
@@ -22,13 +22,18 @@ class CotizacionEstatus extends Model
 		'color'
 	];
 	
+	public static function table()
+	{
+		return with(new static)->getTable();
+	}
+	
 	/**
-	 * Una CotizacionEstatus tiene muchas cotizaciones
+	 * Un CasoEstatus tiene muchos Casos
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function cotizaciones()
+	public function casos()
 	{
-		return $this->hasMany(Cotizacion::class, 'estatus_id');
+		return $this->hasMany(Caso::class, 'estatus_id');
 	}
 }

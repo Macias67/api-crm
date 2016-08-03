@@ -46,6 +46,26 @@ class Clientes extends Model
 		return $this->hasMany(Contactos::class, 'id_cliente');
 	}
 	
+	/**
+	 * Un Cliente tiene muchas cotizaciones
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function cotizaciones()
+	{
+		return $this->hasMany(Cotizacion::class, 'cliente_id');
+	}
+	
+	/**
+	 * Un Cliente tiene muchos Casos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function casos()
+	{
+		return $this->hasMany(Caso::class, 'cliente_id');
+	}
+	
 	public static function table()
 	{
 		return with(new static)->getTable();

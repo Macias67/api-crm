@@ -31,7 +31,7 @@ class Ejecutivo extends Authenticatable
 		'avatar',
 		'oficina_id',
 		'departamento_id',
-	        'online'
+		'online'
 	];
 	
 	/**
@@ -45,6 +45,16 @@ class Ejecutivo extends Authenticatable
 	}
 	
 	/**
+	 * Un Ejecutivo tiene muchos CasoLider
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function casos()
+	{
+		return $this->hasMany(CasoLider::class, 'ejecutivo_id');
+	}
+	
+	/**
 	 * Ejecutivo tiene un Departamento
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -54,7 +64,8 @@ class Ejecutivo extends Authenticatable
 		return $this->belongsTo(Departamentos::class, 'departamento_id');
 	}
 	
-	public function nombreCompleto() {
-		return $this->nombre. ' '.$this->apellido;
+	public function nombreCompleto()
+	{
+		return $this->nombre . ' ' . $this->apellido;
 	}
 }
