@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class CasoEstatus extends Model
 {
+	
+	const PRECIERRE = 1;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *

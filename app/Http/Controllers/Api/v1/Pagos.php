@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\CasoEstatus;
 use App\Http\Models\Cotizacion;
 use App\Transformers\CotizacionPagosTransformer;
 use Dingo\Api\Routing\Helpers;
