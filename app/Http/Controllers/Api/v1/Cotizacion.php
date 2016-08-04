@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Models\Clientes;
 use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionBancos;
+use App\Http\Models\CotizacionEstatus;
 use App\Http\Models\CotizacionProductos;
 use App\Http\Requests\Create\CotizacionRequest;
 use App\Transformers\CotizacionTransformer;
@@ -104,7 +105,7 @@ class Cotizacion extends Controller
 			$request->merge([
 				'ejecutivo_id' => $request->user()->id,
 				'oficina_id'   => $request->user()->oficina_id,
-				'estatus_id'   => 1
+				'estatus_id'   => CotizacionEstatus::PORPAGAR,
 			]);
 			
 			$cotizacion = CotizacionModel::create($request->only([
@@ -144,6 +145,11 @@ class Cotizacion extends Controller
 			}
 			
 			DB::commit();
+			
+			/**
+			 * @TODO enviar email al cliente con detalles de la cotizacion
+			 *
+			 */
 			
 			return $this->response->item($cotizacion, new CotizacionTransformer());
 		}

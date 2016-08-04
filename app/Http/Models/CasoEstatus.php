@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CasoEstatus extends Model
 {
-	
-	const PRECIERRE = 1;
+	const PORASIGNAR = 1;
+	const REASIGNADO = 2;
+	const PROCESO    = 3;
+	const PRECIERRE  = 4;
+	const CERRADO    = 5;
+	const SUSPENDIDO = 6;
+	const CANCELADO  = 7;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo

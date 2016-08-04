@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
 use App\Http\Models\Cotizacion;
+use App\Http\Models\CotizacionEstatus;
 use App\Transformers\CotizacionPagosTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -170,13 +172,29 @@ class Pagos extends Controller
 					
 					if ($todosValidos)
 					{
+						// La cotizacion la marco como pagada
+						$cotizacion->estatus_id = CotizacionEstatus::PAGADA;
+						$cotizacion->save();
+						
 						// Creo un nuevo caso
+						$caso = new Caso();
+						$caso->cliente_id = $cotizacion->cliente->id;
+						$caso->estatus_id = CasoEstatus::PORASIGNAR;
+						$caso->save();
+						
+						$caso->cotizacion()->create([
+							'cotizacion_id' => $cotizacion->id
+						]);
 						// Response con tranformer que indica caso nuevo
-						dd('Creo el caso.');
+						dd($caso);
+					}
+					else
+					{
+						
 					}
 				}
 				
-				return $this->response->item($pago, new CotizacionPagosTransformer());
+				//return $this->response->item($pago, new CotizacionPagosTransformer());
 			}
 		}
 	}

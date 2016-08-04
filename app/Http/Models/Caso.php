@@ -42,6 +42,16 @@ class Caso extends Model
 	}
 	
 	/**
+	 * Un Caso tiene un CasoCotizacion
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function cotizacion()
+	{
+		return $this->hasOne(CasoCotizacion::class, 'caso_id');
+	}
+	
+	/**
 	 * Un Caso pertenece a un Cliente
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

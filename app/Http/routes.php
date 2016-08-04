@@ -26,7 +26,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		$api->resource('cotizaciones', 'Cotizacion');
 		$api->group(['prefix' => 'cotizaciones/{idCotizacion}'], function ($api)
 		{
-			$api->post('pagos/{idPago}/valida', 'Pagos@validaPago');
+			$api->put('pagos/{idPago}/valida', 'Pagos@validaPago');
 			
 			/**
 			 * Pagos
@@ -48,7 +48,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			/**
 			 * Contactos
 			 */
-			$api->resource('contactos', 'Contactos');
+			$api->resource('contactos', 'ClienteContactos');
 		});
 		
 		/**

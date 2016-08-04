@@ -37,7 +37,7 @@ class CotizacionTransformer extends TransformerAbstract
 		$dtPagos = [];
 		if (count($pagos) > 0)
 		{
-			foreach ($pagos as $index => $pago)
+			foreach ($pagos as $indexP => $pago)
 			{
 				$comprobantes = $pago->comprobantes;
 				$dtComprobantres = [];
@@ -53,7 +53,7 @@ class CotizacionTransformer extends TransformerAbstract
 					];
 				}
 				
-				$dtPagos[$index] = [
+				$dtPagos[$indexP] = [
 					'id'           => $pago->id,
 					'contacto_id'  => $pago->contacto->id,
 					'contacto'     => $pago->contacto->nombreCompleto(),

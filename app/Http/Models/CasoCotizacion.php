@@ -30,7 +30,7 @@ class CasoCotizacion extends Model
 	 */
 	public function caso()
 	{
-		return $this->belongsTo(Caso::class, 'id');
+		return $this->belongsTo(Caso::class, 'caso_id');
 	}
 	
 	
