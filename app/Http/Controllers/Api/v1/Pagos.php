@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
-use App\Http\Models\Cotizacion;
+use App\Http\Models\Cotizacion  as CotizacionModel;;
 use App\Http\Models\CotizacionEstatus;
 use App\Transformers\CotizacionPagosTransformer;
 use Dingo\Api\Routing\Helpers;
@@ -24,7 +24,7 @@ class Pagos extends Controller
 	 */
 	public function index($idCotizacion)
 	{
-		$cotizacion = Cotizacion::find($idCotizacion);
+		$cotizacion = CotizacionModel::find($idCotizacion);
 		
 		if (is_null($cotizacion))
 		{
@@ -68,7 +68,7 @@ class Pagos extends Controller
 	 */
 	public function show($idCotizacion, $id)
 	{
-		$cotizacion = Cotizacion::find($idCotizacion);
+		$cotizacion = CotizacionModel::find($idCotizacion);
 		
 		if (is_null($cotizacion))
 		{
@@ -133,7 +133,7 @@ class Pagos extends Controller
 	 */
 	public function validaPago(Request $request, $idCotizacion, $id)
 	{
-		$cotizacion = Cotizacion::find($idCotizacion);
+		$cotizacion = CotizacionModel::find($idCotizacion);
 		
 		if (is_null($cotizacion))
 		{
