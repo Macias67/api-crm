@@ -4,9 +4,7 @@
  * Date: 08/07/2016
  * Time: 09:31 PM
  */
-
 namespace App\Transformers;
-
 
 use App\Http\Models\Bancos;
 use League\Fractal\TransformerAbstract;

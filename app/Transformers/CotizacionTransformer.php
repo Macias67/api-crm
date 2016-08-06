@@ -21,6 +21,7 @@ class CotizacionTransformer extends TransformerAbstract
 		{
 			$dProductos[$index] = [
 				'id'        => $producto->id_producto,
+			        'habilitado' => (bool)$producto->habilitado,
 				'codigo'    => $producto->producto->codigo,
 				'nombre'    => $producto->producto->producto,
 				'descripcion'    => $producto->producto->descripcion,
@@ -29,7 +30,7 @@ class CotizacionTransformer extends TransformerAbstract
 				'descuento' => (float)$producto->descuento,
 				'subtotal'  => (float)$producto->subtotal,
 				'iva'       => (float)$producto->iva,
-				'total'     => (float)$producto->total
+				'total'     => (float)$producto->total,
 			];
 		}
 		

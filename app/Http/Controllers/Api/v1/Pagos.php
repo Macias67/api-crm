@@ -182,7 +182,7 @@ class Pagos extends Controller
 						$caso->estatus_id = CasoEstatus::PORASIGNAR;
 						$caso->save();
 						
-						$caso->cotizacion()->create([
+						$caso->casoCotizacion()->create([
 							'cotizacion_id' => $cotizacion->id
 						]);
 						// Response con tranformer que indica caso nuevo

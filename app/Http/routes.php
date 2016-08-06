@@ -40,6 +40,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		$api->resource('ejecutivos', 'Ejecutivos');
 		
 		/**
+		 * Ejecutivo
+		 */
+		$api->resource('casos', 'Casos');
+		
+		/**
 		 * Clientes
 		 */
 		$api->resource('clientes', 'Clientes');

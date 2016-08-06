@@ -19,6 +19,7 @@ class Caso extends Model
 		'id',
 		'cliente_id',
 		'estatus_id',
+		'caso',
 		'fecha_inicio',
 		'fecha_tentativa_cierre',
 		'fecha_termino',
@@ -31,12 +32,17 @@ class Caso extends Model
 		return with(new static)->getTable();
 	}
 	
+	public function scopeIsAsignado($query, $valor)
+	{
+		return $query->where('online', $valor);
+	}
+	
 	/**
 	 * Un Caso tiene un CasoLider
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function lider()
+	public function casoLider()
 	{
 		return $this->hasOne(CasoLider::class, 'caso_id');
 	}
@@ -46,7 +52,7 @@ class Caso extends Model
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function cotizacion()
+	public function casoCotizacion()
 	{
 		return $this->hasOne(CasoCotizacion::class, 'caso_id');
 	}

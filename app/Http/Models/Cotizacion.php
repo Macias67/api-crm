@@ -115,4 +115,14 @@ class Cotizacion extends Model
 	{
 		return $this->hasMany(CotizacionPagos::class, 'cotizacion_id');
 	}
+	
+	/**
+	 * Una Cotizacion tiene muchos CasoCotizacion
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function casos()
+	{
+		return $this->hasMany(CasoCotizacion::class, 'cotizacion_id');
+	}
 }

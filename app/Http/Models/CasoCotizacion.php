@@ -19,6 +19,7 @@ class CasoCotizacion extends Model
 		'id',
 		'caso_id',
 		'cotizacion_id',
+		'fecha_validacion',
 		'created_at',
 		'updated_at'
 	];
@@ -31,6 +32,16 @@ class CasoCotizacion extends Model
 	public function caso()
 	{
 		return $this->belongsTo(Caso::class, 'caso_id');
+	}
+	
+	/**
+	 * Un CasoCotizacion pertence a una Cotizacion
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function cotizacion()
+	{
+		return $this->belongsTo(Cotizacion::class, 'cotizacion_id');
 	}
 	
 	
