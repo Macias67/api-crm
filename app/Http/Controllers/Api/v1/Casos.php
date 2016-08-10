@@ -22,9 +22,20 @@ class Casos extends Controller
 	{
 		$param = Input::all();
 		
-		$caso = Caso::all();
+		if (array_key_exists('asignado', $param))
+		{
+			$casos = Caso::isAsignado($param['asignado'])->get();
+			
+			return $this->response->collection($casos, new CasoTransformer());
+		}
+		else
+		{
+			$casos = Caso::all();
+			
+			return $this->response->collection($casos, new CasoTransformer());
+		}
 		
-		return $this->response->collection($caso, new CasoTransformer());
+		
 	}
 	
 	/**

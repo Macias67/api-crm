@@ -34,7 +34,7 @@ class Caso extends Model
 	
 	public function scopeIsAsignado($query, $valor)
 	{
-		return $query->where('online', $valor);
+		return $query->where('asignado', $valor);
 	}
 	
 	/**
