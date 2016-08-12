@@ -69,7 +69,16 @@ class Casos extends Controller
 	 */
 	public function show($id)
 	{
-		//
+		$caso = Caso::find($id);
+		
+		if (is_null($caso))
+		{
+			return $this->response->errorNotFound('El ID del caso no existe.');
+		}
+		else
+		{
+			return $this->response->item($caso, new CasoTransformer());
+		}
 	}
 	
 	/**

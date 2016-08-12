@@ -81,10 +81,11 @@ class CasoTransformer extends TransformerAbstract
 		$data = [
 			'id'                   => $caso->id,
 			'cliente'              => [
-				'id'          => $caso->cliente->id,
-				'razonsocial' => $caso->cliente->razonsocial,
-				'rfc'         => $caso->cliente->rfc,
-				'email'       => $caso->cliente->email,
+				'id'           => $caso->cliente->id,
+				'razonsocial'  => $caso->cliente->razonsocial,
+				'rfc'          => $caso->cliente->rfc,
+				'email'        => $caso->cliente->email,
+				'distribuidor' => (bool)$caso->cliente->distribuidor,
 			],
 			'estatus'              => [
 				'id'      => $caso->estatus->id,

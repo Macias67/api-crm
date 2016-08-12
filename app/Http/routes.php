@@ -40,7 +40,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		$api->resource('ejecutivos', 'Ejecutivos');
 		
 		/**
-		 * Ejecutivo
+		 * Casos
 		 */
 		$api->resource('casos', 'Casos');
 		
