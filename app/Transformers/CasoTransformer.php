@@ -75,7 +75,11 @@ class CasoTransformer extends TransformerAbstract
 		$ejecutivo = null;
 		if (!is_null($caso->casoLider))
 		{
-			$ejecutivo = $caso->casoLider->lider;
+			$ejecutivo = [
+				'nombre'      => $caso->casoLider->lider->nombreCompleto(),
+				'asignadopor' => $caso->casoLider->asignadopor->nombreCompleto(),
+				'fecha'       => date('Y-m-d H:i:s', strtotime($caso->casoLider->created_at))
+			];
 		}
 		
 		$data = [

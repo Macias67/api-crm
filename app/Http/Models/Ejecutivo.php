@@ -51,7 +51,7 @@ class Ejecutivo extends Authenticatable
 	 */
 	public function casos()
 	{
-		return $this->hasMany(CasoLider::class, 'ejecutivo_id');
+		return $this->hasMany(CasoLider::class, 'ejecutivo_lider_id');
 	}
 	
 	/**

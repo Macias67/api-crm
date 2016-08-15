@@ -13,11 +13,12 @@ class CasoLider extends Model
 	 */
 	protected $table = 'cs_caso_lider';
 	
-	protected $primaryKey = 'id';
+	protected $primaryKey = 'caso_id';
 	
 	protected $fillable = [
 		'caso_id',
-		'ejecutivo_id',
+		'ejecutivo_lider_id',
+		'ejecutivo_asigna_id',
 		'created_at',
 		'updated_at'
 	];
@@ -39,7 +40,17 @@ class CasoLider extends Model
 	 */
 	public function lider()
 	{
-		return $this->belongsTo(Ejecutivo::class, 'id');
+		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_lider_id');
+	}
+	
+	/**
+	 * Un CasoLider pertenece a Ejecutivo
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function asignadopor()
+	{
+		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_asigna_id');
 	}
 	
 	public static function table()

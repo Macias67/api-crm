@@ -43,6 +43,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		 * Casos
 		 */
 		$api->resource('casos', 'Casos');
+		$api->group(['prefix' => 'casos/{idCaso}'], function ($api)
+		{
+			/**
+			 * Lider
+			 */
+			$api->resource('lider', 'CasoLider');
+		});
 		
 		/**
 		 * Clientes

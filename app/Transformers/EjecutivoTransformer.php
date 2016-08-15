@@ -21,6 +21,7 @@ class EjecutivoTransformer extends TransformerAbstract
 			'apellido'     => $ejecutivo->apellido,
 			'email'        => $ejecutivo->email,
 			'avatar'       => $ejecutivo->avatar,
+			'online' => (bool)$ejecutivo->online,
 			'oficina'      => [
 				'calle'     => $oficina->calle,
 				'numero'    => $oficina->numero,

@@ -21,5 +21,9 @@ class DepartamentosSeeder extends Seeder
 		DB::table('ec_departamentos')->insert([
 			'area' => 'Soporte Técnico'
 		]);
+		
+		DB::table('ec_departamentos')->insert([
+			'area' => 'Desarrollo'
+		]);
 	}
 }

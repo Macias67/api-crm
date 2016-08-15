@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
-use App\Http\Models\Cotizacion  as CotizacionModel;;
+use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionEstatus;
+use App\Transformers\CasoTransformer;
 use App\Transformers\CotizacionPagosTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+
+;
 
 class Pagos extends Controller
 {
@@ -183,10 +186,11 @@ class Pagos extends Controller
 						$caso->save();
 						
 						$caso->casoCotizacion()->create([
-							'cotizacion_id' => $cotizacion->id
+							'cotizacion_id'    => $cotizacion->id,
+							'fecha_validacion' => date('Y-m-d H:i:s')
 						]);
-						// Response con tranformer que indica caso nuevo
-						dd($caso);
+						
+						return $this->response->item($caso, new CasoTransformer());
 					}
 					else
 					{
