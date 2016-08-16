@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Transformers\CasoLiderTransformer;
-use App\Transformers\CasoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -73,7 +72,11 @@ class CasoLider extends Controller
 			
 			DB::commit();
 			
-			return $this->response->item($caso, new CasoTransformer());
+			/**
+			 * @TODO Enviar correo al cliente y ejecutivo de asignacion de caso y notificar en la app.
+			 */
+			
+			return $this->response->item($caso->casoLider, new CasoLiderTransformer());
 		}
 		catch (\Exception $e)
 		{
