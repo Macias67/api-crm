@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Transformers\EjecutivoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Unlu\Laravel\Api\QueryBuilder;
 
 class Ejecutivos extends Controller
 {
@@ -18,9 +19,10 @@ class Ejecutivos extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		return $this->response->collection(Ejecutivo::all(), new EjecutivoTransformer());
+		$queryBuilder = new QueryBuilder(new Ejecutivo, $request);
+		return $this->response->collection($queryBuilder->build()->get(), new EjecutivoTransformer());
 	}
 	
 	/**

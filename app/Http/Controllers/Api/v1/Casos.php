@@ -7,7 +7,7 @@ use App\Http\Models\Caso;
 use App\Transformers\CasoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Unlu\Laravel\Api\QueryBuilder;
 
 class Casos extends Controller
 {
@@ -16,26 +16,51 @@ class Casos extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		$param = Input::all();
+		$queryBuilder = new QueryBuilder(new Caso, $request);
 		
-		if (array_key_exists('asignado', $param))
-		{
-			$casos = Caso::isAsignado($param['asignado'])->get();
-			
-			return $this->response->collection($casos, new CasoTransformer());
-		}
-		else
-		{
-			$casos = Caso::all();
-			
-			return $this->response->collection($casos, new CasoTransformer());
-		}
+		return response()->json([
+			'data' => $queryBuilder->build()->get(),
+		]);
 		
-		
+		//return $this->response->collection($queryBuilder->get(), new CasoTransformer());
+
+//		$param = Input::all();
+//
+//		if (array_key_exists('asignado', $param))
+//		{
+//			$casos = Caso::isAsignado($param['asignado'])->get();
+//
+//			return $this->response->collection($casos, new CasoTransformer());
+//		}
+//		elseif (array_key_exists('lider', $param))
+//		{
+//			$casoLider = CasoLider::where('ejecutivo_lider_id', $param['lider'])->get();
+//
+//			//$ejecutivo = Ejecutivo::find($param['lider']);
+//			//$casos = Caso::isAsignado(true)->casoLider()->where('ejecutivo_lider_id', $param['lider'])->get();
+//			//dd($casos[0]->caso);
+//
+//			$casos = [];
+//			foreach ($casoLider as $index => $caso)
+//			{
+//				array_push($casos, $caso->caso);
+//			}
+//			$collection = collect($casos)->where('estatus_id', (int)$param['estatus']);
+//
+//			return $this->response->collection($collection, new CasoTransformer());
+//		}
+//		else
+//		{
+//			$casos = Caso::all();
+//
+//			return $this->response->collection($casos, new CasoTransformer());
+//		}
 	}
 	
 	/**

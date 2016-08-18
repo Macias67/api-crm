@@ -24,6 +24,7 @@ class Ejecutivo extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
+		'id',
 		'nombre',
 		'apellido',
 		'email',

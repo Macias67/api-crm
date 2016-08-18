@@ -11,10 +11,11 @@
 		"php" : ">=5.5.9",
 		"laravel/framework" : "5.2.*",
 		"dingo/api" : "1.0.*@dev",
-		"tymon/jwt-auth": "0.5.*",
-		"zizaco/entrust": "5.2.x-dev",
-		"barryvdh/laravel-cors": "^0.8.0",
-		"yajra/laravel-datatables-oracle": "~6.0"
+		"tymon/jwt-auth" : "0.5.*",
+		"zizaco/entrust" : "5.2.x-dev",
+		"barryvdh/laravel-cors" : "^0.8.0",
+		"yajra/laravel-datatables-oracle" : "~6.0",
+		"unlu/laravel-api-query-builder" : "~1.0"
 	},
 	"require-dev" : {
 		"fzaninotto/faker" : "~1.4",

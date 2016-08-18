@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
+use App\Http\Models\CasoEstatus;
 use App\Transformers\CasoLiderTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -68,6 +69,7 @@ class CasoLider extends Controller
 			]);
 			
 			$caso->asignado = true;
+			$caso->estatus_id = CasoEstatus::ASIGNADO;
 			$caso->save();
 			
 			DB::commit();
