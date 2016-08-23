@@ -2,7 +2,7 @@
 
 return [
 	
-	'limit' => 15,
+	'limit' => 0,
 	
 	'orderBy' => [
 		[
