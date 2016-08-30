@@ -18,7 +18,7 @@ class CotizacionSeeder extends Seeder
 			'ejecutivo_id' => 1,
 			'contacto_id'  => 1,
 			'oficina_id'   => 1,
-			'estatus_id'   => \App\Http\Models\CotizacionEstatus::PAGADA,
+			'estatus_id'   => \App\Http\Models\CotizacionEstatus::REVISION,
 			'vencimiento'  => date('Y-m-d H:i:s', time() + (60 * 60 * 24 * 16)),
 			'cxc'          => 0,
 			'subtotal'     => 5500,

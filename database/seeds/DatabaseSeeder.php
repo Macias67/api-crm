@@ -27,8 +27,5 @@ class DatabaseSeeder extends Seeder
 		$this->call(CotizacionProductosSeeder::class);
 		$this->call(CotizacionPagosSeeder::class);
 		$this->call(CotizacionComprobantesSeeder::class);
-		
-		// Caso
-		
 	}
 }
