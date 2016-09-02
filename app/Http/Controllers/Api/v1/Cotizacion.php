@@ -159,8 +159,6 @@ class Cotizacion extends Controller
 			
 			return $this->response->error($e->getMessage(), 500);
 		}
-		
-		
 	}
 	
 	/**

@@ -39,7 +39,7 @@ class ClientesSeeder extends Seeder
 		for ($i = 0; $i < 10; $i++)
 		{
 			DB::table('cl_clientes')->insert([
-				'razonsocial'  => mb_strtoupper($faker->company) . ' - ' . $faker->randomNumber(4),
+				'razonsocial'  => mb_strtoupper($faker->company),
 				'rfc'          => mb_strtoupper(substr($faker->md5, 0, 13)),
 				'prospecto'    => $faker->randomElement([0, 1]),
 				'distribuidor' => $faker->randomElement([0, 1]),

@@ -14,7 +14,7 @@ class CotizacionSeeder extends Seeder
 	{
 		DB::table('ct_cotizacion')->insert([
 			'id'           => 1,
-			'cliente_id'   => rand(1, 10),
+			'cliente_id'   => 1,
 			'ejecutivo_id' => 1,
 			'contacto_id'  => 1,
 			'oficina_id'   => 1,

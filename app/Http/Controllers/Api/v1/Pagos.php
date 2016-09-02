@@ -132,7 +132,7 @@ class Pagos extends Controller
 	/**
 	 * @TODO Hacer un request para validar que el usuario puede validar el pago
 	 *
-	 * @return \Dingo\Api\Dispatcher
+	 * @return \Dingo\Api\Http\Response
 	 */
 	public function validaPago(Request $request, $idCotizacion, $id)
 	{
@@ -194,7 +194,7 @@ class Pagos extends Controller
 					}
 					else
 					{
-						
+						return $this->response->noContent();
 					}
 				}
 				

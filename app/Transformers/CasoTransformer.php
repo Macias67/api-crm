@@ -50,6 +50,7 @@ class CasoTransformer extends TransformerAbstract
 					'id'     => $cotizacion->contacto->id,
 					'nombre' => $cotizacion->contacto->nombreCompleto(),
 					'email'  => $cotizacion->contacto->email,
+					'telefono'  => $cotizacion->contacto->telefono,
 					'online' => (bool)$cotizacion->contacto->online,
 				],
 				'oficina'     => [
