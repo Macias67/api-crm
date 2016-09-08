@@ -52,6 +52,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		});
 		
 		/**
+		 * Tareas
+		 */
+		$api->resource('tareas', 'Tareas');
+		
+		/**
 		 * Clientes
 		 */
 		$api->resource('clientes', 'Clientes');
