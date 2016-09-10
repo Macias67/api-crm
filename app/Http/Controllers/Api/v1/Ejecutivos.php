@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Ejecutivo;
 use App\Http\Requests;
+use App\QueryBuilder\EjecutivoQueryBuilder;
 use App\Transformers\EjecutivoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class Ejecutivos extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$queryBuilder = new QueryBuilder(new Ejecutivo, $request);
+		$queryBuilder = new EjecutivoQueryBuilder(new Ejecutivo, $request);
 		return $this->response->collection($queryBuilder->build()->get(), new EjecutivoTransformer());
 	}
 	
