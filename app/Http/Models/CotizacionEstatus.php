@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CotizacionEstatus extends Model
 {
-	
 	const PORPAGAR  = 1;
 	const REVISION  = 2;
 	const IRREGULAR = 3;

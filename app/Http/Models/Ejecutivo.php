@@ -32,7 +32,9 @@ class Ejecutivo extends Authenticatable
 		'avatar',
 		'oficina_id',
 		'departamento_id',
-		'online'
+		'online',
+		'color',
+		'class'
 	];
 	
 	/**
@@ -53,6 +55,16 @@ class Ejecutivo extends Authenticatable
 	public function casos()
 	{
 		return $this->hasMany(CasoLider::class, 'ejecutivo_lider_id');
+	}
+	
+	/**
+	 * Un Ejecutivo tiene muchos Tarea
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function tareas()
+	{
+		return $this->hasMany(Tarea::class, 'id_ejecutivo');
 	}
 	
 	/**

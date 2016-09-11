@@ -16,6 +16,7 @@ class CasoTransformer extends TransformerAbstract
 	public function transform(Caso $caso)
 	{
 		$cotizacion = null;
+		// Si tiene cotizacion
 		if (!is_null($caso->casoCotizacion))
 		{
 			$cotizacion = $caso->casoCotizacion->cotizacion;
@@ -47,11 +48,11 @@ class CasoTransformer extends TransformerAbstract
 					'online' => (bool)$cotizacion->ejecutivo->online,
 				],
 				'contacto'    => [
-					'id'     => $cotizacion->contacto->id,
-					'nombre' => $cotizacion->contacto->nombreCompleto(),
-					'email'  => $cotizacion->contacto->email,
-					'telefono'  => $cotizacion->contacto->telefono,
-					'online' => (bool)$cotizacion->contacto->online,
+					'id'       => $cotizacion->contacto->id,
+					'nombre'   => $cotizacion->contacto->nombreCompleto(),
+					'email'    => $cotizacion->contacto->email,
+					'telefono' => $cotizacion->contacto->telefono,
+					'online'   => (bool)$cotizacion->contacto->online,
 				],
 				'oficina'     => [
 					'id'     => $cotizacion->oficina->id,
@@ -74,6 +75,7 @@ class CasoTransformer extends TransformerAbstract
 		}
 		
 		$ejecutivo = null;
+		// Si tiene lider el caso
 		if (!is_null($caso->casoLider))
 		{
 			$ejecutivo = [
@@ -81,6 +83,39 @@ class CasoTransformer extends TransformerAbstract
 				'asignadopor' => $caso->casoLider->asignadopor->nombreCompleto(),
 				'fecha'       => date('Y-m-d H:i:s', strtotime($caso->casoLider->created_at))
 			];
+		}
+		
+		$tareas = [];
+		if (count($caso->tareas) > 0)
+		{
+			$tareas = $caso->tareas;
+			foreach ($tareas as $index => $tarea)
+			{
+				$tareas[$index] = [
+					'id'                => $tarea->id,
+					'ejecutivo'         => [
+						'id'     => $tarea->ejecutivo->id,
+						'nombre' => $tarea->ejecutivo->nombreCompleto(),
+						'avatar' => $tarea->ejecutivo->avatar,
+						'color' => $tarea->ejecutivo->color,
+						'class' => $tarea->ejecutivo->class,
+					],
+					'estatus'           => [
+						'id'      => $tarea->estatus->id,
+						'estatus' => $tarea->estatus->estatus,
+						'class'   => $tarea->estatus->class,
+						'color'   => $tarea->estatus->color,
+					],
+					'titulo'            => $tarea->titulo,
+					'descripcion'       => $tarea->descripcion,
+					'avance'            => $tarea->avance,
+					'fecha_tentativa'   => (is_null($tarea->fecha_tentativa)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_tentativa)),
+					'fecha_cierre'      => (is_null($tarea->fecha_cierre)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_cierre)),
+					'duracion_segundos' => $tarea->duracion_segundos,
+					'habilitado'        => (bool)$tarea->habilitado,
+					'creado'            => date('Y-m-d H:i:s', strtotime($tarea->created_at))
+				];
+			}
 		}
 		
 		$data = [
@@ -101,6 +136,7 @@ class CasoTransformer extends TransformerAbstract
 			'cotizacion'           => $cotizacion,
 			'asignado'             => (bool)$caso->asignado,
 			'lider'                => $ejecutivo,
+			'tareas'               => $tareas,
 			'fechainicio'          => $caso->fecha_inicio,
 			'fechatentativacierre' => $caso->fecha_tentativa_cierre,
 			'fechatermino'         => $caso->fecha_termino,

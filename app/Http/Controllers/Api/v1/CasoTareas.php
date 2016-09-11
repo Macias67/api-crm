@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\Caso;
+use App\Http\Models\TareaEstatus;
+use App\Http\Requests\Create\TareaRequest;
+use App\Transformers\CasoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class Tareas extends Controller
+class CasoTareas extends Controller
 {
 	use Helpers;
 	
@@ -33,13 +38,40 @@ class Tareas extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Create\TareaRequest $request
+	 * @param                                        $idCaso
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(TareaRequest $request, $idCaso)
 	{
-		//
+		try
+		{
+			$caso = Caso::find($idCaso);
+			
+			DB::beginTransaction();
+			
+			$caso->tareas()->create([
+				'id_ejecutivo' => $request->get('ejecutivo'),
+				'id_estatus'   => TareaEstatus::ASIGNADO,
+				'titulo'       => $request->get('titulo'),
+				'descripcion'  => $request->get('descripcion'),
+			]);
+			
+			DB::commit();
+			
+			/**
+			 * @TODO Enviar correo al ejecutivo de asignacion de tarea y notificar en la app.
+			 */
+			
+			return $this->response->item($caso, new CasoTransformer());
+		}
+		catch (\Exception $e)
+		{
+			DB::rollback();
+			
+			return $this->response->error($e->getMessage(), 500);
+		}
 	}
 	
 	/**
