@@ -15,38 +15,50 @@ class EjecutivosSeeder extends Seeder
 		$faker = Faker\Factory::create();
 		
 		DB::table('ec_ejecutivos')->insert([
-			'nombre'       => 'Luis',
-			'apellido'     => 'Macias',
-			'email'        => 'luismacias.angulo@gmail.com',
-			'password'     => bcrypt('secret'),
+			'nombre'          => 'Luis',
+			'apellido'        => 'Macias',
+			'email'           => 'luismacias.angulo@gmail.com',
+			'password'        => bcrypt('secret'),
 			'oficina_id'      => 1,
 			'departamento_id' => 3,
-			'created_at'   => date('Y-m-d H:i:s'),
-			'updated_at'   => date('Y-m-d H:i:s'),
+			'avatar'          => 'default.jpg',
+			'online'          => 1,
+			'color'           => '#F2784B',
+			'class'           => 'yellow-casablanca',
+			'created_at'      => date('Y-m-d H:i:s'),
+			'updated_at'      => date('Y-m-d H:i:s'),
 		]);
 		
 		DB::table('ec_ejecutivos')->insert([
-			'nombre'       => 'Eleazar',
-			'apellido'     => 'Frías',
-			'email'        => 'eleazar.frias@gmail.com',
-			'password'     => bcrypt('secret'),
+			'nombre'          => 'Eleazar',
+			'apellido'        => 'Frías',
+			'email'           => 'eleazar.frias@gmail.com',
+			'password'        => bcrypt('secret'),
 			'oficina_id'      => 1,
 			'departamento_id' => 2,
-			'created_at'   => date('Y-m-d H:i:s'),
-			'updated_at'   => date('Y-m-d H:i:s'),
+			'avatar'          => 'default.jpg',
+			'online'          => 1,
+			'color'           => '#BF55EC',
+			'class'           => 'purple-medium',
+			'created_at'      => date('Y-m-d H:i:s'),
+			'updated_at'      => date('Y-m-d H:i:s'),
 		]);
 		
 		DB::table('ec_ejecutivos')->insert([
-			'nombre'       => 'Gloria',
-			'apellido'     => 'Camarena',
-			'email'        => 'gloria.camarena@gmail.com',
-			'password'     => bcrypt('secret'),
+			'nombre'          => 'Gloria',
+			'apellido'        => 'Camarena',
+			'email'           => 'gloria.camarena@gmail.com',
+			'password'        => bcrypt('secret'),
 			'oficina_id'      => 1,
 			'departamento_id' => 1,
-			'created_at'   => date('Y-m-d H:i:s'),
-			'updated_at'   => date('Y-m-d H:i:s'),
+			'avatar'          => 'default.jpg',
+			'online'          => 1,
+			'color'           => '#44B6AE',
+			'class'           => 'green-haze',
+			'created_at'      => date('Y-m-d H:i:s'),
+			'updated_at'      => date('Y-m-d H:i:s'),
 		]);
-		
+
 //		for ($i=0; $i<2; $i++)
 //		{
 //			DB::table('ec_ejecutivos')->insert([

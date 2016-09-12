@@ -20,7 +20,7 @@ class CotizacionComprobantes extends Model
 		'pago_id',
 		'archivo',
 		'nombre',
-		'extesion',
+		'extension',
 		'created_at',
 		'updated_at'
 	];

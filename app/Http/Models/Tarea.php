@@ -68,4 +68,14 @@ class Tarea extends Model
 	{
 		return $this->belongsTo(TareaEstatus::class, 'id_estatus');
 	}
+	
+	/**
+	 * Una Tarea tiene muchas Nota
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function notas()
+	{
+		return $this->hasMany(Nota::class, 'id_tarea');
+	}
 }
