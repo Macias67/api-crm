@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
+use App\Http\Models\CasoEstatus;
 use App\Http\Models\TareaEstatus;
 use App\Http\Requests\Create\TareaRequest;
 use App\Transformers\CasoTransformer;
@@ -57,6 +58,13 @@ class CasoTareas extends Controller
 				'titulo'       => $request->get('titulo'),
 				'descripcion'  => $request->get('descripcion'),
 			]);
+			
+			// Si empiza a asignar tareas, cambio el estatus del caso
+			if ($caso->estatus_id == CasoEstatus::ASIGNADO)
+			{
+				$caso->estatus_id = CasoEstatus::PROCESO;
+				$caso->save();
+			}
 			
 			DB::commit();
 			
