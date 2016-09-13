@@ -7,7 +7,6 @@
 
 namespace App\Transformers;
 
-
 use App\Http\Models\Caso;
 use League\Fractal\TransformerAbstract;
 

@@ -56,6 +56,23 @@ class TareaTransformer extends TransformerAbstract
 				'class'   => $tarea->estatus->class,
 				'color'   => $tarea->estatus->color,
 			],
+			'caso'              => [
+				'id' => $tarea->caso->id,
+				'cliente' => [
+					'id'          => $tarea->caso->cliente->id,
+					'razonsocial' => $tarea->caso->cliente->razonsocial,
+				],
+				'lider'   => [
+					'id'     => $tarea->caso->casoLider->lider->id,
+					'nombre' => $tarea->caso->casoLider->lider->nombreCompleto(),
+				],
+				'estatus' => [
+					'id'      => $tarea->caso->estatus->id,
+					'estatus' => $tarea->caso->estatus->estatus,
+					'class'   => $tarea->caso->estatus->class,
+					'color'   => $tarea->caso->estatus->color
+				],
+			],
 			'titulo'            => $tarea->titulo,
 			'descripcion'       => $tarea->descripcion,
 			'avance'            => $tarea->avance,
