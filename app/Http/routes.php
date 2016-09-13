@@ -51,10 +51,15 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			$api->resource('lider', 'CasoLider');
 			
 			/**
-			 * Tareas
+			 * CasoTareas
 			 */
 			$api->resource('tareas', 'CasoTareas');
 		});
+		
+		/**
+		 * Tareas
+		 */
+		$api->resource('tareas', 'Tareas');
 				
 		/**
 		 * Clientes

@@ -3,28 +3,26 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Ejecutivo;
-use App\QueryBuilder\EjecutivoQueryBuilder;
-use App\Transformers\EjecutivoTransformer;
+use App\Http\Models\Tarea;
+use App\QueryBuilder\TareaQueryBuilder;
+use App\Transformers\TareaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
-class Ejecutivos extends Controller
+class Tareas extends Controller
 {
 	use Helpers;
 	
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @param \Illuminate\Http\Request $request
-	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
-		$queryBuilder = new EjecutivoQueryBuilder(new Ejecutivo, $request);
+		$queryBuilder = new TareaQueryBuilder(new Tarea(), $request);
 		
-		return $this->response->collection($queryBuilder->build()->get(), new EjecutivoTransformer());
+		return $this->response->collection($queryBuilder->build()->get(), new TareaTransformer());
 	}
 	
 	/**
