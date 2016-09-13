@@ -56,7 +56,16 @@ class Tareas extends Controller
 	 */
 	public function show($id)
 	{
-		//
+		$tarea = Tarea::find($id);
+		
+		if (is_null($tarea))
+		{
+			return $this->response->errorNotFound('El ID de la tarea no existe.');
+		}
+		else
+		{
+			return $this->response->item($tarea, new TareaTransformer());
+		}
 	}
 	
 	/**
