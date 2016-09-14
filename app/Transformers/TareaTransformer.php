@@ -61,6 +61,7 @@ class TareaTransformer extends TransformerAbstract
 				'cliente' => [
 					'id'          => $tarea->caso->cliente->id,
 					'razonsocial' => $tarea->caso->cliente->razonsocial,
+					'rfc' => $tarea->caso->cliente->rfc,
 				],
 				'lider'   => [
 					'id'     => $tarea->caso->casoLider->lider->id,
