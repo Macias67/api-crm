@@ -16,56 +16,56 @@ class CasoStatusSeeder extends Seeder
 			'id'      => 1,
 			'estatus' => 'Por Asignar',
 			'color'   => '#F3C200',
-			'class'   => 'bg-yellow-crusta bg-font-yellow-crusta'
+			'class'   => 'yellow-crusta'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 2,
 			'estatus' => 'Asignado',
 			'color'   => '#3FABA4',
-			'class'   => 'bg-green-soft bg-font-green-soft'
+			'class'   => 'green-soft'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 3,
 			'estatus' => 'Reasignado',
 			'color'   => '#C8D046',
-			'class'   => 'bg-yellow-soft bg-font-yellow-soft'
+			'class'   => 'yellow-soft'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 4,
 			'estatus' => 'Proceso',
 			'color'   => '#26C281',
-			'class'   => 'bg-green-jungle bg-font-green-jungle'
+			'class'   => 'green-jungle'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 5,
 			'estatus' => 'Precierre',
 			'color'   => '#32C5D2',
-			'class'   => 'bg-green bg-font-green'
+			'class'   => 'green'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 6,
 			'estatus' => 'Cerrado',
 			'color'   => '#E9EDEF',
-			'class'   => 'bg-grey-steel bg-font-grey-steel'
+			'class'   => 'grey-steel'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 7,
 			'estatus' => 'Suspendido',
 			'color'   => '#2F353B',
-			'class'   => 'bg-dark bg-font-dark'
+			'class'   => 'dark'
 		]);
 		
 		DB::table('cs_caso_estatus')->insert([
 			'id'      => 8,
 			'estatus' => 'Cancelado',
 			'color'   => '#D91E18',
-			'class'   => 'bg-red-thunderbird bg-font-red-thunderbird'
+			'class'   => 'red-thunderbird'
 		]);
 	}
 }

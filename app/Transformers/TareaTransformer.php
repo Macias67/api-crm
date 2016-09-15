@@ -58,6 +58,7 @@ class TareaTransformer extends TransformerAbstract
 			],
 			'caso'              => [
 				'id' => $tarea->caso->id,
+				'avance' => $tarea->caso->avance,
 				'cliente' => [
 					'id'          => $tarea->caso->cliente->id,
 					'razonsocial' => $tarea->caso->cliente->razonsocial,
@@ -72,7 +73,7 @@ class TareaTransformer extends TransformerAbstract
 					'estatus' => $tarea->caso->estatus->estatus,
 					'class'   => $tarea->caso->estatus->class,
 					'color'   => $tarea->caso->estatus->color
-				],
+				]
 			],
 			'titulo'            => $tarea->titulo,
 			'descripcion'       => $tarea->descripcion,

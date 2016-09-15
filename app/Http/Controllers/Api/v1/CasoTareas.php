@@ -59,10 +59,13 @@ class CasoTareas extends Controller
 				'descripcion'  => $request->get('descripcion'),
 			]);
 			
-			// Si empiza a asignar tareas, cambio el estatus del caso
+			/**
+			 * Si empieza a asignar tareas, cambio el estatus del caso y registro fecha de inicio
+			 */
 			if ($caso->estatus_id == CasoEstatus::ASIGNADO)
 			{
 				$caso->estatus_id = CasoEstatus::PROCESO;
+				$caso->fecha_inicio = date('Y-m-d H:i:s', time());
 				$caso->save();
 			}
 			

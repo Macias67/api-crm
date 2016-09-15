@@ -165,6 +165,7 @@ class CasoTransformer extends TransformerAbstract
 			],
 			'cotizacion'           => $cotizacion,
 			'asignado'             => (bool)$caso->asignado,
+			'avance' => $caso->avance,
 			'lider'                => $ejecutivo,
 			'tareas'               => $tareas,
 			'fechainicio'          => $caso->fecha_inicio,
