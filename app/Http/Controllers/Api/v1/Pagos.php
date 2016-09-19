@@ -12,8 +12,6 @@ use App\Transformers\CotizacionPagosTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 
-;
-
 class Pagos extends Controller
 {
 	use Helpers;

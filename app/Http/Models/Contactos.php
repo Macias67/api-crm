@@ -2,9 +2,9 @@
 
 namespace App\Http\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Contactos extends Model
+class Contactos extends Authenticatable
 {
 	/**
 	 * Nombre de la tabla usada por el modelo
