@@ -16,8 +16,9 @@ class TareaTransformer extends TransformerAbstract
 	{
 		$notas_publicos = [];
 		$notas_privados = [];
+		$todas = [];
 		
-		$notas = $tarea->notas;
+		$notas = $tarea->notas()->orderBy('created_at', 'desc')->get();
 		if (count($notas) > 0)
 		{
 			foreach ($notas as $nota)
@@ -25,6 +26,7 @@ class TareaTransformer extends TransformerAbstract
 				$data = [
 					'id'          => $nota->id,
 					'nota'        => $nota->nota,
+					'publico'        => (bool)$nota->publico,
 					'habilitado'  => (bool)$nota->habilitado,
 					'creada'      => date('Y-m-d H:i:s', strtotime($nota->created_at)),
 					'actualizada' => date('Y-m-d H:i:s', strtotime($nota->updated_at))
@@ -38,6 +40,8 @@ class TareaTransformer extends TransformerAbstract
 				{
 					array_push($notas_privados, $data);
 				}
+				
+				array_push($todas, $data);
 			}
 		}
 		
@@ -82,7 +86,8 @@ class TareaTransformer extends TransformerAbstract
 			'fecha_cierre'      => (is_null($tarea->fecha_cierre)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_cierre)),
 			'notas'             => [
 				'publicas' => $notas_publicos,
-				'privadas' => $notas_privados
+				'privadas' => $notas_privados,
+			        'todas' => $todas
 			],
 			'duracion_segundos' => $tarea->duracion_segundos,
 			'habilitado'        => (bool)$tarea->habilitado,

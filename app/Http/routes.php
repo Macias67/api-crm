@@ -60,6 +60,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		 * Tareas
 		 */
 		$api->resource('tareas', 'Tareas');
+		$api->group(['prefix' => 'tareas/{idTarea}'], function ($api)
+		{
+			/**
+			 * TareaNotas
+			 */
+			$api->resource('notas', 'TareaNotas');
+		});
 				
 		/**
 		 * Clientes
