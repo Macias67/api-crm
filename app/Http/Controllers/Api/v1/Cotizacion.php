@@ -9,6 +9,7 @@ use App\Http\Models\CotizacionBancos;
 use App\Http\Models\CotizacionEstatus;
 use App\Http\Models\CotizacionProductos;
 use App\Http\Requests\Create\CotizacionRequest;
+use App\QueryBuilder\CotizacionQueryBuilder;
 use App\Transformers\CotizacionTransformer;
 use App\Transformers\Datatable\CotizacionDataTableTransformer;
 use Dingo\Api\Routing\Helpers;
@@ -24,59 +25,16 @@ class Cotizacion extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		$param = Input::all();
+		$queryBuilder = new CotizacionQueryBuilder(new CotizacionModel(), $request);
+		$cotizacion = $queryBuilder->build()->get();
 		
-		if (count($param) > 0)
-		{
-			if (array_key_exists('estatus', $param))
-			{
-				$cotizaciones = CotizacionModel::where('estatus_id', '=', $param['estatus'])->get();
-				
-				return $this->response->collection($cotizaciones, new CotizacionTransformer());
-			}
-		}
-		
-		if (Input::exists('q'))
-		{
-			$value = Input::get('q');
-			//$cliente = DB::table(ClienteModel::table())->where('razonsocial', $value)->first();
-			
-			$cliente = CotizacionModel::where('razonsocial', 'like', '%' . $value . '%')
-			                          ->orWhere('rfc', 'like', '%' . $value . '%')
-			                          ->get();
-			
-			return $this->response->collection($cliente, new CotizacionTransformer());
-			//dd($cliente);
-			
-			//return $this->response->item($cliente, new ClienteTransformer());
-		}
-		else
-		{
-			return $this->response->collection(CotizacionModel::get(), new CotizacionTransformer());
-		}
-	}
-	
-	public function datatable(Request $request)
-	{
-		$cotizaciones = CotizacionModel::select([CotizacionModel::table() . '.*', Clientes::table() . '.razonsocial'])
-		                               ->join(Clientes::table(), CotizacionModel::table() . '.cliente_id', '=', Clientes::table() . '.id');
-		
-		return Datatables::of($cotizaciones)
-		                 ->filterColumn(Clientes::table() . '.razonsocial', function ($query, $keyword)
-		                 {
-			                 dd($query);
-			                 $query->whereRaw(Clientes::table() . ".razonsocial like ?", ["%{$keyword}%"]);
-		                 })
-//		                 ->editColumn('razonsocial', function ($model)
-//		                 {
-//			                 return $model->cliente->razonsocial;
-//		                 })
-                                 ->setTransformer(new CotizacionDataTableTransformer())
-		                 ->make(true);
+		return $this->response->collection($cotizacion, new CotizacionTransformer());
 	}
 	
 	/**

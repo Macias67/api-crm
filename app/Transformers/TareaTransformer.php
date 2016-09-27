@@ -91,7 +91,7 @@ class TareaTransformer extends TransformerAbstract
 			],
 			'duracion_segundos' => $tarea->duracion_segundos,
 			'habilitado'        => (bool)$tarea->habilitado,
-			'creado'            => date('Y-m-d H:i:s', strtotime($tarea->created_at))
+			'created_at'            => date('Y-m-d H:i:s', strtotime($tarea->created_at))
 		];
 		
 		return $data;
