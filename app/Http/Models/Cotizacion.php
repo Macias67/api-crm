@@ -30,8 +30,31 @@ class Cotizacion extends Model
 		'subtotal',
 		'iva',
 		'total',
-	        'created_at',
-	        'updated_at'
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'vencimiento' => 'date',
+		'cxc'         => 'boolean',
+		'subtotal'    => 'float',
+		'iva'         => 'float',
+		'total'       => 'float'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
 	];
 	
 	public static function table()

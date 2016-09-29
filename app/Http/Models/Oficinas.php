@@ -36,6 +36,25 @@ class Oficinas extends Model
 	];
 	
 	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'online'    => 'boolean'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
 	 * La oficina tiene muchos ejecutivos
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany

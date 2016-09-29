@@ -32,6 +32,29 @@ class Caso extends Model
 		'updated_at'
 	];
 	
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'avance' => 'integer',
+		'fecha_tentativa_cierre' => 'date',
+		'asignado' => 'boolean'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'fecha_inicio',
+		'fecha_termino',
+		'created_at',
+		'updated_at'
+	];
+	
 	public static function table()
 	{
 		return with(new static)->getTable();

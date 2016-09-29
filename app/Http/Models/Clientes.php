@@ -45,6 +45,8 @@ class Clientes extends Model
 	 * @var array
 	 */
 	protected $casts = [
+		'prospecto' => 'boolean',
+		'distribuidor' => 'boolean',
 		'online' => 'boolean'
 	];
 	

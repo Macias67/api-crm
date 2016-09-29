@@ -8,6 +8,7 @@ use Mpociot\Firebase\SyncsWithFirebase;
 class Bancos extends Model
 {
 	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -25,6 +26,15 @@ class Bancos extends Model
 		'titular',
 		'cib',
 		'online',
+	];
+	
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'online'    => 'boolean'
 	];
 	
 	/**

@@ -28,6 +28,17 @@ class CasoCotizacion extends Model
 	];
 	
 	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'fecha_validacion',
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
 	 * Un CasoCotizacion pertence a Caso
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany

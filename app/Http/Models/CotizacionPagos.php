@@ -30,6 +30,26 @@ class CotizacionPagos extends Model
 	];
 	
 	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'cantidad' => 'float',
+		'valido'    => 'boolean'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
 	 * Una CotizacionPago pertence a una Cotizacion
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany

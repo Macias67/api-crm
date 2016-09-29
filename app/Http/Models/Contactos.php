@@ -21,8 +21,7 @@ class Contactos extends Model
 	protected $fillable = [
 		'id',
 		'id_cliente',
-		'telefono',
-		'online'
+		'telefono'
 	];
 	
 	/**

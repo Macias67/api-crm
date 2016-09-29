@@ -33,6 +33,16 @@ class Roles extends EntrustRole
 	];
 	
 	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
 	 * Un Roles tiene muchos Permisos
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

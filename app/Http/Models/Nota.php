@@ -31,6 +31,26 @@ class Nota extends Model
 		'habilitado',
 	];
 	
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'publico' => 'boolean',
+		'habilitado'    => 'boolean'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
+	];
+	
 	public static function table()
 	{
 		return with(new static)->getTable();

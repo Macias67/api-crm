@@ -21,7 +21,6 @@ class CasoLider extends Model
 	protected $fillable = [
 		'caso_id',
 		'ejecutivo_lider_id',
-		'ejecutivo_asigna_id',
 		'created_at',
 		'updated_at'
 	];

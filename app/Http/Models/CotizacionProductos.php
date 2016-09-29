@@ -32,6 +32,30 @@ class CotizacionProductos extends Model
 	];
 	
 	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'precio' => 'float',
+		'descuento' => 'float',
+		'subtotal' => 'float',
+		'iva' => 'float',
+		'total' => 'float',
+		'habilitado'    => 'boolean'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
 	 * Un CotizacionProducto pertenece a una Cotizacion
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

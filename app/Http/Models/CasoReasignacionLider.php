@@ -19,7 +19,23 @@ class CasoReasignacionLider extends Model
 	protected $primaryKey = 'id';
 	
 	protected $fillable = [
-		'id'
+		'id',
+		'caso_id',
+		'lider_old',
+		'lider_new',
+		'motivo',
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
 	];
 	
 	public static function table()
