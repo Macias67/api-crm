@@ -4,11 +4,11 @@ namespace App\Http\Models;
 
 use App\Http\Models\Mutators\UserAppMutator;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Mpociot\Firebase\SyncsWithFirebase;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class UserApp extends Authenticatable
 {
+	// @TODO cada vez que se haga un db:seed comentar esta linea
 	//use EntrustUserTrait;
 	use UserAppMutator, SyncsWithFirebase;
 	
@@ -17,7 +17,7 @@ class UserApp extends Authenticatable
 	 *
 	 * @var string
 	 */
-	protected $table = 'user_app';
+	protected $table = 'usr_usuarios';
 	
 	protected $primaryKey = 'id';
 	

@@ -3,7 +3,6 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Mpociot\Firebase\SyncsWithFirebase;
 
 class Clientes extends Model
 {

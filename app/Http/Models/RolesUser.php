@@ -3,7 +3,7 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Mpociot\Firebase\SyncsWithFirebase;
+
 
 class RolesUser extends Model
 {

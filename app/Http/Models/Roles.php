@@ -2,7 +2,7 @@
 
 namespace App\Http\Models;
 
-use Mpociot\Firebase\SyncsWithFirebase;
+
 use Zizaco\Entrust\EntrustRole;
 
 class Roles extends EntrustRole
