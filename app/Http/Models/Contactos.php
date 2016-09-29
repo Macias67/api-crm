@@ -2,10 +2,13 @@
 
 namespace App\Http\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
-class Contactos extends Authenticatable
+class Contactos extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -18,13 +21,20 @@ class Contactos extends Authenticatable
 	protected $fillable = [
 		'id',
 		'id_cliente',
-		'nombre',
-		'apellido',
-		'email',
 		'telefono',
 		'online'
 	];
-
+	
+	/**
+	 * Contacto pertenece a un UserApp
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userapp()
+	{
+		return $this->belongsTo(UserApp::class, 'id');
+	}
+	
 	/**
 	 * Contacto pertenece a un Cliente
 	 *
@@ -45,7 +55,8 @@ class Contactos extends Authenticatable
 		return $query->where('online', true);
 	}
 	
-	public function nombreCompleto() {
-		return $this->nombre. ' '.$this->apellido;
+	public function nombreCompleto()
+	{
+		return $this->nombre . ' ' . $this->apellido;
 	}
 }

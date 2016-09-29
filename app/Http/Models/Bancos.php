@@ -3,18 +3,20 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class Bancos extends Model
 {
+	use SyncsWithFirebase;
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
 	protected $table = 'ec_bancos';
-
+	
 	protected $primaryKey = 'id';
-
+	
 	protected $fillable = [
 		'id',
 		'banco',
@@ -37,6 +39,6 @@ class Bancos extends Model
 	
 	public function scopeIsOnline($query)
 	{
-		return $query->where('online', TRUE);
+		return $query->where('online', true);
 	}
 }

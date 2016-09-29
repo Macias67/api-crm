@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Ejecutivo;
+use App\Http\Requests\Create\EjecutivoRequest;
 use App\QueryBuilder\EjecutivoQueryBuilder;
 use App\Transformers\EjecutivoTransformer;
 use Dingo\Api\Routing\Helpers;
@@ -40,11 +41,11 @@ class Ejecutivos extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Create\EjecutivoRequest $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(EjecutivoRequest $request)
 	{
 		//
 	}

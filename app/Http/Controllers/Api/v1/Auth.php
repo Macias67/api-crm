@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Contactos;
-use App\Http\Models\Ejecutivo;
-use App\Transformers\ContactoTransformer;
-use App\Transformers\EjecutivoTransformer;
+use App\Http\Models\UserApp;
+use App\Http\Requests\LoginRequest;
+use App\Transformers\UserAppTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -24,20 +22,15 @@ class Auth extends Controller
 		$token = JWTAuth::getToken();
 		$user = JWTAuth::toUser($token);
 		
-		return $this->response->item($user, new EjecutivoTransformer());
+		return $this->response->item($user, new UserAppTransformer());
 	}
 	
-	public function authenticate(Request $request)
+	public function authenticate(LoginRequest $request)
 	{
 		// grab credentials from the request
 		$credentials = $request->only('email', 'password');
 		try
 		{
-			if ($request->get('client') == true)
-			{
-				Config::set('auth.providers.users.model', Contactos::class);
-			}
-			
 			// attempt to verify the credentials and create a token for the user
 			if (!$token = JWTAuth::attempt($credentials))
 			{
@@ -45,22 +38,11 @@ class Auth extends Controller
 			}
 			else
 			{
-				if ($request->get('client') == true)
-				{
-					$contacto = Contactos::where($request->only(['email']))->first();
-					$contacto->token = $token;
-					$contacto->esCliente = true;
-					
-					// all good so return the token
-					return $this->response->item($contacto, new ContactoTransformer());
-				} else {
-					$ejecutivo = Ejecutivo::where($request->only(['email']))->first();
-					$ejecutivo->token = $token;
-					
-					// all good so return the token
-					return $this->response->item($ejecutivo, new EjecutivoTransformer());
-				}
+				$usuario = UserApp::where($request->only(['email']))->first();
+				$usuario->token = $token;
 				
+				// all good so return the token
+				return $this->response->item($usuario, new UserAppTransformer());
 			}
 		}
 		catch (JWTException $e)

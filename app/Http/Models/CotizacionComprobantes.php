@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class CotizacionComprobantes extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *

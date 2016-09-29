@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class CotizacionProductos extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -25,7 +28,7 @@ class CotizacionProductos extends Model
 		'subtotal',
 		'iva',
 		'total',
-	        'habilitado'
+		'habilitado'
 	];
 	
 	/**

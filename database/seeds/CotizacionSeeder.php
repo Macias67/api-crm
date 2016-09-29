@@ -12,11 +12,11 @@ class CotizacionSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('ct_cotizacion')->insert([
+		\App\Http\Models\Cotizacion::create([
 			'id'           => 1,
 			'cliente_id'   => 1,
 			'ejecutivo_id' => 1,
-			'contacto_id'  => 1,
+			'contacto_id'  => 4,
 			'oficina_id'   => 1,
 			'estatus_id'   => \App\Http\Models\CotizacionEstatus::REVISION,
 			'vencimiento'  => date('Y-m-d H:i:s', time() + (60 * 60 * 24 * 16)),

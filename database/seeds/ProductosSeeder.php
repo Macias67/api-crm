@@ -12,7 +12,7 @@ class ProductosSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('ec_productos')->insert([
+		\App\Http\Models\Productos::create([
 			'codigo'      => 'ADM',
 			'producto'    => 'ADMINPAQ',
 			'descripcion' => 'Sistema ADMINPAQ última versión',
@@ -23,7 +23,7 @@ class ProductosSeeder extends Seeder
 			'updated_at'  => date('Y-m-d H:i:s')
 		]);
 		
-		DB::table('ec_productos')->insert([
+		\App\Http\Models\Productos::create([
 			'codigo'      => 'FAC',
 			'producto'    => 'CONTPAQi FACTURA ELECTRÓNICA',
 			'descripcion' => 'Sistema FACTURA ELECTRÓNICA última versión',
@@ -34,7 +34,7 @@ class ProductosSeeder extends Seeder
 			'updated_at'  => date('Y-m-d H:i:s')
 		]);
 		
-		DB::table('ec_productos')->insert([
+		\App\Http\Models\Productos::create([
 			'codigo'      => 'CNOM',
 			'producto'    => 'CONTPAQi NÓMINAS',
 			'descripcion' => 'Sistema NÓMINAS última versión',
@@ -45,7 +45,7 @@ class ProductosSeeder extends Seeder
 			'updated_at'  => date('Y-m-d H:i:s')
 		]);
 		
-		DB::table('ec_productos')->insert([
+		\App\Http\Models\Productos::create([
 			'codigo'      => 'CBAN',
 			'producto'    => 'CONTPAQi BANCOS',
 			'descripcion' => 'Sistema BANCOS última versión',

@@ -12,15 +12,13 @@ class CotizacionPagosSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('ct_cotizacion_pagos')->insert([
+		\App\Http\Models\CotizacionPagos::create([
 			'id'            => 1,
 			'cotizacion_id' => 1,
-			'contacto_id'   => 1,
+			'contacto_id'   => 4,
 			'cantidad'      => 6380,
 			'comentario'    => 'Copia comprobante pago',
 			'valido'        => 0,
-			'created_at'    => date('Y-m-d H:i:s', time()),
-			'updated_at'    => date('Y-m-d H:i:s', time())
 		]);
 	}
 }

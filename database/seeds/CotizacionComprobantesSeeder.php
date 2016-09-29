@@ -12,14 +12,12 @@ class CotizacionComprobantesSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('ct_cotizacion_comprobantes')->insert([
+		\App\Http\Models\CotizacionComprobantes::create([
 			'id'            => 1,
 			'pago_id' => 1,
 			'archivo'   => 'scanner.jpg',
 			'nombre'      => 'scanner',
-			'extension'    => 'jpg',
-			'created_at'    => date('Y-m-d H:i:s', time()),
-			'updated_at'    => date('Y-m-d H:i:s', time())
+			'extension'    => 'jpg'
 		]);
 	}
 }

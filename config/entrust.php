@@ -9,7 +9,7 @@
  */
 
 return [
-
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Entrust Role Model
@@ -19,8 +19,8 @@ return [
 	| the role if it is in a different namespace.
 	|
 	*/
-	'role'                  => 'Http\App\Roles',
-
+	'role'                  => App\Http\Models\Roles::class,
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Entrust Roles Table
@@ -30,7 +30,7 @@ return [
 	|
 	*/
 	'roles_table'           => 'ec_roles',
-
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Entrust Permission Model
@@ -40,8 +40,8 @@ return [
 	| Update the permission if it is in a different namespace.
 	|
 	*/
-	'permission'            => 'Http\App\Permisos',
-
+	'permission'            => App\Http\Models\Permisos::class,
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Entrust Permissions Table
@@ -52,7 +52,7 @@ return [
 	|
 	*/
 	'permissions_table'     => 'ec_permisos',
-
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Entrust permission_role Table
@@ -63,7 +63,7 @@ return [
 	|
 	*/
 	'permission_role_table' => 'ec_permisos_roles',
-
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Entrust role_user Table
@@ -74,14 +74,14 @@ return [
 	|
 	*/
 	'role_user_table'       => 'ec_roles_ejecutivo',
-
+	
 	/*
 	|--------------------------------------------------------------------------
 	| User Foreign key on Entrust's role_user Table (Pivot)
 	|--------------------------------------------------------------------------
 	*/
 	'user_foreign_key'      => 'user_id',
-
+	
 	/*
 	|--------------------------------------------------------------------------
 	| Role Foreign key on Entrust's role_user Table (Pivot)

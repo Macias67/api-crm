@@ -14,28 +14,20 @@ class ContactosSeeder extends Seeder
 	{
 		$faker = Faker\Factory::create();
 		
-		DB::table('cl_contactos')->insert([
+		\App\Http\Models\Contactos::create([
+			'id' => 4,
 			'id_cliente' => 1,
-			'nombre'     => 'Luis',
-			'apellido'   => 'Macias',
-			'email'      => 'luismacias.angulo@gmail.com',
-			'password'   => bcrypt('qwerty'),
 			'telefono'   => '3929418119',
-			'online'     => 1,
 			'created_at' => date('Y-m-d H:i:s'),
 			'updated_at' => date('Y-m-d H:i:s')
 		]);
 		
 		for ($i = 0; $i < 15; $i++)
 		{
-			DB::table('cl_contactos')->insert([
+			\App\Http\Models\Contactos::create([
+				'id' => ($i + 5),
 				'id_cliente' => rand(1, 10),
-				'nombre'     => $faker->name,
-				'apellido'   => $faker->lastName,
-				'email'      => $faker->safeEmail,
-				'password'   => bcrypt('qwerty'),
 				'telefono'   => '392'.$faker->randomNumber(7),
-				'online'     => 1,
 				'created_at' => date('Y-m-d H:i:s'),
 				'updated_at' => date('Y-m-d H:i:s')
 			]);

@@ -4,9 +4,12 @@ namespace App\Http\Models;
 
 use App\Http\Controllers\Api\v1\CasoTareas;
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class Caso extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *

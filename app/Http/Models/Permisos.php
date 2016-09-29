@@ -2,10 +2,13 @@
 
 namespace App\Http\Models;
 
+use Mpociot\Firebase\SyncsWithFirebase;
 use Zizaco\Entrust\EntrustPermission;
 
 class Permisos extends EntrustPermission
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -24,6 +27,13 @@ class Permisos extends EntrustPermission
 		'id',
 		'name',
 		'display_name',
-		'description'
+		'description',
+		'created_at',
+		'updated_at'
 	];
+	
+	public static function table()
+	{
+		return with(new static)->getTable();
+	}
 }

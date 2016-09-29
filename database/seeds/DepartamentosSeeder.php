@@ -14,16 +14,28 @@ class DepartamentosSeeder extends Seeder
 	{
 		$faker = Faker\Factory::create();
 		
-		DB::table('ec_departamentos')->insert([
+		\App\Http\Models\Departamentos::create([
 			'area' => 'Ventas'
 		]);
 		
-		DB::table('ec_departamentos')->insert([
+		\App\Http\Models\Departamentos::create([
 			'area' => 'Soporte Técnico'
 		]);
 		
-		DB::table('ec_departamentos')->insert([
+		\App\Http\Models\Departamentos::create([
 			'area' => 'Desarrollo'
 		]);
+		
+//		DB::table('ec_departamentos')->insert([
+//			'area' => 'Ventas'
+//		]);
+//
+//		DB::table('ec_departamentos')->insert([
+//			'area' => 'Soporte Técnico'
+//		]);
+//
+//		DB::table('ec_departamentos')->insert([
+//			'area' => 'Desarrollo'
+//		]);
 	}
 }

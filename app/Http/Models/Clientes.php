@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class Clientes extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -34,6 +37,25 @@ class Clientes extends Model
 		'estado',
 		'pais',
 		'online'
+	];
+	
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'online' => 'boolean'
+	];
+	
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at',
+		'updated_at'
 	];
 	
 	/**

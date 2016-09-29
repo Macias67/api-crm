@@ -14,45 +14,28 @@ class EjecutivosSeeder extends Seeder
 	{
 		$faker = Faker\Factory::create();
 		
-		DB::table('ec_ejecutivos')->insert([
-			'nombre'          => 'Luis',
-			'apellido'        => 'Macias',
-			'email'           => 'luismacias.angulo@gmail.com',
-			'password'        => bcrypt('secret'),
+		\App\Http\Models\Ejecutivo::create([
+			'id'          => 1,
 			'oficina_id'      => 1,
 			'departamento_id' => 3,
-			'avatar'          => 'default.jpg',
-			'online'          => 1,
 			'color'           => '#F2784B',
-			'class'           => 'yellow-casablanca',
-			'created_at'      => date('Y-m-d H:i:s'),
-			'updated_at'      => date('Y-m-d H:i:s'),
+			'class'           => 'yellow-casablanca'
 		]);
 		
-		DB::table('ec_ejecutivos')->insert([
-			'nombre'          => 'Eleazar',
-			'apellido'        => 'Frías',
-			'email'           => 'eleazar.frias@gmail.com',
-			'password'        => bcrypt('secret'),
+		\App\Http\Models\Ejecutivo::create([
+			'id'          => 2,
 			'oficina_id'      => 1,
 			'departamento_id' => 2,
-			'avatar'          => 'default.jpg',
-			'online'          => 1,
 			'color'           => '#BF55EC',
 			'class'           => 'purple-medium',
 			'created_at'      => date('Y-m-d H:i:s'),
 			'updated_at'      => date('Y-m-d H:i:s'),
 		]);
 		
-		DB::table('ec_ejecutivos')->insert([
-			'nombre'          => 'Gloria',
-			'apellido'        => 'Camarena',
-			'email'           => 'gloria.camarena@gmail.com',
-			'password'        => bcrypt('secret'),
+		\App\Http\Models\Ejecutivo::create([
+			'id'          => 3,
 			'oficina_id'      => 1,
 			'departamento_id' => 1,
-			'avatar'          => 'default.jpg',
-			'online'          => 1,
 			'color'           => '#44B6AE',
 			'class'           => 'green-haze',
 			'created_at'      => date('Y-m-d H:i:s'),

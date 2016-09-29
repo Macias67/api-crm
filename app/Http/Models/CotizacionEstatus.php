@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class CotizacionEstatus extends Model
 {
+	use SyncsWithFirebase;
+	
 	const PORPAGAR  = 1;
 	const REVISION  = 2;
 	const IRREGULAR = 3;
@@ -22,6 +25,8 @@ class CotizacionEstatus extends Model
 	protected $table = 'ct_cotizacion_estatus';
 	
 	protected $primaryKey = 'id';
+	
+	public $timestamps = false;
 	
 	protected $fillable = [
 		'id',

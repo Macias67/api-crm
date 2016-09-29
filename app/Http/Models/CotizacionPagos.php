@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class CotizacionPagos extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -23,7 +26,7 @@ class CotizacionPagos extends Model
 		'comentario',
 		'valido',
 		'created_at',
-	        'updated_at'
+		'updated_at'
 	];
 	
 	/**

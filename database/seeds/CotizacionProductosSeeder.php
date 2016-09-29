@@ -12,7 +12,7 @@ class CotizacionProductosSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('ct_cotizacion_productos')->insert([
+		\App\Http\Models\CotizacionProductos::create([
 			'id'           => 1,
 			'id_cotizacion'   => 1,
 			'id_producto' => 1,
@@ -22,9 +22,7 @@ class CotizacionProductosSeeder extends Seeder
 			'subtotal'  => 5500,
 			'iva'          => 880,
 			'total'     => 6380,
-			'habilitado'          => 1,
-			'created_at'   => date('Y-m-d H:i:s', time()),
-			'updated_at'   => date('Y-m-d H:i:s', time())
+			'habilitado'          => 1
 		]);
 	}
 }

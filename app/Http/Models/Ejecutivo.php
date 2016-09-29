@@ -2,13 +2,12 @@
 
 namespace App\Http\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
-class Ejecutivo extends Authenticatable
+class Ejecutivo extends Model
 {
-	use EntrustUserTrait;
-	
+	use SyncsWithFirebase;
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -25,17 +24,21 @@ class Ejecutivo extends Authenticatable
 	 */
 	protected $fillable = [
 		'id',
-		'nombre',
-		'apellido',
-		'email',
-		'password',
-		'avatar',
 		'oficina_id',
 		'departamento_id',
-		'online',
 		'color',
 		'class'
 	];
+	
+	/**
+	 * Ejecutivo pertenece a un UserApp
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function userapp()
+	{
+		return $this->belongsTo(UserApp::class, 'id');
+	}
 	
 	/**
 	 * Ejecutivo pertenece a una Oficina
@@ -75,10 +78,5 @@ class Ejecutivo extends Authenticatable
 	public function departamento()
 	{
 		return $this->belongsTo(Departamentos::class, 'departamento_id');
-	}
-	
-	public function nombreCompleto()
-	{
-		return $this->nombre . ' ' . $this->apellido;
 	}
 }

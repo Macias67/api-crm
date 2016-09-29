@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class Departamentos extends Model
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
@@ -14,6 +17,8 @@ class Departamentos extends Model
 	protected $table = 'ec_departamentos';
 	
 	protected $primaryKey = 'id';
+	
+	public $timestamps = false;
 	
 	/**
 	 * Un Departamento tiene muchos ejecutivos

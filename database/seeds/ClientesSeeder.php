@@ -14,7 +14,7 @@ class ClientesSeeder extends Seeder
 	{
 		$faker = Faker\Factory::create();
 		
-		DB::table('cl_clientes')->insert([
+		\App\Http\Models\Clientes::create([
 			'razonsocial'  => 'EMPRESA DE MACIAS',
 			'rfc'          => 'AAA000AAAA123',
 			'prospecto'    => 0,
@@ -32,13 +32,11 @@ class ClientesSeeder extends Seeder
 			'estado'       => 'Jalisco',
 			'pais'         => 'México',
 			'online'       => 1,
-			'created_at'   => date('Y-m-d H:i:s'),
-			'updated_at'   => date('Y-m-d H:i:s')
 		]);
 		
 		for ($i = 0; $i < 10; $i++)
 		{
-			DB::table('cl_clientes')->insert([
+			\App\Http\Models\Clientes::create([
 				'razonsocial'  => mb_strtoupper($faker->company),
 				'rfc'          => mb_strtoupper(substr($faker->md5, 0, 13)),
 				'prospecto'    => $faker->randomElement([0, 1]),

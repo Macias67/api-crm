@@ -5,7 +5,7 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use Mpociot\Firebase\SyncsWithFirebase;
 
-class NotaArchivo extends Model
+class RolesUser extends Model
 {
 	use SyncsWithFirebase;
 	
@@ -14,9 +14,7 @@ class NotaArchivo extends Model
 	 *
 	 * @var string
 	 */
-	protected $table = 'cs_nota_archivo';
-	
-	protected $primaryKey = 'id';
+	protected $table = 'ec_roles_user';
 	
 	/**
 	 * The attributes that are mass assignable.
@@ -24,25 +22,12 @@ class NotaArchivo extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'id',
-		'id_nota',
-		'archivo',
-		'nombre',
-		'extension'
+		'user_id',
+		'role_id'
 	];
 	
 	public static function table()
 	{
 		return with(new static)->getTable();
-	}
-	
-	/**
-	 * Una NotaArchivo pertence a Nota
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function nota()
-	{
-		return $this->belongsTo(Nota::class, 'id_nota');
 	}
 }

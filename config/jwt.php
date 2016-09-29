@@ -73,7 +73,7 @@ return [
 	|
 	*/
 	
-	'user' => App\Http\Models\Ejecutivo::class,
+	'user' => App\Http\Models\UserApp::class,
 	
 	/*
 	|--------------------------------------------------------------------------

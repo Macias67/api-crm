@@ -4,9 +4,11 @@ namespace App\Http\Models;
 
 use App\Http\Models\Mutators\MOficinas;
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class Oficinas extends Model
 {
+	use SyncsWithFirebase;
 	use MOficinas;
 	
 	/**

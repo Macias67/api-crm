@@ -16,15 +16,13 @@ class BancoSeeder extends Seeder
 		
 		for ($i = 0; $i < 3; $i++)
 		{
-			DB::table('ec_bancos')->insert([
+			\App\Http\Models\Bancos::create([
 				'banco'      => 'BANAMEX',
 				'sucursal'   => '2346',
 				'cta'        => '73919374019231',
 				'titular'    => $faker->firstName . ' ' . $faker->lastName,
 				'cib'        => $faker->creditCardNumber,
-				'online'     => 1,
-				'created_at' => date('Y-m-d H:i:s'),
-				'updated_at' => date('Y-m-d H:i:s'),
+				'online'     => 1
 			]);
 		}
 	}

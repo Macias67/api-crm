@@ -12,7 +12,7 @@ class UnidadProductosSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('ec_unidad_productos')->insert([
+		\App\Http\Models\UnidadesProductos::create([
 			'unidad'      => 'sistema',
 			'plural'      => 'sistemas',
 			'abreviatura' => 'sist',

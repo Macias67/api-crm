@@ -2,16 +2,19 @@
 
 namespace App\Http\Models;
 
+use Mpociot\Firebase\SyncsWithFirebase;
 use Zizaco\Entrust\EntrustRole;
 
 class Roles extends EntrustRole
 {
+	use SyncsWithFirebase;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
-	protected $table = 'ec_ejecutivos';
+	protected $table = 'ec_roles';
 	
 	protected $primaryKey = 'id';
 	
@@ -24,6 +27,18 @@ class Roles extends EntrustRole
 		'id',
 		'name',
 		'display_name',
-		'description'
+		'description',
+		'created_at',
+		'updated_at'
 	];
+	
+	/**
+	 * Un Roles tiene muchos Permisos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function permisos()
+	{
+		return $this->belongsToMany (Permisos::class, PermisosRoles::table(), 'role_id', 'permission_id');
+	}
 }

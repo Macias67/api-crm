@@ -3,9 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mpociot\Firebase\SyncsWithFirebase;
 
 class TareaEstatus extends Model
 {
+	use SyncsWithFirebase;
+	
 	const ASIGNADO   = 1;
 	const REASIGNADO = 2;
 	const PROCESO    = 3;
@@ -21,6 +24,8 @@ class TareaEstatus extends Model
 	protected $table = 'cs_tarea_estatus';
 	
 	protected $primaryKey = 'id';
+	
+	public $timestamps = false;
 	
 	protected $fillable = [
 		'id',
