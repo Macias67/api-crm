@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
 		$this->call(ProductosSeeder::class);
 		$this->call(CotizacionStatusSeeder::class);
 		$this->call(CasoStatusSeeder::class);
+		
+		$this->call(PermisosSeeder::class);
+		$this->call(RolesSeeder::class);
 
 		//Cotizaciones
 		$this->call(CotizacionSeeder::class);

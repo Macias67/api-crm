@@ -24,7 +24,7 @@ class LoginRequest extends Request
 	public function rules()
 	{
 		return [
-			'email'    => 'required|email|exists:user_app,email',
+			'email'    => 'required|email|exists:usr_usuarios,email',
 			'password' => 'required',
 		];
 	}

@@ -9,7 +9,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 class UserApp extends Authenticatable
 {
 	// @TODO cada vez que se haga un db:seed comentar esta linea
-	//use EntrustUserTrait;
+	use EntrustUserTrait;
 	use UserAppMutator, SyncsWithFirebase;
 	
 	/**
