@@ -16,20 +16,20 @@ class ClienteContactoTransformer extends TransformerAbstract
 	public function transform(ClienteContactos $contacto)
 	{
 		$data = [
-			'id'         => $contacto->id,
-			'nombre'     => $contacto->nombre,
-			'apellido'   => $contacto->apellido,
-			'email'      => $contacto->email,
+			'id'         => $contacto->usuario->id,
+			'nombre'     => $contacto->usuario->nombre,
+			'apellido'   => $contacto->usuario->apellido,
+			'email'      => $contacto->usuario->email,
 			'telefono'   => $contacto->telefono,
-			'online'     => (bool)$contacto->online,
+			'online'     => $contacto->usuario->online,
 			'cliente'    => [
 				'id'          => $contacto->cliente->id,
 				'razonsocial' => $contacto->cliente->razonsocial,
 				'rfc'         => $contacto->cliente->rfc,
 				'razonsocial' => $contacto->cliente->razonsocial,
 			],
-			'created_at' => $contacto->created_at,
-			'updated_at' => $contacto->updated_at
+			'created_at' => $contacto->created_at->getTimestamp(),
+			'updated_at' => $contacto->updated_at->getTimestamp()
 		];
 		
 		return $data;

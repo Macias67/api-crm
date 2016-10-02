@@ -18,7 +18,7 @@ class ClientesSeeder extends Seeder
 			'razonsocial'  => 'EMPRESA DE MACIAS',
 			'rfc'          => 'AAA000AAAA123',
 			'prospecto'    => 0,
-			'distribuidor' => 1,
+			'distribuidor' => 0,
 			'email'        => 'luismacias.angulo@gmail.com',
 			'telefono'     => '3929418119',
 			'telefono2'    => '',

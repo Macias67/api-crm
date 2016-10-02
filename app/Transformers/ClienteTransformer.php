@@ -21,12 +21,12 @@ class ClienteTransformer extends TransformerAbstract
 		foreach ($contactos as $index => $contacto)
 		{
 			$dContactos[$index] = [
-				'id'       => $contacto->id,
-				'nombre'   => $contacto->nombre,
-				'apellido' => $contacto->apellido,
-				'email'    => $contacto->email,
+				'id'       => $contacto->usuario->id,
+				'nombre'   => $contacto->usuario->nombre,
+				'apellido' => $contacto->usuario->apellido,
+				'email'    => $contacto->usuario->email,
 				'telefono' => $contacto->telefono,
-				'online'   => (bool)$contacto->online
+				'online'   => $contacto->usuario->online
 			];
 		}
 
@@ -50,8 +50,8 @@ class ClienteTransformer extends TransformerAbstract
 			'pais'         => $cliente->pais,
 			'online'       => (bool)$cliente->online,
 			'contactos'    => $dContactos,
-			'created_at'   => $cliente->created_at,
-			'updated_at'   => $cliente->updated_at
+			'created_at'   => $cliente->created_at->getTimestamp(),
+			'updated_at'   => $cliente->updated_at->getTimestamp()
 		];
 		
 		return $data;

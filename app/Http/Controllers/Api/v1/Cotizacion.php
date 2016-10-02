@@ -62,7 +62,7 @@ class Cotizacion extends Controller
 		{
 			$request->merge([
 				'ejecutivo_id' => $request->user()->id,
-				'oficina_id'   => $request->user()->oficina_id,
+				'oficina_id'   => $request->user()->infoEjecutivo->oficina_id,
 				'estatus_id'   => CotizacionEstatus::PORPAGAR,
 			]);
 			

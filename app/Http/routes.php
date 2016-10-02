@@ -14,6 +14,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 	 */
 	$api->post('auth', ['uses' => 'Auth@authenticate']);
 	
+	/**
+	 * @TODO Endpoint de prueba para actualizar token
+	 */
+	$api->post('token', ['uses' => 'Auth@tokenRefresh']);
+	
 	$api->group(['middleware' => 'jwt.auth'], function ($api)
 	{
 		$api->get('/me', 'Auth@me');

@@ -34,7 +34,7 @@ class UserApp extends Authenticatable
 		'avatar',
 		'online',
 		'email',
-		'password',
+		'device_token',
 		'created_at',
 		'updated_at'
 	];

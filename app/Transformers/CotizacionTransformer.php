@@ -76,16 +76,16 @@ class CotizacionTransformer extends TransformerAbstract
 			        'distribuidor' => (boolean)$cotizacion->cliente->distribuidor,
 			],
 			'ejecutivo'   => [
-				'id'       => $cotizacion->ejecutivo->id,
-				'nombre'   => $cotizacion->ejecutivo->nombreCompleto(),
-				'email'    => $cotizacion->ejecutivo->email
+				'id'       => $cotizacion->ejecutivo->usuario->id,
+				'nombre'   => $cotizacion->ejecutivo->usuario->nombreCompleto(),
+				'email'    => $cotizacion->ejecutivo->usuario->email
 			],
 			'contacto'    => [
-				'id'       => $cotizacion->contacto->id,
-				'nombre'   => $cotizacion->contacto->nombreCompleto(),
+				'id'       => $cotizacion->contacto->usuario->id,
+				'nombre'   => $cotizacion->contacto->usuario->nombreCompleto(),
 				'telefono' => $cotizacion->contacto->telefono,
-				'email'    => $cotizacion->contacto->email,
-			        'online' => (bool)$cotizacion->contacto->online
+				'email'    => $cotizacion->contacto->usuario->email,
+			        'online' => $cotizacion->contacto->usuario->online
 			],
 			'oficina'     => [
 				'id'     => $cotizacion->oficina->id,

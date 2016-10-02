@@ -24,6 +24,16 @@ class ClienteContactos extends Model
 	];
 	
 	/**
+	 * Contacto pertenece a un UserApp
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function usuario()
+	{
+		return $this->belongsTo(UserApp::class, 'id');
+	}
+	
+	/**
 	 * Contacto pertenece a un Cliente
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -16,32 +16,27 @@ class ContactoTransformer extends TransformerAbstract
 	public function transform(Contactos $contacto)
 	{
 		$data = [
-			'id'         => $contacto->id,
-			'nombre'     => $contacto->nombre,
-			'apellido'   => $contacto->apellido,
-			'email'      => $contacto->email,
-			'online'     => (bool)$contacto->online,
-			'cliente' => [
-				'id' => $contacto->cliente->id,
-			        'razonsocial' =>  $contacto->cliente->razonsocial,
-			        'rfc' =>  $contacto->cliente->rfc,
-				'prospecto' =>  (bool)$contacto->cliente->prospecto,
-				'distribuidor' =>  (bool)$contacto->cliente->distribuidor,
-				'email' =>  $contacto->cliente->email,
-				'online' =>  $contacto->cliente->online,
+			'id'         => $contacto->usuario->id,
+			'nombre'     => $contacto->usuario->nombre,
+			'apellido'   => $contacto->usuario->apellido,
+			'email'      => $contacto->usuario->email,
+			'online'     => $contacto->usuario->online,
+			'cliente'    => [
+				'id'           => $contacto->cliente->id,
+				'razonsocial'  => $contacto->cliente->razonsocial,
+				'rfc'          => $contacto->cliente->rfc,
+				'prospecto'    => $contacto->cliente->prospecto,
+				'distribuidor' => $contacto->cliente->distribuidor,
+				'email'        => $contacto->cliente->email,
+				'online'       => $contacto->cliente->online,
 			],
-			'created_at' => date('Y-m-d H:i:s', strtotime($contacto->created_at)),
-			'updated_at' => date('Y-m-d H:i:s', strtotime($contacto->updated_at))
+			'created_at' => $contacto->created_at->getTimestamp(),
+			'updated_at' => $contacto->updated_at->getTimestamp()
 		];
 		
 		if (isset($contacto->token))
 		{
 			$data['token'] = $contacto->token;
-		}
-		
-		if (isset($contacto->esCliente))
-		{
-			$data['esCliente'] = $contacto->esCliente;
 		}
 		
 		return $data;

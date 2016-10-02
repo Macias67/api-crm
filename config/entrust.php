@@ -73,7 +73,7 @@ return [
 	| database.
 	|
 	*/
-	'role_user_table'       => 'ec_roles_ejecutivo',
+	'role_user_table'       => 'ec_roles_user',
 	
 	/*
 	|--------------------------------------------------------------------------

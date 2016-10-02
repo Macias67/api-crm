@@ -35,7 +35,7 @@ class Ejecutivo extends Model
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function userapp()
+	public function usuario()
 	{
 		return $this->belongsTo(UserApp::class, 'id');
 	}

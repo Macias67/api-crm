@@ -16,7 +16,8 @@
 		"barryvdh/laravel-cors" : "^0.8.0",
 		"yajra/laravel-datatables-oracle" : "~6.0",
 		"unlu/laravel-api-query-builder" : "~1.0",
-		"mpociot/laravel-firebase-sync": "^1.0"
+		"mpociot/laravel-firebase-sync": "^1.0",
+		"brozot/laravel-fcm": "^1.2"
 	},
 	"require-dev" : {
 		"fzaninotto/faker" : "~1.4",

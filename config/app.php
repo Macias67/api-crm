@@ -164,6 +164,8 @@ return [
 		Yajra\Datatables\DatatablesServiceProvider::class,
 		
 		Unlu\Laravel\Api\ApiQueryBuilderServiceProvider::class,
+		
+		LaravelFCM\FCMServiceProvider::class,
 	
 	],
 	
@@ -218,6 +220,9 @@ return [
 		'APIRoute' => Dingo\Api\Facade\Route::class,
 		
 		'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+		
+		'FCM'      => LaravelFCM\Facades\FCM::class,
+		'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
 	],
 
 ];
