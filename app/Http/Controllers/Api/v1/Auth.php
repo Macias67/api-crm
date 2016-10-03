@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\TestEvent;
+use App\Events\UsuarioEntro;
 use App\Http\Controllers\Controller;
 use App\Http\Models\UserApp;
 use App\Http\Requests\LoginRequest;
@@ -43,24 +45,10 @@ class Auth extends Controller
 			else
 			{
 				$usuario = UserApp::where($request->only(['email']))->first();
+				
+				event(new UsuarioEntro($usuario));
+				
 				$usuario->token = $token;
-				
-				$optionBuiler = new OptionsBuilder();
-				$optionBuiler->setTimeToLive(60 * 20);
-				
-				$notificationBuilder = new PayloadNotificationBuilder($usuario->nombreCompleto().' ha entrado al sistema');
-				$notificationBuilder->setBody('El usuario ' . $usuario->nombreCompleto() . ' ha entrado al sistema.')
-				                    ->setSound('default');
-				
-				$dataBuilder = new PayloadDataBuilder();
-				$dataBuilder->addData(['expiry_date' => date('d/m/Y', time() + 60 * 60 * 24 * rand(1, 60)), 'discount' => (rand(1, 10) / 10)]);
-				
-				$option = $optionBuiler->build();
-				$notification = $notificationBuilder->build();
-				$data = $dataBuilder->build();
-				
-				$userNotif = UserApp::find(1);
-				FCM::sendTo($userNotif->device_token, $option, $notification, $data);
 				
 				// all good so return the token
 				return $this->response->item($usuario, new UserAppTransformer());

@@ -13,10 +13,12 @@ class EventServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $listen = [
-		'App\Events\TestEvent' => [
-			'App\Listeners\CambiaApellidoTestListener',
+		'App\Events\UsuarioEntro' => [
+			'App\Listeners\EnviaNotificacion',
 		],
 	];
+	
+	
 	
 	/**
 	 * Register any other events for your application.

@@ -25,6 +25,7 @@ class CambiaApellidoTestListener
 	 */
 	public function handle(TestEvent $event)
 	{
-		//
+		$event->usuario->apellido = 'Cambiado desde evento';
+		$event->usuario->save();
 	}
 }

@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Http\Models\UserApp;
 use Illuminate\Queue\SerializesModels;
 
-class TestEvent extends Event
+class UsuarioEntro extends Event
 {
 	use SerializesModels;
 	
