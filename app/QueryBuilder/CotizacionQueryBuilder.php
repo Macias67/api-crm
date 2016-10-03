@@ -15,4 +15,14 @@ class CotizacionQueryBuilder extends QueryBuilder
 	{
 		return $query->where('estatus_id', $name);
 	}
+	
+	public function filterByCliente($query, $name)
+	{
+		return $query->where('cliente_id', $name);
+	}
+	
+	public function filterByContacto($query, $name)
+	{
+		return $query->where('contacto_id', $name);
+	}
 }
