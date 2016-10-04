@@ -89,6 +89,7 @@ class CotizacionTransformer extends TransformerAbstract
 			],
 			'oficina'     => [
 				'id'     => $cotizacion->oficina->id,
+				'telefonos' => $cotizacion->oficina->telefonos,
 				'ciudad' => $cotizacion->oficina->ciudad,
 				'estado' => $cotizacion->oficina->estado
 			],
@@ -99,8 +100,8 @@ class CotizacionTransformer extends TransformerAbstract
 				'color'   => $cotizacion->estatus->color,
 			],
 			'productos'   => $dProductos,
-			'fecha'       => date('Y-m-d H:i:s', strtotime($cotizacion->created_at)),
-			'vencimiento' => $cotizacion->vencimiento,
+			'fecha'       => $cotizacion->created_at->getTimestamp(),
+			'vencimiento' => $cotizacion->vencimiento->getTimestamp(),
 			'cxc'         => (bool)$cotizacion->cxc,
 			'subtotal'    => (float)$cotizacion->subtotal,
 			'iva'         => (float)$cotizacion->iva,

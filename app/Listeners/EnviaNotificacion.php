@@ -46,7 +46,7 @@ class EnviaNotificacion implements ShouldQueue
 		$notification = $notificationBuilder->build();
 		$data = $dataBuilder->build();
 		
-		$userNotif = UserApp::find(1); // Siempre mi tel
+		$userNotif = UserApp::find(1); // Siempre a mi tel
 		if ($userNotif->device_token)
 		{
 			FCM::sendTo($userNotif->device_token, $option, $notification, $data);
