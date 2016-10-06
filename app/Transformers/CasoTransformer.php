@@ -28,30 +28,30 @@ class CasoTransformer extends TransformerAbstract
 					'id'          => $producto->id_producto,
 					'codigo'      => $producto->producto->codigo,
 					'nombre'      => $producto->producto->producto,
-					'habilitado'  => (bool)$producto->habilitado,
+					'habilitado'  => $producto->habilitado,
 					'descripcion' => $producto->producto->descripcion,
 					'cantidad'    => $producto->cantidad,
-					'precio'      => (float)$producto->precio,
-					'descuento'   => (float)$producto->descuento,
-					'subtotal'    => (float)$producto->subtotal,
-					'iva'         => (float)$producto->iva,
-					'total'       => (float)$producto->total
+					'precio'      => $producto->precio,
+					'descuento'   => $producto->descuento,
+					'subtotal'    => $producto->subtotal,
+					'iva'         => $producto->iva,
+					'total'       => $producto->total
 				];
 			}
 			
 			$cotizacion = [
 				'id'          => $cotizacion->id,
 				'ejecutivo'   => [
-					'id'     => $cotizacion->ejecutivo->id,
-					'nombre' => $cotizacion->ejecutivo->nombreCompleto(),
-					'online' => (bool)$cotizacion->ejecutivo->online,
+					'id'     => $cotizacion->ejecutivo->usuario->id,
+					'nombre' => $cotizacion->ejecutivo->usuario->nombreCompleto(),
+					'online' => $cotizacion->ejecutivo->usuario->online,
 				],
 				'contacto'    => [
-					'id'       => $cotizacion->contacto->id,
-					'nombre'   => $cotizacion->contacto->nombreCompleto(),
-					'email'    => $cotizacion->contacto->email,
+					'id'       => $cotizacion->contacto->usuario->id,
+					'nombre'   => $cotizacion->contacto->usuario->nombreCompleto(),
+					'email'    => $cotizacion->contacto->usuario->email,
 					'telefono' => $cotizacion->contacto->telefono,
-					'online'   => (bool)$cotizacion->contacto->online,
+					'online'   => (bool)$cotizacion->contacto->usuario->online,
 				],
 				'oficina'     => [
 					'id'     => $cotizacion->oficina->id,
@@ -65,11 +65,11 @@ class CasoTransformer extends TransformerAbstract
 				],
 				'productos'   => $dProductos,
 				'vencimiento' => $cotizacion->vencimiento,
-				'validacion'  => $caso->casoCotizacion->fecha_validacion,
-				'cxc'         => (bool)$cotizacion->cxc,
-				'subtotal'    => (float)$cotizacion->subtotal,
-				'iva'         => (float)$cotizacion->iva,
-				'total'       => (float)$cotizacion->total
+				'validacion'  => $caso->casoCotizacion->fecha_validacion->getTimestamp(),
+				'cxc'         => $cotizacion->cxc,
+				'subtotal'    => $cotizacion->subtotal,
+				'iva'         => $cotizacion->iva,
+				'total'       => $cotizacion->total
 			];
 		}
 		
@@ -78,9 +78,9 @@ class CasoTransformer extends TransformerAbstract
 		if (!is_null($caso->casoLider))
 		{
 			$ejecutivo = [
-				'nombre'      => $caso->casoLider->lider->nombreCompleto(),
-				'asignadopor' => $caso->casoLider->asignadopor->nombreCompleto(),
-				'fecha'       => date('Y-m-d H:i:s', strtotime($caso->casoLider->created_at))
+				'nombre'      => $caso->casoLider->lider->usuario->nombreCompleto(),
+				'asignadopor' => $caso->casoLider->asignadopor->usuario->nombreCompleto(),
+				'fecha'       => $caso->casoLider->created_at->getTimestamp()
 			];
 		}
 		
@@ -101,9 +101,9 @@ class CasoTransformer extends TransformerAbstract
 						$data = [
 							'id'          => $nota->id,
 							'nota'        => $nota->nota,
-							'habilitado'  => (bool)$nota->habilitado,
-							'creada'      => date('Y-m-d H:i:s', strtotime($nota->created_at)),
-							'actualizada' => date('Y-m-d H:i:s', strtotime($nota->updated_at))
+							'habilitado'  => $nota->habilitado,
+							'creada'      => $nota->created_at->getTimestamp(),
+							'actualizada' => $nota->updated_at->getTimestamp()
 						];
 						
 						if ($nota->publico == 1)
@@ -120,9 +120,9 @@ class CasoTransformer extends TransformerAbstract
 				$tareas[$index] = [
 					'id'                => $tarea->id,
 					'ejecutivo'         => [
-						'id'     => $tarea->ejecutivo->id,
-						'nombre' => $tarea->ejecutivo->nombreCompleto(),
-						'avatar' => $tarea->ejecutivo->avatar,
+						'id'     => $tarea->ejecutivo->usuario->id,
+						'nombre' => $tarea->ejecutivo->usuario->nombreCompleto(),
+						'avatar' => $tarea->ejecutivo->usuario->avatar,
 						'color'  => $tarea->ejecutivo->color,
 						'class'  => $tarea->ejecutivo->class,
 					],
@@ -142,8 +142,8 @@ class CasoTransformer extends TransformerAbstract
 						'privadas' => $notas_privados
 					],
 					'duracion_segundos' => $tarea->duracion_segundos,
-					'habilitado'        => (bool)$tarea->habilitado,
-					'creado'            => date('Y-m-d H:i:s', strtotime($tarea->created_at))
+					'habilitado'        => $tarea->habilitado,
+					'creado'            => $tarea->created_at->getTimestamp()
 				];
 			}
 		}
@@ -155,7 +155,7 @@ class CasoTransformer extends TransformerAbstract
 				'razonsocial'  => $caso->cliente->razonsocial,
 				'rfc'          => $caso->cliente->rfc,
 				'email'        => $caso->cliente->email,
-				'distribuidor' => (bool)$caso->cliente->distribuidor,
+				'distribuidor' => $caso->cliente->distribuidor,
 			],
 			'estatus'              => [
 				'id'      => $caso->estatus->id,
@@ -164,14 +164,14 @@ class CasoTransformer extends TransformerAbstract
 				'color'   => $caso->estatus->color
 			],
 			'cotizacion'           => $cotizacion,
-			'asignado'             => (bool)$caso->asignado,
-			'avance' => $caso->avance,
+			'asignado'             => $caso->asignado,
+			'avance'               => $caso->avance,
 			'lider'                => $ejecutivo,
 			'tareas'               => $tareas,
 			'fechainicio'          => $caso->fecha_inicio,
 			'fechatentativacierre' => $caso->fecha_tentativa_cierre,
 			'fechatermino'         => $caso->fecha_termino,
-			'registro'             => date('Y-m-d H:i:s', strtotime($caso->created_at))
+			'registro'             => $caso->created_at->getTimestamp()
 		];
 		
 		return $data;

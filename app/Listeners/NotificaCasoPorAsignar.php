@@ -2,19 +2,19 @@
 
 namespace App\Listeners;
 
-use App\Events\UsuarioEntro;
+use App\Events\CasoPorAsignar;
 use App\Http\Models\UserApp;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFCM\Facades\FCM;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 
-class EnviaNotificacion implements ShouldQueue
+class NotificaCasoPorAsignar
 {
 	/**
 	 * Create the event listener.
 	 *
+	 * @return void
 	 */
 	public function __construct()
 	{
@@ -24,19 +24,19 @@ class EnviaNotificacion implements ShouldQueue
 	/**
 	 * Handle the event.
 	 *
-	 * @param  UsuarioEntro $event
+	 * @param  CasoPorAsignar $event
 	 *
 	 * @return void
 	 */
-	public function handle(UsuarioEntro $event)
+	public function handle(CasoPorAsignar $event)
 	{
-		$usuario = $event->usuario;
+		$cliente = $event->cliente;
 		
 		$optionBuiler = new OptionsBuilder();
 		$optionBuiler->setTimeToLive(60 * 20);
 		
-		$notificationBuilder = new PayloadNotificationBuilder($usuario->nombreCompleto() . ' ha entrado al sistema');
-		$notificationBuilder->setBody('El usuario ' . $usuario->nombreCompleto() . ' ha entrado al sistema.')
+		$notificationBuilder = new PayloadNotificationBuilder('Nuevo caso en espera de asignación.');
+		$notificationBuilder->setBody('Nuevo caso del cliente ' . $cliente->razonsocial . ' esta en espera de asignación de líder.')
 		                    ->setSound('default');
 		
 		$dataBuilder = new PayloadDataBuilder();

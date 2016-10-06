@@ -2,19 +2,19 @@
 
 namespace App\Listeners;
 
-use App\Events\UsuarioEntro;
+use App\Events\ContactoSubePago;
 use App\Http\Models\UserApp;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFCM\Facades\FCM;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 
-class EnviaNotificacion implements ShouldQueue
+class NotificaSubidaPago
 {
 	/**
 	 * Create the event listener.
 	 *
+	 * @return void
 	 */
 	public function __construct()
 	{
@@ -24,19 +24,19 @@ class EnviaNotificacion implements ShouldQueue
 	/**
 	 * Handle the event.
 	 *
-	 * @param  UsuarioEntro $event
+	 * @param  ContactoSubePago $event
 	 *
 	 * @return void
 	 */
-	public function handle(UsuarioEntro $event)
+	public function handle(ContactoSubePago $event)
 	{
-		$usuario = $event->usuario;
+		$contacto = $event->contacto;
 		
 		$optionBuiler = new OptionsBuilder();
 		$optionBuiler->setTimeToLive(60 * 20);
 		
-		$notificationBuilder = new PayloadNotificationBuilder($usuario->nombreCompleto() . ' ha entrado al sistema');
-		$notificationBuilder->setBody('El usuario ' . $usuario->nombreCompleto() . ' ha entrado al sistema.')
+		$notificationBuilder = new PayloadNotificationBuilder('Nuevo pago subido para validar.');
+		$notificationBuilder->setBody('El contacto ' . $contacto->usuario->nombreCompleto() . ' de la empresa ' . $contacto->cliente->razonsocial . ' ha subido un nuevo pago para validar.')
 		                    ->setSound('default');
 		
 		$dataBuilder = new PayloadDataBuilder();

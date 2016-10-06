@@ -23,6 +23,7 @@ class CotizacionPagos extends Model
 		'cotizacion_id',
 		'contacto_id',
 		'cantidad',
+		'tipo',
 		'comentario',
 		'valido',
 		'created_at',

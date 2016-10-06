@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\CasoPorAsignar;
+use App\Events\ContactoSubePago;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
+use App\Http\Models\CasoCotizacion;
 use App\Http\Models\CasoEstatus;
+use App\Http\Models\Contactos;
 use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionEstatus;
+use App\Http\Requests\Create\CotizacionPagoRequest;
 use App\Transformers\CasoTransformer;
 use App\Transformers\CotizacionPagosTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Pagos extends Controller
 {
@@ -50,13 +56,55 @@ class Pagos extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Create\CotizacionPagoRequest $request
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request)
+	public function store(CotizacionPagoRequest $request)
 	{
-		//
+		try
+		{
+			$cotizacion = CotizacionModel::find($request->get('cotizacion_id'));
+			DB::beginTransaction();
+			
+			$pago = $cotizacion->pagos()->create([
+				'contacto_id' => $request->get('contacto_id'),
+				'cantidad'    => $request->get('cantidad'),
+				'tipo'        => $request->get('tipo'),
+				'comentario'  => $request->get('comentario')
+			]);
+			
+			$archivo = $request->get('archivo');
+			$pago->comprobantes()->create([
+				'download_url' => $archivo['url'],
+				'content_type' => $archivo['contentType'],
+				'full_path'    => $archivo['fullPath'],
+				'md5hash'      => $archivo['hash'],
+				'name'         => $archivo['name'],
+				'size'         => $archivo['size']
+			]);
+			
+			// Se cambia el status de la cotizacción a Revisión
+			$cotizacion->estatus_id = CotizacionEstatus::REVISION;
+			$cotizacion->save();
+			
+			DB::commit();
+			
+			/**
+			 * @TODO Push Notification en la app. Notificar al usuario de Ventas
+			 */
+			$contacto = Contactos::find($request->get('contacto_id'));
+			event(new ContactoSubePago($contacto));
+			
+			// Solo se sube pago
+			return $this->response->created();
+		}
+		catch (\Exception $e)
+		{
+			DB::rollback();
+			
+			return $this->response->error($e->getMessage(), 500);
+		}
 	}
 	
 	/**
@@ -130,7 +178,7 @@ class Pagos extends Controller
 	/**
 	 * @TODO Hacer un request para validar que el usuario puede validar el pago
 	 *
-	 * @return \Dingo\Api\Http\Response
+	 * @return \Dingo\Api\Http\Response|void
 	 */
 	public function validaPago(Request $request, $idCotizacion, $id)
 	{
@@ -146,57 +194,91 @@ class Pagos extends Controller
 			
 			if (is_null($pago))
 			{
-				return $this->response->errorNotFound('El ID del pago no corresponde a la cotización.');
+				return $this->response->errorNotFound('El ID del pago no corresponde a la cotización o no existe.');
 			}
 			else
 			{
-				$valido = $request->get('valido');
-				
-				if ($pago->valido == false)
+				try
 				{
-					$pago->valido = $valido;
-					$pago->save();
+					$valido = $request->get('valido');
 					
-					/**
-					 * @TODO Revisar que todos los pagos estén validados para abrir nuevo caso
-					 */
-					$pagos = $cotizacion->pagos;
-					$todosValidos = true;
-					foreach ($pagos as $pago)
+					DB::beginTransaction();
+					
+					// SI el pago NO esta válido, entro al proceso
+					if ($pago->valido == false)
 					{
-						if (!$pago->valido)
+						$pago->valido = $valido;
+						$pago->save();
+						
+						/**
+						 * @TODO Revisar que todos los pagos estén validados para abrir nuevo caso
+						 */
+						$pagos = $cotizacion->pagos;
+						$totalAPagar = 0;
+						foreach ($pagos as $pago)
 						{
-							$todosValidos = false;
-							break;
+							if ($pago->valido)
+							{
+								$totalAPagar += $pago->cantidad;
+							}
 						}
-					}
-					
-					if ($todosValidos)
-					{
-						// La cotizacion la marco como pagada
-						$cotizacion->estatus_id = CotizacionEstatus::PAGADA;
+						
+						// Cambio el estatus de la cotización segun la cantidad de pagos
+						if ($totalAPagar >= $cotizacion->total)
+						{
+							// La cotizacion la marco como pagada
+							$cotizacion->estatus_id = CotizacionEstatus::PAGADA;
+						}
+						elseif ($totalAPagar < $cotizacion->total)
+						{
+							// La cotizacion la marco como abonada
+							$cotizacion->estatus_id = CotizacionEstatus::ABONADA;
+						}
+						
 						$cotizacion->save();
 						
-						// Creo un nuevo caso
-						$caso = new Caso();
-						$caso->cliente_id = $cotizacion->cliente->id;
-						$caso->estatus_id = CasoEstatus::PORASIGNAR;
-						$caso->save();
+						// Busco en la tabla 'cs_caso_cotizacion' si ya hay un caso ligado a esta cotización
+						$casoCotizacion = CasoCotizacion::where('cotizacion_id', $cotizacion->id)->get();
 						
-						$caso->casoCotizacion()->create([
-							'cotizacion_id'    => $cotizacion->id,
-							'fecha_validacion' => date('Y-m-d H:i:s')
-						]);
-						
-						return $this->response->item($caso, new CasoTransformer());
-					}
-					else
-					{
-						return $this->response->noContent();
+						// SI es null el resultado, es porque NO HAY CASO y se debe abrir uno.
+						if (count($casoCotizacion) == 0)
+						{
+							// Creo un nuevo caso
+							$caso = new Caso();
+							$caso->cliente_id = $cotizacion->cliente->id;
+							$caso->estatus_id = CasoEstatus::PORASIGNAR;
+							$caso->save();
+							
+							// Ligo la cotización al caso
+							$caso->casoCotizacion()->create([
+								'cotizacion_id'    => $cotizacion->id,
+								'fecha_validacion' => date('Y-m-d H:i:s')
+							]);
+							
+							/**
+							 * @TODO Push Notification al asignador de casos.
+							 */
+							event(new CasoPorAsignar($cotizacion->cliente));
+							
+							DB::commit();
+							
+							return $this->response->item($caso, new CasoTransformer());
+						}
+						else
+						{
+							DB::commit();
+							
+							// Solo valido un pago, sin crear caso
+							return $this->response->noContent();
+						}
 					}
 				}
-				
-				//return $this->response->item($pago, new CotizacionPagosTransformer());
+				catch (\Exception $e)
+				{
+					DB::rollback();
+					
+					return $this->response->error($e->getMessage(), 500);
+				}
 			}
 		}
 	}

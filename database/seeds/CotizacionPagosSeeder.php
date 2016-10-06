@@ -17,6 +17,7 @@ class CotizacionPagosSeeder extends Seeder
 			'cotizacion_id' => 1,
 			'contacto_id'   => 4,
 			'cantidad'      => 6380,
+			'tipo'      => 'total',
 			'comentario'    => 'Copia comprobante pago',
 			'valido'        => 0,
 		]);

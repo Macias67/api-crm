@@ -16,6 +16,12 @@ class EventServiceProvider extends ServiceProvider
 		'App\Events\UsuarioEntro' => [
 			'App\Listeners\EnviaNotificacion',
 		],
+		'App\Events\ContactoSubePago' => [
+			'App\Listeners\NotificaSubidaPago',
+		],
+		'App\Events\CasoPorAsignar' => [
+			'App\Listeners\NotificaCasoPorAsignar',
+		],
 	];
 	
 	
