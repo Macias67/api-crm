@@ -101,6 +101,7 @@ class CotizacionTransformer extends TransformerAbstract
 			'estatus'     => [
 				'id'      => $cotizacion->estatus->id,
 				'estatus' => $cotizacion->estatus->estatus,
+				'class'   => $cotizacion->estatus->class,
 				'color'   => $cotizacion->estatus->color,
 			],
 			'productos'   => $dProductos,
