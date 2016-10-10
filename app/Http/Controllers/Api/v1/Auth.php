@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Events\TestEvent;
+use App\Events\NotificaUsuario;
 use App\Events\UsuarioEntro;
 use App\Http\Controllers\Controller;
+use App\Http\Models\FBNotification;
 use App\Http\Models\UserApp;
 use App\Http\Requests\LoginRequest;
 use App\Transformers\UserAppTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
-use LaravelFCM\Facades\FCM;
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -45,10 +42,15 @@ class Auth extends Controller
 			else
 			{
 				$usuario = UserApp::where($request->only(['email']))->first();
-				
-				event(new UsuarioEntro($usuario));
-				
 				$usuario->token = $token;
+				
+				$tipo = ($usuario->ejecutivo) ? 'El ejecutivo' : 'El contacto';
+				
+				$notificacion = new FBNotification($usuario->nombreCompleto() . ' acaba de entrar al sistema');
+				$notificacion->setMensaje($tipo . ' ' . $usuario->nombreCompleto() . ' entro al sistema a las ' . date('h:i A', $notificacion->getTimestamp()))
+				             ->setTipo(FBNotification::INFO);
+				
+				event(new NotificaUsuario($notificacion));
 				
 				// all good so return the token
 				return $this->response->item($usuario, new UserAppTransformer());

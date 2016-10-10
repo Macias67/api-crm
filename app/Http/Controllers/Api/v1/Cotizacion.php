@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Clientes;
 use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionBancos;
 use App\Http\Models\CotizacionEstatus;
 use App\Http\Models\CotizacionProductos;
+use App\Http\Models\FBNotification;
 use App\Http\Requests\Create\CotizacionRequest;
 use App\QueryBuilder\CotizacionQueryBuilder;
 use App\Transformers\CotizacionTransformer;
@@ -101,13 +103,18 @@ class Cotizacion extends Controller
 					'id_banco' => $banco
 				]));
 			}
-			
-			DB::commit();
-			
+						
 			/**
-			 * @TODO enviar email al cliente con detalles de la cotizacion
+			 * @TODO enviar email y notificacion al cliente con detalles de la cotizacion
 			 *
 			 */
+			$notificacion = new FBNotification('Se ha enviado nueva cotización');
+			$notificacion->setMensaje('Se ha enviado una nueva cotización a nombre de '.$cotizacion->contacto->usuario->nombreCompleto().'.')
+				->setTipo(FBNotification::INFO);
+
+			event(new NotificaUsuario($notificacion));
+			
+			DB::commit();
 			
 			return $this->response->item($cotizacion, new CotizacionTransformer());
 		}

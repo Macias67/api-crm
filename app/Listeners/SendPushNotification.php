@@ -2,19 +2,19 @@
 
 namespace App\Listeners;
 
-use App\Events\CasoPorAsignar;
+use App\Events\NotificaUsuario;
 use App\Http\Models\UserApp;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFCM\Facades\FCM;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 
-class NotificaCasoPorAsignar
+class SendPushNotification implements ShouldQueue
 {
 	/**
 	 * Create the event listener.
 	 *
-	 * @return void
 	 */
 	public function __construct()
 	{
@@ -24,28 +24,31 @@ class NotificaCasoPorAsignar
 	/**
 	 * Handle the event.
 	 *
-	 * @param  CasoPorAsignar $event
+	 * @param  NotificaUsuario $event
 	 *
 	 * @return void
 	 */
-	public function handle(CasoPorAsignar $event)
+	public function handle(NotificaUsuario $event)
 	{
-		$cliente = $event->cliente;
+		$notification = $event->notificacion;
 		
 		$optionBuiler = new OptionsBuilder();
 		$optionBuiler->setTimeToLive(60 * 20);
 		
-		$notificationBuilder = new PayloadNotificationBuilder('Nuevo caso en espera de asignación.');
-		$notificationBuilder->setBody('Nuevo caso del cliente ' . $cliente->razonsocial . ' esta en espera de asignación de líder.')
+		$notificationBuilder = new PayloadNotificationBuilder($notification->getTitulo());
+		$notificationBuilder->setBody($notification->getMensaje())
 		                    ->setSound('default');
 		
 		$dataBuilder = new PayloadDataBuilder();
-		$dataBuilder->addData(['expiry_date' => date('d/m/Y', time() + 60 * 60 * 24 * rand(1, 60)), 'discount' => (rand(1, 10) / 10)]);
+		$dataBuilder->addData(['expiry_date' => date('d/m/Y', $notification->getTimestamp()), 'discount' => (rand(1, 10) / 10)]);
 		
 		$option = $optionBuiler->build();
 		$notification = $notificationBuilder->build();
 		$data = $dataBuilder->build();
 		
+		/**
+		 * @TODO Sustituir por el user_id de la var notificacion
+		 */
 		$userNotif = UserApp::find(1); // Siempre a mi tel
 		if ($userNotif->device_token)
 		{

@@ -13,15 +13,10 @@ class EventServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $listen = [
-		'App\Events\UsuarioEntro' => [
-			'App\Listeners\EnviaNotificacion',
-		],
-		'App\Events\ContactoSubePago' => [
-			'App\Listeners\NotificaSubidaPago',
-		],
-		'App\Events\CasoPorAsignar' => [
-			'App\Listeners\NotificaCasoPorAsignar',
-		],
+		'App\Events\NotificaUsuario' => [
+			'App\Listeners\SendPushNotification',
+			'App\Listeners\PushNotificacionFirebase',
+		]
 	];
 	
 	
