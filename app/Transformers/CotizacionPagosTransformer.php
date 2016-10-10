@@ -24,7 +24,7 @@ class CotizacionPagosTransformer extends TransformerAbstract
 				'archivo'   => $comprobante->archivo,
 				'nombre'    => $comprobante->nombre,
 				'extension' => $comprobante->extension,
-				'fecha'     => date('Y-m-d H:i:s', strtotime($comprobante->created_at))
+				'fecha'     => $comprobante->created_at->getTimestamp()
 			];
 		}
 		
@@ -34,17 +34,17 @@ class CotizacionPagosTransformer extends TransformerAbstract
 				'id'     => $pago->contacto->id,
 				'nombre' => $pago->contacto->nombreCompleto(),
 				'email'  => $pago->contacto->email,
-				'online' => (bool)$pago->contacto->online
+				'online' => $pago->contacto->online
 			],
 			'cliente'      => [
 				'id'          => $pago->contacto->cliente->id,
 				'razonsocial' => $pago->contacto->cliente->razonsocial,
 				'rfc'         => $pago->contacto->cliente->rfc,
 			],
-			'cantidad'     => (float)$pago->cantidad,
+			'cantidad'     => $pago->cantidad,
 			'comentario'   => (is_null($pago->comentario)) ? '' : $pago->comentario,
-			'valido'       => (bool)$pago->valido,
-			'fecha'        => date('Y-m-d H:i:s', strtotime($pago->created_at)),
+			'valido'       => $pago->valido,
+			'fecha'        => $pago->created_at->getTimestamp(),
 			'comprobantes' => $dtComprobantres
 		];
 		

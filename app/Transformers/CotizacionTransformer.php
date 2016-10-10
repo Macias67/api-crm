@@ -21,16 +21,16 @@ class CotizacionTransformer extends TransformerAbstract
 		{
 			$dProductos[$index] = [
 				'id'          => $producto->id_producto,
-				'habilitado'  => (bool)$producto->habilitado,
+				'habilitado'  => $producto->habilitado,
 				'codigo'      => $producto->producto->codigo,
 				'nombre'      => $producto->producto->producto,
 				'descripcion' => $producto->producto->descripcion,
 				'cantidad'    => $producto->cantidad,
-				'precio'      => (float)$producto->precio,
-				'descuento'   => (float)$producto->descuento,
-				'subtotal'    => (float)$producto->subtotal,
-				'iva'         => (float)$producto->iva,
-				'total'       => (float)$producto->total,
+				'precio'      => $producto->precio,
+				'descuento'   => $producto->descuento,
+				'subtotal'    => $producto->subtotal,
+				'iva'         => $producto->iva,
+				'total'       => $producto->total,
 			];
 		}
 		
@@ -107,10 +107,10 @@ class CotizacionTransformer extends TransformerAbstract
 			'productos'   => $dProductos,
 			'fecha'       => $cotizacion->created_at->getTimestamp(),
 			'vencimiento' => $cotizacion->vencimiento->getTimestamp(),
-			'cxc'         => (bool)$cotizacion->cxc,
-			'subtotal'    => (float)$cotizacion->subtotal,
-			'iva'         => (float)$cotizacion->iva,
-			'total'       => (float)$cotizacion->total,
+			'cxc'         => $cotizacion->cxc,
+			'subtotal'    => $cotizacion->subtotal,
+			'iva'         => $cotizacion->iva,
+			'total'       => $cotizacion->total,
 		];
 		
 		return $data;
