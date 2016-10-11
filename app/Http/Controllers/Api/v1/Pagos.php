@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Events\CasoPorAsignar;
 use App\Events\ContactoSubePago;
+use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoCotizacion;
 use App\Http\Models\CasoEstatus;
-use App\Http\Models\Contactos;
 use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionEstatus;
+use App\Http\Models\FBNotification;
 use App\Http\Requests\Create\CotizacionPagoRequest;
 use App\Transformers\CasoTransformer;
 use App\Transformers\CotizacionPagosTransformer;
@@ -93,8 +94,11 @@ class Pagos extends Controller
 			/**
 			 * @TODO Push Notification en la app. Notificar al usuario de Ventas
 			 */
-			$contacto = Contactos::find($request->get('contacto_id'));
-			event(new ContactoSubePago($contacto));
+			$notificacion = new FBNotification('Nuevo pago para validar de ' . $cotizacion->cliente->razonsocial);
+			$notificacion->setMensaje('El contacto ' . $pago->contacto->usuario->nombreCompleto() . ' de la empresa ' . $cotizacion->cliente->razonsocial . ' ha subido un nuevo pago para validarse.')
+			             ->setTipo(FBNotification::INFO);
+			
+			event(new NotificaUsuario($notificacion));
 			
 			// Solo se sube pago
 			return $this->response->created();
