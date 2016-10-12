@@ -24,7 +24,7 @@ class TareaRequest extends Request
 	public function rules()
 	{
 		return [
-			'ejecutivo'   => 'required|integer|exists:ec_ejecutivos,id',
+			'ejecutivo'   => 'required|integer|exists:ec_ejecutivos,ejecutivo_id',
 			'titulo'      => 'required',
 			'descripcion' => 'required'
 		];

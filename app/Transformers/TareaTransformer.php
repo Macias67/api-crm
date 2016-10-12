@@ -26,10 +26,10 @@ class TareaTransformer extends TransformerAbstract
 				$data = [
 					'id'          => $nota->id,
 					'nota'        => $nota->nota,
-					'publico'        => (bool)$nota->publico,
-					'habilitado'  => (bool)$nota->habilitado,
-					'creada'      => date('Y-m-d H:i:s', strtotime($nota->created_at)),
-					'actualizada' => date('Y-m-d H:i:s', strtotime($nota->updated_at))
+					'publico'     => $nota->publico,
+					'habilitado'  => $nota->habilitado,
+					'creada'      => $nota->created_at->getTimestamp(),
+					'actualizada' => $nota->updated_at->getTimestamp()
 				];
 				
 				if ($nota->publico == 1)
@@ -49,7 +49,7 @@ class TareaTransformer extends TransformerAbstract
 			'id'                => $tarea->id,
 			'ejecutivo'         => [
 				'id'     => $tarea->ejecutivo->id,
-				'nombre' => $tarea->ejecutivo->nombreCompleto(),
+				'nombre' => $tarea->ejecutivo->usuario->nombreCompleto(),
 				'avatar' => $tarea->ejecutivo->avatar,
 				'color'  => $tarea->ejecutivo->color,
 				'class'  => $tarea->ejecutivo->class,
@@ -61,16 +61,16 @@ class TareaTransformer extends TransformerAbstract
 				'color'   => $tarea->estatus->color,
 			],
 			'caso'              => [
-				'id' => $tarea->caso->id,
-				'avance' => $tarea->caso->avance,
+				'id'      => $tarea->caso->id,
+				'avance'  => $tarea->caso->avance,
 				'cliente' => [
 					'id'          => $tarea->caso->cliente->id,
 					'razonsocial' => $tarea->caso->cliente->razonsocial,
-					'rfc' => $tarea->caso->cliente->rfc,
+					'rfc'         => $tarea->caso->cliente->rfc,
 				],
 				'lider'   => [
 					'id'     => $tarea->caso->casoLider->lider->id,
-					'nombre' => $tarea->caso->casoLider->lider->nombreCompleto(),
+					'nombre' => $tarea->caso->casoLider->lider->usuario->nombreCompleto(),
 				],
 				'estatus' => [
 					'id'      => $tarea->caso->estatus->id,
@@ -87,11 +87,11 @@ class TareaTransformer extends TransformerAbstract
 			'notas'             => [
 				'publicas' => $notas_publicos,
 				'privadas' => $notas_privados,
-			        'todas' => $todas
+				'todas'    => $todas
 			],
 			'duracion_segundos' => $tarea->duracion_segundos,
-			'habilitado'        => (bool)$tarea->habilitado,
-			'created_at'            => date('Y-m-d H:i:s', strtotime($tarea->created_at))
+			'habilitado'        => $tarea->habilitado,
+			'created_at'        => date('Y-m-d H:i:s', strtotime($tarea->created_at))
 		];
 		
 		return $data;

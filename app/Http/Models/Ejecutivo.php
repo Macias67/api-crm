@@ -15,7 +15,7 @@ class Ejecutivo extends Model
 	 */
 	protected $table = 'ec_ejecutivos';
 	
-	protected $primaryKey = 'id';
+	protected $primaryKey = 'ejecutivo_id';
 	
 	/**
 	 * The attributes that are mass assignable.
@@ -23,7 +23,7 @@ class Ejecutivo extends Model
 	 * @var array
 	 */
 	protected $fillable = [
-		'id',
+		'ejecutivo_id',
 		'oficina_id',
 		'departamento_id',
 		'color',
@@ -37,7 +37,7 @@ class Ejecutivo extends Model
 	 */
 	public function usuario()
 	{
-		return $this->belongsTo(UserApp::class, 'id');
+		return $this->belongsTo(UserApp::class, 'ejecutivo_id');
 	}
 	
 	/**
@@ -78,5 +78,10 @@ class Ejecutivo extends Model
 	public function departamento()
 	{
 		return $this->belongsTo(Departamentos::class, 'departamento_id');
+	}
+	
+	public static function table()
+	{
+		return with(new static)->getTable();
 	}
 }

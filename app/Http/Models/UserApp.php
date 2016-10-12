@@ -86,7 +86,7 @@ class UserApp extends Authenticatable
 	 */
 	public function infoEjecutivo()
 	{
-		return $this->hasOne(Ejecutivo::class, 'id');
+		return $this->hasOne(Ejecutivo::class, 'ejecutivo_id');
 	}
 	
 	/**

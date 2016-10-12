@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
+use App\Http\Models\FBNotification;
 use App\Http\Models\TareaEstatus;
 use App\Http\Requests\Create\TareaRequest;
 use App\Transformers\CasoTransformer;
@@ -52,7 +54,7 @@ class CasoTareas extends Controller
 			
 			DB::beginTransaction();
 			
-			$caso->tareas()->create([
+			$tarea = $caso->tareas()->create([
 				'id_ejecutivo' => $request->get('ejecutivo'),
 				'id_estatus'   => TareaEstatus::ASIGNADO,
 				'titulo'       => $request->get('titulo'),
@@ -74,6 +76,12 @@ class CasoTareas extends Controller
 			/**
 			 * @TODO Enviar correo al ejecutivo de asignacion de tarea y notificar en la app.
 			 */
+			$notificacion = new FBNotification('Nueva tarea asginada: "' . $tarea->titulo . '"');
+			$notificacion
+				->setMensaje($caso->casoLider->lider->usuario->nombreCompleto() . ' te ha asignado una nueva tarea para el Caso #' . $caso->id . ' del cliente ' . $caso->cliente->razonsocial . '.')
+				->setTipo(FBNotification::INFO);
+			
+			event(new NotificaUsuario($notificacion));
 			
 			return $this->response->item($caso, new CasoTransformer());
 		}

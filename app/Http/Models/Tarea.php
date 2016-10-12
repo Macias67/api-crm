@@ -2,12 +2,13 @@
 
 namespace App\Http\Models;
 
+use App\Http\Models\Mutators\MTarea;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Tarea extends Model
 {
-	use SyncsWithFirebase;
+	use SyncsWithFirebase, MTarea;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo
