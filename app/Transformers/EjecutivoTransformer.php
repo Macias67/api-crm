@@ -16,12 +16,12 @@ class EjecutivoTransformer extends TransformerAbstract
 	{
 		$oficina = $ejecutivo->oficina;
 		$data = [
-			'id'           => $ejecutivo->id,
-			'nombre'       => $ejecutivo->nombre,
-			'apellido'     => $ejecutivo->apellido,
-			'email'        => $ejecutivo->email,
-			'avatar'       => $ejecutivo->avatar,
-			'online' => (bool)$ejecutivo->online,
+			'id'           => $ejecutivo->usuario->id,
+			'nombre'       => $ejecutivo->usuario->nombre,
+			'apellido'     => $ejecutivo->usuario->apellido,
+			'email'        => $ejecutivo->usuario->email,
+			'avatar'       => $ejecutivo->usuario->avatar,
+			'online' => $ejecutivo->usuario->online,
 			'oficina'      => [
 				'calle'     => $oficina->calle,
 				'numero'    => $oficina->numero,
@@ -35,8 +35,8 @@ class EjecutivoTransformer extends TransformerAbstract
 				'email'     => $oficina->email,
 			],
 			'departamento' => $ejecutivo->departamento,
-			'created_at'   => $ejecutivo->created_at,
-			'updated_at'   => $ejecutivo->updated_at
+			'created_at'   => $ejecutivo->created_at->getTimestamp(),
+			'updated_at'   => $ejecutivo->updated_at->getTimestamp()
 		];
 		
 		if (isset($ejecutivo->token))

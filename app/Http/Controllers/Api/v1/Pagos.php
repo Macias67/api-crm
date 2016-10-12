@@ -244,8 +244,8 @@ class Pagos extends Controller
 						// Busco en la tabla 'cs_caso_cotizacion' si ya hay un caso ligado a esta cotización
 						$casoCotizacion = CasoCotizacion::where('cotizacion_id', $cotizacion->id)->get();
 						
-						// SI es null el resultado, es porque NO HAY CASO y se debe abrir uno.
-						if (count($casoCotizacion) == 0)
+						// SI es TRUE el resultado, es porque NO HAY CASO y se debe abrir uno.
+						if ($casoCotizacion->isEmpty())
 						{
 							// Creo un nuevo caso
 							$caso = new Caso();
@@ -259,12 +259,16 @@ class Pagos extends Controller
 								'fecha_validacion' => date('Y-m-d H:i:s')
 							]);
 							
+							DB::commit();
+							
 							/**
 							 * @TODO Push Notification al asignador de casos.
 							 */
-							event(new CasoPorAsignar($cotizacion->cliente));
+							$notificacion = new FBNotification('Nuevo caso en espera de asignación.');
+							$notificacion->setMensaje('Se ha abierto un nuevo caso para el cliente ' . $caso->cliente->razonsocial . ' en espera de asignación de líder.')
+							             ->setTipo(FBNotification::INFO);
 							
-							DB::commit();
+							event(new NotificaUsuario($notificacion));
 							
 							return $this->response->item($caso, new CasoTransformer());
 						}

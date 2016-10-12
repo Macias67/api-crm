@@ -51,7 +51,7 @@ class CasoTransformer extends TransformerAbstract
 					'nombre'   => $cotizacion->contacto->usuario->nombreCompleto(),
 					'email'    => $cotizacion->contacto->usuario->email,
 					'telefono' => $cotizacion->contacto->telefono,
-					'online'   => (bool)$cotizacion->contacto->usuario->online,
+					'online'   => $cotizacion->contacto->usuario->online,
 				],
 				'oficina'     => [
 					'id'     => $cotizacion->oficina->id,
@@ -79,7 +79,6 @@ class CasoTransformer extends TransformerAbstract
 		{
 			$ejecutivo = [
 				'nombre'      => $caso->casoLider->lider->usuario->nombreCompleto(),
-				'asignadopor' => $caso->casoLider->asignadopor->usuario->nombreCompleto(),
 				'fecha'       => $caso->casoLider->created_at->getTimestamp()
 			];
 		}

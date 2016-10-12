@@ -15,9 +15,8 @@ class CasoLiderTransformer extends TransformerAbstract
 	public function transform(CasoLider $casoLider)
 	{
 		$data = [
-			'nombre'      => $casoLider->lider->nombreCompleto(),
-			'asignador' => $casoLider->asignadopor->nombreCompleto(),
-			'fecha'       => date('Y-m-d H:i:s', strtotime($casoLider->created_at))
+			'nombre'      => $casoLider->lider->usuario->nombreCompleto(),
+			'fecha'       => $casoLider->created_at->getTimestamp()
 		];
 		
 		return $data;

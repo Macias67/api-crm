@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
+use App\Http\Models\FBNotification;
 use App\Transformers\CasoLiderTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -50,10 +52,11 @@ class CasoLider extends Controller
 	
 	/**
 	 * Store a newly created resource in storage.
+	 * @TODO Hacer un request que revise que el lider sí es ejecutivo
 	 *
 	 * @param  \Illuminate\Http\Request $request
 	 *
-	 * @return void
+	 * @return \Dingo\Api\Http\Response|void
 	 */
 	public function store(Request $request, $idCaso)
 	{
@@ -64,8 +67,7 @@ class CasoLider extends Controller
 			DB::beginTransaction();
 			
 			$caso->casoLider()->create([
-				'ejecutivo_lider_id'  => $request->get('lider'),
-				'ejecutivo_asigna_id' => $request->user()->id
+				'ejecutivo_lider_id' => $request->get('lider')
 			]);
 			
 			$caso->asignado = true;
@@ -77,6 +79,11 @@ class CasoLider extends Controller
 			/**
 			 * @TODO Enviar correo al cliente y ejecutivo de asignacion de caso y notificar en la app.
 			 */
+			$notificacion = new FBNotification('Se te ha asignado nuevo caso.');
+			$notificacion->setMensaje('Ahora eres líder del caso #' . $caso->id . ' del cliente ' . $caso->cliente->razonsocial . '.')
+			             ->setTipo(FBNotification::INFO);
+			
+			event(new NotificaUsuario($notificacion));
 			
 			return $this->response->item($caso->casoLider, new CasoLiderTransformer());
 		}

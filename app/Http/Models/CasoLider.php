@@ -43,17 +43,7 @@ class CasoLider extends Model
 	{
 		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_lider_id');
 	}
-	
-	/**
-	 * Un CasoLider pertenece a Ejecutivo
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function asignadopor()
-	{
-		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_asigna_id');
-	}
-	
+		
 	public static function table()
 	{
 		return with(new static)->getTable();
