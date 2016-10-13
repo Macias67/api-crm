@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Tarea;
+use App\Http\Requests\Update\TareaUpdateRequest;
 use App\QueryBuilder\TareaQueryBuilder;
 use App\Transformers\TareaTransformer;
 use Dingo\Api\Routing\Helpers;
@@ -83,14 +84,31 @@ class Tareas extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request $request
-	 * @param  int                      $id
+	 * @param \App\Http\Requests\Update\TareaUpdateRequest $request
+	 * @param  int                                         $id
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(TareaUpdateRequest $request, $id)
 	{
-		//
+		$tarea = Tarea::find($id);
+		
+		if (is_null($tarea))
+		{
+			return $this->response->errorNotFound('El ID de la tarea no existe.');
+		}
+		else
+		{
+			/**
+			 * @TODO Calcular las fechas de todas las tareas y establecer fecha tentativa de cierre del caso
+			 */
+			$tarea->fecha_inicio = $request->get('fechainicio');
+			$tarea->fecha_tentativa_cierre = $request->get('fechatentativacierre');
+			$tarea->duracion_minutos = $request->get('duracionminutos');
+			$tarea->save();
+			
+			return $this->response->item($tarea, new TareaTransformer());
+		}
 	}
 	
 	/**

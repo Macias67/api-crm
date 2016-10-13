@@ -82,16 +82,17 @@ class TareaTransformer extends TransformerAbstract
 			'titulo'            => $tarea->titulo,
 			'descripcion'       => $tarea->descripcion,
 			'avance'            => $tarea->avance,
-			'fecha_tentativa'   => (is_null($tarea->fecha_tentativa)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_tentativa)),
-			'fecha_cierre'      => (is_null($tarea->fecha_cierre)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_cierre)),
+			'fecha_inicio'   => (is_null($tarea->fecha_inicio)) ? null :  $tarea->fecha_inicio->getTimestamp(),
+			'fecha_tentativa_cierre'      => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
+			'fecha_cierre'      => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
+			'duracion_minutos' => $tarea->duracion_minutos,
 			'notas'             => [
 				'publicas' => $notas_publicos,
 				'privadas' => $notas_privados,
 				'todas'    => $todas
 			],
-			'duracion_segundos' => $tarea->duracion_segundos,
 			'habilitado'        => $tarea->habilitado,
-			'created_at'        => date('Y-m-d H:i:s', strtotime($tarea->created_at))
+			'created_at'        => $tarea->created_at->getTimestamp()
 		];
 		
 		return $data;

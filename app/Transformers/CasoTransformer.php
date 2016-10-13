@@ -78,8 +78,8 @@ class CasoTransformer extends TransformerAbstract
 		if (!is_null($caso->casoLider))
 		{
 			$ejecutivo = [
-				'nombre'      => $caso->casoLider->lider->usuario->nombreCompleto(),
-				'fecha'       => $caso->casoLider->created_at->getTimestamp()
+				'nombre' => $caso->casoLider->lider->usuario->nombreCompleto(),
+				'fecha'  => $caso->casoLider->created_at->getTimestamp()
 			];
 		}
 		
@@ -117,32 +117,33 @@ class CasoTransformer extends TransformerAbstract
 				}
 				
 				$tareas[$index] = [
-					'id'                => $tarea->id,
-					'ejecutivo'         => [
+					'id'                     => $tarea->id,
+					'ejecutivo'              => [
 						'id'     => $tarea->ejecutivo->usuario->id,
 						'nombre' => $tarea->ejecutivo->usuario->nombreCompleto(),
 						'avatar' => $tarea->ejecutivo->usuario->avatar,
 						'color'  => $tarea->ejecutivo->color,
 						'class'  => $tarea->ejecutivo->class,
 					],
-					'estatus'           => [
+					'estatus'                => [
 						'id'      => $tarea->estatus->id,
 						'estatus' => $tarea->estatus->estatus,
 						'class'   => $tarea->estatus->class,
 						'color'   => $tarea->estatus->color,
 					],
-					'titulo'            => $tarea->titulo,
-					'descripcion'       => $tarea->descripcion,
-					'avance'            => $tarea->avance,
-					'fecha_tentativa'   => (is_null($tarea->fecha_tentativa)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_tentativa)),
-					'fecha_cierre'      => (is_null($tarea->fecha_cierre)) ? null : date('Y-m-d H:i:s', strtotime($tarea->fecha_cierre)),
-					'notas'             => [
+					'titulo'                 => $tarea->titulo,
+					'descripcion'            => $tarea->descripcion,
+					'avance'                 => $tarea->avance,
+					'fecha_inicio'           => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
+					'fecha_tentativa_cierre' => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
+					'fecha_cierre'           => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
+					'duracion_minutos'      => $tarea->duracion_minutos,
+					'notas'                  => [
 						'publicas' => $notas_publicos,
 						'privadas' => $notas_privados
 					],
-					'duracion_segundos' => $tarea->duracion_segundos,
-					'habilitado'        => $tarea->habilitado,
-					'creado'            => $tarea->created_at->getTimestamp()
+					'habilitado'             => $tarea->habilitado,
+					'creado'                 => $tarea->created_at->getTimestamp()
 				];
 			}
 		}

@@ -32,9 +32,10 @@ class Tarea extends Model
 		'titulo',
 		'descripcion',
 		'avance',
-		'fecha_tentativa',
+		'fecha_inicio',
+		'fecha_tentativa_cierre',
 		'fecha_cierre',
-		'duracion_segundos',
+		'duracion_minutos',
 		'habilitado',
 	];
 	
@@ -45,9 +46,7 @@ class Tarea extends Model
 	 */
 	protected $casts = [
 		'avance' => 'integer',
-		'fecha_tentativa'    => 'date',
-		'fecha_cierre'    => 'date',
-		'duracion_segundos'    => 'integer',
+		'duracion_minutos'    => 'integer',
 		'habilitado'    => 'boolean',
 	];
 	
@@ -58,7 +57,10 @@ class Tarea extends Model
 	 */
 	protected $dates = [
 		'created_at',
-		'updated_at'
+		'updated_at',
+	        'fecha_inicio',
+	        'fecha_tentativa_cierre',
+	        'fecha_cierre'
 	];
 	
 	public static function table()
