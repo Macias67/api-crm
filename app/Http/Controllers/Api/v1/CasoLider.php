@@ -35,7 +35,6 @@ class CasoLider extends Controller
 		}
 		else
 		{
-			//dd($caso->casoLider);
 			return $this->response->item($caso->casoLider, new CasoLiderTransformer());
 		}
 	}

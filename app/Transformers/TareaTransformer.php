@@ -23,13 +23,30 @@ class TareaTransformer extends TransformerAbstract
 		{
 			foreach ($notas as $nota)
 			{
+				$archivos = [];
+				$dArchivos = $nota->archivos;
+				foreach ($dArchivos as $index => $dArchivo) {
+					$archivos[$index] = [
+						'id' => $dArchivo->id,
+						'downloadUrl' => $dArchivo->download_url,
+						'contentType' => $dArchivo->content_type,
+						'path' => $dArchivo->full_path,
+						'md5hash' => $dArchivo->md5hash,
+						'nombre' => $dArchivo->name,
+						'tamano' => $dArchivo->size,
+						'creado' => $dArchivo->created_at->getTimestamp()
+					];
+				}
+				
 				$data = [
 					'id'          => $nota->id,
 					'nota'        => $nota->nota,
 					'publico'     => $nota->publico,
+					'avance'     => $nota->avance,
 					'habilitado'  => $nota->habilitado,
 					'creada'      => $nota->created_at->getTimestamp(),
-					'actualizada' => $nota->updated_at->getTimestamp()
+					'actualizada' => $nota->updated_at->getTimestamp(),
+				        'archivos' => $archivos
 				];
 				
 				if ($nota->publico == 1)

@@ -15,7 +15,7 @@ class EjecutivosSeeder extends Seeder
 		$faker = Faker\Factory::create();
 		
 		\App\Http\Models\Ejecutivo::create([
-			'ejecutivo_id'          => 1,
+			'id'          => 1,
 			'oficina_id'      => 1,
 			'departamento_id' => 3,
 			'color'           => '#F2784B',
@@ -23,7 +23,7 @@ class EjecutivosSeeder extends Seeder
 		]);
 		
 		\App\Http\Models\Ejecutivo::create([
-			'ejecutivo_id'          => 2,
+			'id'          => 2,
 			'oficina_id'      => 1,
 			'departamento_id' => 2,
 			'color'           => '#BF55EC',
@@ -33,7 +33,7 @@ class EjecutivosSeeder extends Seeder
 		]);
 		
 		\App\Http\Models\Ejecutivo::create([
-			'ejecutivo_id'          => 3,
+			'id'          => 3,
 			'oficina_id'      => 1,
 			'departamento_id' => 1,
 			'color'           => '#44B6AE',

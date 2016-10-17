@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\CasoEstatus;
 use App\Http\Models\Tarea;
 use App\Http\Models\TareaEstatus;
 use App\Http\Requests\Create\NotaRequest;
@@ -20,9 +21,19 @@ class TareaNotas extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index($idTarea)
 	{
-		//
+		$tarea = Tarea::find($idTarea);
+		
+		if (is_null($tarea))
+		{
+			return $this->response->errorNotFound('El id de la tarea no existe.');
+		}
+		else
+		{
+			dd($tarea->notas);
+			//return $this->response->item($caso->casoLider, new CasoLiderTransformer());
+		}
 	}
 	
 	/**
@@ -53,6 +64,7 @@ class TareaNotas extends Controller
 			DB::beginTransaction();
 			
 			$tarea->avance = $request->get('avance');
+			$tarea->save();
 			
 			$nota = $tarea->notas()->create([
 				'nota'       => $request->get('descripcion'),
@@ -80,7 +92,37 @@ class TareaNotas extends Controller
 			$estatus = [TareaEstatus::ASIGNADO, TareaEstatus::REASIGNADO, TareaEstatus::PROCESO, TareaEstatus::SUSPENDIDO];
 			if (in_array($tarea->id_estatus, $estatus))
 			{
-				$tarea->id_estatus = ($tarea->avance < 100) ? TareaEstatus::PROCESO : TareaEstatus::CERRADO;
+				$tareas = $tarea->caso->tareas;
+				
+				if ($tarea->avance < 100)
+				{
+					$tarea->id_estatus = TareaEstatus::PROCESO;
+					$tarea->caso->avance = (int)($tareas->sum('avance') / $tareas->count());
+				}
+				else if ($tarea->avance == 100)
+				{
+					$tarea->id_estatus = TareaEstatus::CERRADO;
+					$tarea->fecha_cierre = date('Y-m-d H:i:s');
+					$tarea->save();
+					
+					/**
+					 * Reviso todas las tareas del caso que esten cerradas, si es asi PRECIERRO el caso y
+					 * mando las notificaciones
+					 */
+					dd($tareas->where('id_estatus', TareaEstatus::CERRADO)->count()); // @TODO checar esto
+					if ($tareas->count() == $tareas->where('id_estatus', TareaEstatus::CERRADO)->count())
+					{
+						$tarea->caso->estatus_id = CasoEstatus::PRECIERRE;
+						$tarea->caso->fecha_termino = date('Y-m-d H:i:s');
+						$tarea->caso->avance = (int)($tareas->sum('avance') / $tareas->count());
+						
+						/**
+						 * @TODO Envia email y notificación
+						 */
+					}
+				}
+				
+				$tarea->caso->save();
 				$tarea->save();
 			}
 			
