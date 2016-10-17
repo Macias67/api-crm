@@ -68,6 +68,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		$api->group(['prefix' => 'tareas/{idTarea}'], function ($api)
 		{
 			/**
+			 * Establece fechas
+			 */
+			$api->put('fechas', 'Tareas@asignaFechas');
+			
+			/**
 			 * TareaNotas
 			 */
 			$api->resource('notas', 'TareaNotas');

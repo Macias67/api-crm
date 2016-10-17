@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +15,7 @@ class EjecutivosSeeder extends Seeder
 		$faker = Faker\Factory::create();
 		
 		\App\Http\Models\Ejecutivo::create([
-			'id'          => 1,
+			'ejecutivo_id'          => 1,
 			'oficina_id'      => 1,
 			'departamento_id' => 3,
 			'color'           => '#F2784B',
@@ -23,7 +23,7 @@ class EjecutivosSeeder extends Seeder
 		]);
 		
 		\App\Http\Models\Ejecutivo::create([
-			'id'          => 2,
+			'ejecutivo_id'          => 2,
 			'oficina_id'      => 1,
 			'departamento_id' => 2,
 			'color'           => '#BF55EC',
@@ -33,7 +33,7 @@ class EjecutivosSeeder extends Seeder
 		]);
 		
 		\App\Http\Models\Ejecutivo::create([
-			'id'          => 3,
+			'ejecutivo_id'          => 3,
 			'oficina_id'      => 1,
 			'departamento_id' => 1,
 			'color'           => '#44B6AE',

@@ -26,9 +26,23 @@ class NotaArchivo extends Model
 	protected $fillable = [
 		'id',
 		'id_nota',
-		'archivo',
-		'nombre',
-		'extension'
+		'download_url',
+		'content_type',
+		'full_path',
+		'md5hash',
+		'name',
+		'size',
+		'created_at',
+		'updated_at'
+	];
+	
+	/**
+	 * The attributes that should be casted to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'size' => 'integer'
 	];
 	
 	/**

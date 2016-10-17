@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Tarea;
+use App\Http\Requests\Update\TareaEstableceFechaRequest;
 use App\Http\Requests\Update\TareaUpdateRequest;
 use App\QueryBuilder\TareaQueryBuilder;
 use App\Transformers\TareaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Tareas extends Controller
 {
@@ -91,24 +93,7 @@ class Tareas extends Controller
 	 */
 	public function update(TareaUpdateRequest $request, $id)
 	{
-		$tarea = Tarea::find($id);
 		
-		if (is_null($tarea))
-		{
-			return $this->response->errorNotFound('El ID de la tarea no existe.');
-		}
-		else
-		{
-			/**
-			 * @TODO Calcular las fechas de todas las tareas y establecer fecha tentativa de cierre del caso
-			 */
-			$tarea->fecha_inicio = $request->get('fechainicio');
-			$tarea->fecha_tentativa_cierre = $request->get('fechatentativacierre');
-			$tarea->duracion_minutos = $request->get('duracionminutos');
-			$tarea->save();
-			
-			return $this->response->item($tarea, new TareaTransformer());
-		}
 	}
 	
 	/**
@@ -121,5 +106,50 @@ class Tareas extends Controller
 	public function destroy($id)
 	{
 		//
+	}
+	
+	public function asignaFechas(TareaEstableceFechaRequest $request, $id) {
+		$tarea = Tarea::find($id);
+		
+		if (is_null($tarea))
+		{
+			return $this->response->errorNotFound('El ID de la tarea no existe.');
+		}
+		else
+		{
+			try
+			{
+				DB::beginTransaction();
+				
+				$tarea->fecha_inicio = $request->get('fechainicio');
+				$tarea->fecha_tentativa_cierre = $request->get('fechatentativacierre');
+				$tarea->duracion_minutos = $request->get('duracionminutos');
+				$tarea->save();
+				
+				/**
+				 * @TODO Calcular las fechas de todas las tareas y establecer fecha tentativa de cierre del caso
+				 */
+				$ultimaFechaTarea = $tarea->caso->tareas()->orderBy('fecha_tentativa_cierre', 'desc')->get();
+				
+				if (!$ultimaFechaTarea->isEmpty())
+				{
+					$tarea->caso->fecha_tentativa_cierre = date('Y-m-d H:i:s', $ultimaFechaTarea->first()->fecha_tentativa_cierre->getTimestamp());
+					$tarea->caso->save();
+				}
+				
+				
+				
+				DB::commit();
+				
+				
+				return $this->response->item($tarea, new TareaTransformer());
+			}
+			catch (\Exception $e)
+			{
+				DB::rollback();
+				
+				return $this->response->error($e->getMessage(), 500);
+			}
+		}
 	}
 }

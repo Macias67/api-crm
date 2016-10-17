@@ -77,7 +77,7 @@ class CotizacionTransformer extends TransformerAbstract
 			'cliente'     => [
 				'id'           => $cotizacion->cliente->id,
 				'razonsocial'  => $cotizacion->cliente->razonsocial,
-				'distribuidor' => (boolean)$cotizacion->cliente->distribuidor,
+				'distribuidor' => $cotizacion->cliente->distribuidor,
 			],
 			'ejecutivo'   => [
 				'id'     => $cotizacion->ejecutivo->usuario->id,

@@ -63,14 +63,14 @@ class Cotizacion extends Controller
 		try
 		{
 			$request->merge([
-				'ejecutivo_id' => $request->user()->id,
+				'id' => $request->user()->id,
 				'oficina_id'   => $request->user()->infoEjecutivo->oficina_id,
 				'estatus_id'   => CotizacionEstatus::PORPAGAR,
 			]);
 			
 			$cotizacion = CotizacionModel::create($request->only([
 				'cliente_id',
-				'ejecutivo_id',
+				'id',
 				'contacto_id',
 				'oficina_id',
 				'estatus_id',

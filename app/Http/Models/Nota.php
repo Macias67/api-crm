@@ -28,7 +28,8 @@ class Nota extends Model
 		'id_tarea',
 		'nota',
 		'publico',
-		'habilitado',
+		'avance',
+		'habilitado'
 	];
 	
 	/**
@@ -37,8 +38,8 @@ class Nota extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'publico' => 'boolean',
-		'habilitado'    => 'boolean'
+		'publico'    => 'boolean',
+		'habilitado' => 'boolean'
 	];
 	
 	/**

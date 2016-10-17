@@ -23,10 +23,27 @@ class NotaRequest extends Request
 	 */
 	public function rules()
 	{
-		return [
-			'descripcion'       => 'required',
-			'tipo'    => 'required|boolean',
-			'habilitado' => 'boolean',
+		$rules = [
+			'descripcion' => 'required',
+			'tipo'        => 'required|boolean',
+			'avance'      => 'required|integer',
+			'habilitado'  => 'boolean'
 		];
+		
+		if ($this->has('archivo'))
+		{
+			$rules_archivo = [
+				'archivo.url'         => 'required|active_url',
+				'archivo.contentType' => 'required',
+				'archivo.fullPath'    => 'required',
+				'archivo.hash'        => 'required|unique:cs_nota_archivo,md5hash',
+				'archivo.name'        => 'required',
+				'archivo.size'        => 'required|integer',
+			];
+			
+			$rules = array_merge($rules, $rules_archivo);
+		}
+		
+		return $rules;
 	}
 }

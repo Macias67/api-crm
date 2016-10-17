@@ -137,7 +137,7 @@ class CasoTransformer extends TransformerAbstract
 					'fecha_inicio'           => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
 					'fecha_tentativa_cierre' => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
 					'fecha_cierre'           => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
-					'duracion_minutos'      => $tarea->duracion_minutos,
+					'duracion_minutos'       => $tarea->duracion_minutos,
 					'notas'                  => [
 						'publicas' => $notas_publicos,
 						'privadas' => $notas_privados
@@ -168,9 +168,9 @@ class CasoTransformer extends TransformerAbstract
 			'avance'               => $caso->avance,
 			'lider'                => $ejecutivo,
 			'tareas'               => $tareas,
-			'fechainicio'          => $caso->fecha_inicio,
-			'fechatentativacierre' => $caso->fecha_tentativa_cierre,
-			'fechatermino'         => $caso->fecha_termino,
+			'fechainicio'          => (is_null($caso->fecha_inicio)) ? null : $caso->fecha_inicio->getTimestamp(),
+			'fechatentativacierre' => (is_null($caso->fecha_tentativa_cierre)) ? null : $caso->fecha_tentativa_cierre->getTimestamp(),
+			'fechatermino'         => (is_null($caso->fecha_termino)) ? null : $caso->fecha_termino->getTimestamp(),
 			'registro'             => $caso->created_at->getTimestamp()
 		];
 		

@@ -49,32 +49,49 @@ class TareaNotas extends Controller
 		try
 		{
 			$tarea = Tarea::find($idTarea);
-
+			
 			DB::beginTransaction();
-
-			$tarea->notas()->create([
+			
+			$tarea->avance = $request->get('avance');
+			
+			$nota = $tarea->notas()->create([
 				'nota'       => $request->get('descripcion'),
 				'publico'    => (bool)$request->get('tipo'),
+				'avance'     => $request->get('avance'),
 				'habilitado' => true,
 			]);
-
-			/**
-			 * Si empieza a asignar tareas, cambio el estatus del caso y registro fecha de inicio
-			 */
-			if ($tarea->id_estatus == TareaEstatus::ASIGNADO)
+			
+			if ($request->has('archivo'))
 			{
-				$tarea->id_estatus = TareaEstatus::PROCESO;
+				$archivo = $request->get('archivo');
+				$nota->archivos()->create([
+					'download_url' => $archivo['url'],
+					'content_type' => $archivo['contentType'],
+					'full_path'    => $archivo['fullPath'],
+					'md5hash'      => $archivo['hash'],
+					'name'         => $archivo['name'],
+					'size'         => $archivo['size']
+				]);
+			}
+			
+			/**
+			 * Si empieza a crear notas, cambio el estatus de la tarea y registro fecha de inicio de tarea
+			 */
+			$estatus = [TareaEstatus::ASIGNADO, TareaEstatus::REASIGNADO, TareaEstatus::PROCESO, TareaEstatus::SUSPENDIDO];
+			if (in_array($tarea->id_estatus, $estatus))
+			{
+				$tarea->id_estatus = ($tarea->avance < 100) ? TareaEstatus::PROCESO : TareaEstatus::CERRADO;
 				$tarea->save();
 			}
-
+			
 			DB::commit();
-
+			
 			return $this->response->item($tarea, new TareaTransformer());
 		}
 		catch (\Exception $e)
 		{
 			DB::rollback();
-
+			
 			return $this->response->error($e->getMessage(), 500);
 		}
 	}
