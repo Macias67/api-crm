@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\CasoEstatus;
+use App\Http\Models\FBNotification;
 use App\Http\Models\Tarea;
 use App\Http\Models\TareaEstatus;
 use App\Http\Requests\Create\NotaRequest;
@@ -92,12 +94,15 @@ class TareaNotas extends Controller
 			$estatus = [TareaEstatus::ASIGNADO, TareaEstatus::REASIGNADO, TareaEstatus::PROCESO, TareaEstatus::SUSPENDIDO];
 			if (in_array($tarea->id_estatus, $estatus))
 			{
-				$tareas = $tarea->caso->tareas;
-				
 				if ($tarea->avance < 100)
 				{
+					$tareas = $tarea->caso->tareas;
+					
 					$tarea->id_estatus = TareaEstatus::PROCESO;
 					$tarea->caso->avance = (int)($tareas->sum('avance') / $tareas->count());
+					
+					$tarea->caso->save();
+					$tarea->save();
 				}
 				else if ($tarea->avance == 100)
 				{
@@ -109,21 +114,27 @@ class TareaNotas extends Controller
 					 * Reviso todas las tareas del caso que esten cerradas, si es asi PRECIERRO el caso y
 					 * mando las notificaciones
 					 */
-					dd($tareas->where('id_estatus', TareaEstatus::CERRADO)->count()); // @TODO checar esto
+					$tareas = $tarea->caso->tareas;
 					if ($tareas->count() == $tareas->where('id_estatus', TareaEstatus::CERRADO)->count())
 					{
 						$tarea->caso->estatus_id = CasoEstatus::PRECIERRE;
 						$tarea->caso->fecha_termino = date('Y-m-d H:i:s');
 						$tarea->caso->avance = (int)($tareas->sum('avance') / $tareas->count());
+						$tarea->caso->save();
 						
 						/**
 						 * @TODO Envia email y notificación
 						 */
+						$notificacion = new FBNotification('Caso #' . $tarea->caso->id . ' ahora está en Precierre.');
+						$notificacion
+							->setMensaje('Se han cerrado todas las tareas del caso #' . $tarea->caso->id . ', en espera de que ' . $tarea->caso->cliente->razonsocial . ' conteste la encuesta para su cierre.')
+							->setTipo(FBNotification::SUCCESS);
+						
+						event(new NotificaUsuario($notificacion));
+						
+						$tarea->save();
 					}
 				}
-				
-				$tarea->caso->save();
-				$tarea->save();
 			}
 			
 			DB::commit();
