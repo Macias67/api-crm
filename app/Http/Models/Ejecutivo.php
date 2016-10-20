@@ -80,6 +80,16 @@ class Ejecutivo extends Model
 		return $this->belongsTo(Departamentos::class, 'departamento_id');
 	}
 	
+	/**
+	 * Un Ejecutivo tiene muchas Agendas
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function agenda()
+	{
+		return $this->hasMany(Agenda::class, 'ejecutivo_id');
+	}
+	
 	public static function table()
 	{
 		return with(new static)->getTable();

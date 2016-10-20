@@ -25,9 +25,9 @@ class TareaEstableceFechaRequest extends Request
 	public function rules()
 	{
 		return [
-			'fechainicio'          => 'date|date_format:Y-m-d H:i:s',
-			'duracionminutos'      => 'integer',
-			'fechatentativacierre' => 'date|date_format:Y-m-d H:i:s',
+			'fechainicio'          => 'required|date|date_format:Y-m-d H:i:s',
+			'duracionminutos'      => 'required|integer',
+			'fechatentativacierre' => 'required|date|date_format:Y-m-d H:i:s',
 		];
 	}
 }

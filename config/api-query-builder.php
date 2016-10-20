@@ -7,7 +7,7 @@ return [
 	'orderBy' => [
 		[
 			'column'    => 'id',
-			'direction' => 'desc'
+			'direction' => 'asc'
 		]
 	],
 	

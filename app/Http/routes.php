@@ -43,6 +43,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		 * Ejecutivo
 		 */
 		$api->resource('ejecutivos', 'Ejecutivos');
+		$api->group(['prefix' => 'ejecutivos/{idEjecutivo}'], function ($api)
+		{
+			/**
+			 * Lider
+			 */
+			$api->resource('agenda', 'EjecutivoAgenda');
+		});
 		
 		/**
 		 * Casos
@@ -77,7 +84,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			 */
 			$api->resource('notas', 'TareaNotas');
 		});
-				
+		
 		/**
 		 * Clientes
 		 */
@@ -109,5 +116,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		 * Bancos
 		 */
 		$api->resource('bancos', 'Bancos');
+		
+		/**
+		 * Agenda
+		 */
+		$api->resource('agenda', 'Agenda');
 	});
 });
