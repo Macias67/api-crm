@@ -9,6 +9,7 @@ use App\QueryBuilder\AgendaQueryBuilder;
 use App\Transformers\AgendaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Agenda extends Controller
 {

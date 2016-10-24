@@ -11,5 +11,13 @@ use Unlu\Laravel\Api\QueryBuilder;
 
 class AgendaQueryBuilder extends QueryBuilder
 {
+	public function filterByEjecutivo($query, $name)
+	{
+		return $query->where('ejecutivo_id', $name);
+	}
 	
+	public function filterByReferencia($query, $name)
+	{
+		return $query->where('referencia', $name);
+	}
 }
