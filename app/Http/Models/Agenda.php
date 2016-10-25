@@ -26,6 +26,7 @@ class Agenda extends Model
 		'start',
 		'end',
 		'url',
+		'notificado',
 		'referencia',
 		'created_at',
 		'updated_at'
@@ -39,6 +40,7 @@ class Agenda extends Model
 	protected $casts = [
 		'allDay' => 'boolean',
 		'start'  => 'datetime',
+		'notificado' => 'boolean',
 	];
 	
 	/**

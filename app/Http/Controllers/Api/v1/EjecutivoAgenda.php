@@ -66,7 +66,7 @@ class EjecutivoAgenda extends Controller
 			}
 			else
 			{
-				$ejecutivo->agenda()->create([
+				$agenda = $ejecutivo->agenda()->create([
 					'ejecutivo_id' => $idEjecutivo,
 					'titulo'       => $request->get('titulo'),
 					'descripcion'  => $request->get('descripcion'),
@@ -78,7 +78,7 @@ class EjecutivoAgenda extends Controller
 				
 				DB::commit();
 				
-				return $this->response->collection($ejecutivo->agenda, new EjecutivoAgendaTransformer());
+				return $this->response->item($agenda, new EjecutivoAgendaTransformer())->setStatusCode(201);
 			}
 		}
 		catch (\Exception $e)

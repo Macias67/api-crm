@@ -16,6 +16,12 @@ class AgendaQueryBuilder extends QueryBuilder
 		return $query->where('ejecutivo_id', $name);
 	}
 	
+	public function filterByNotificado($query, $name)
+	{
+		$name = (filter_var($name, FILTER_VALIDATE_BOOLEAN)) ? 1 : 0;
+		return $query->where('notificado', $name);
+	}
+	
 	public function filterByReferencia($query, $name)
 	{
 		return $query->where('referencia', $name);

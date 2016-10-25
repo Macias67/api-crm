@@ -29,6 +29,7 @@ class AgendaTransformer extends TransformerAbstract
 			'end'         => $agenda->end->getTimestamp(),
 			'url'         => $agenda->url,
 			'referencia'  => $agenda->referencia,
+			'notificado'  => $agenda->notificado,
 			'creado'      => $agenda->created_at->getTimestamp(),
 		];
 		

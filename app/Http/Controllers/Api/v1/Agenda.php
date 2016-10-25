@@ -117,6 +117,17 @@ class Agenda extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		$agenda = AgendaModel::find($id);
+		
+		if (is_null($agenda))
+		{
+			return $this->response->errorNotFound('El ID del evento  no existe.');
+		}
+		else
+		{
+			$agenda->delete();
+			
+			return $this->response->noContent();
+		}
 	}
 }
