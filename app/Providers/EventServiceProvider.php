@@ -15,7 +15,7 @@ class EventServiceProvider extends ServiceProvider
 	protected $listen = [
 		'App\Events\NotificaUsuario' => [
 			'App\Listeners\SendPushNotification',
-			'App\Listeners\PushNotificacionFirebase',
+			//'App\Listeners\PushNotificacionFirebase',
 		]
 	];
 	

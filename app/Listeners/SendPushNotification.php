@@ -40,7 +40,11 @@ class SendPushNotification implements ShouldQueue
 		                    ->setSound('default');
 		
 		$dataBuilder = new PayloadDataBuilder();
-		$dataBuilder->addData(['expiry_date' => date('d/m/Y', $notification->getTimestamp()), 'discount' => (rand(1, 10) / 10)]);
+		$dataBuilder->addData([
+			'expiry_date' => date('d/m/Y', $notification->getTimestamp()),
+			'discount'    => (rand(1, 10) / 10),
+			'tipo'        => $notification->getTipo()
+		]);
 		
 		$option = $optionBuiler->build();
 		$notification = $notificationBuilder->build();
@@ -53,6 +57,7 @@ class SendPushNotification implements ShouldQueue
 		if ($userNotif->device_token)
 		{
 			FCM::sendTo($userNotif->device_token, $option, $notification, $data);
+			FCM::sendTo('cStzzXu9BPE:APA91bGGXZXBePy5eDT5LaldJYReaayvEfFQt9a7C5a5r887wXJvo9SdImc2ebWfWgHBNd-GJuKuBNCVtX0VxHNqkF-WhIUQdXImz7eGjwtR8LBGLgfTSbclaus_ipkKcOetjIHDTnyR', $option, $notification, $data);
 		}
 	}
 }
