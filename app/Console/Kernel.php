@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
 	 * @var array
 	 */
 	protected $commands = [
-		// Commands\Inspire::class,
+		Commands\Inspire::class,
+		Commands\LogDemo::class,
+	        Commands\NotificaUsuarios::class,
 	];
 	
 	/**
@@ -25,7 +27,8 @@ class Kernel extends ConsoleKernel
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		// $schedule->command('inspire')
-		//          ->hourly();
+		//$schedule->command('inspire')->everyMinute();
+		$schedule->command('logdemo')->everyMinute();
+		$schedule->command('notifica:agenda')->everyMinute();
 	}
 }
