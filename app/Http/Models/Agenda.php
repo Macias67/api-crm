@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo

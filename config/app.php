@@ -166,6 +166,8 @@ return [
 		Unlu\Laravel\Api\ApiQueryBuilderServiceProvider::class,
 		
 		LaravelFCM\FCMServiceProvider::class,
+		
+		Jenssegers\Agent\AgentServiceProvider::class
 	
 	],
 	
@@ -223,6 +225,8 @@ return [
 		
 		'FCM'      => LaravelFCM\Facades\FCM::class,
 		'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
+		
+		'Agent' => Jenssegers\Agent\Facades\Agent::class
 	],
 
 ];

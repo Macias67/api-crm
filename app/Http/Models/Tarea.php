@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tarea extends Model
 {
-	use SyncsWithFirebase, MTarea;
+	//use SyncsWithFirebase;
+	use MTarea;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo

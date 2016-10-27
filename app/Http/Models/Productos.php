@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Productos extends Model
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo

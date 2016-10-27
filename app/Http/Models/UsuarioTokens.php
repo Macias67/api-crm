@@ -2,36 +2,27 @@
 
 namespace App\Http\Models;
 
+use Illuminate\Database\Eloquent\Model;
 
-use Zizaco\Entrust\EntrustPermission;
-
-class Permisos extends EntrustPermission
+class UsuarioTokens extends Model
 {
-	//use SyncsWithFirebase;
-	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
-	protected $table = 'ec_permisos';
+	protected $table = 'usr_usuario_tokens';
 	
 	protected $primaryKey = 'id';
 	
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
 	protected $fillable = [
 		'id',
-		'name',
-		'display_name',
-		'description',
+		'id_usuario',
+		'token',
 		'created_at',
 		'updated_at'
 	];
-	
+		
 	/**
 	 * The attributes that should be mutated to dates.
 	 *
@@ -42,8 +33,23 @@ class Permisos extends EntrustPermission
 		'updated_at'
 	];
 	
+	/**
+	 * Nombre de la tabla
+	 *
+	 * @return mixed
+	 */
 	public static function table()
 	{
 		return with(new static)->getTable();
+	}
+	
+	/**
+	 * Un UsuarioToken pertenece a un Usuario
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function usuario()
+	{
+		return $this->belongsTo(UserApp::class);
 	}
 }

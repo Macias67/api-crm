@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Oficinas extends Model
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	use MOficinas;
 	
 	/**

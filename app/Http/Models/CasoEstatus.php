@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CasoEstatus extends Model
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	
 	const PORASIGNAR = 1;
 	const ASIGNADO   = 2;

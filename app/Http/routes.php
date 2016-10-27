@@ -25,6 +25,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		//$api->get('validatetoken', 'Auth@validateToken');
 		
 		/**
+		 * Logs
+		 */
+		$api->resource('logs', 'Log');
+		
+		/**
 		 * Cotizacion
 		 */
 		$api->post('cotizaciones/datatable', 'Cotizacion@datatable');

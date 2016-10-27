@@ -9,8 +9,9 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 class UserApp extends Authenticatable
 {
 	// @TODO cada vez que se haga un db:seed comentar esta linea
-	use EntrustUserTrait;
-	use UserAppMutator, SyncsWithFirebase;
+	use EntrustUserTrait, UserAppMutator;
+	
+	//use SyncsWithFirebase;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo
@@ -34,7 +35,6 @@ class UserApp extends Authenticatable
 		'avatar',
 		'online',
 		'email',
-		'device_token',
 		'created_at',
 		'updated_at'
 	];
@@ -72,7 +72,7 @@ class UserApp extends Authenticatable
 	/**
 	 * Un UserApp tiene muchos Roles
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
 	 */
 	public function roles()
 	{
@@ -82,7 +82,7 @@ class UserApp extends Authenticatable
 	/**
 	 * Un UserApp tiene un Ejecutivo
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
 	 */
 	public function infoEjecutivo()
 	{
@@ -92,11 +92,21 @@ class UserApp extends Authenticatable
 	/**
 	 * Un UserApp tiene un Contacto
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
 	 */
 	public function infoContacto()
 	{
 		return $this->hasOne(Contactos::class, 'id');
+	}
+	
+	/**
+	 * Un UserApp tiene muchos UsuarioTokens
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\hasMany
+	 */
+	public function deviceTokens()
+	{
+		return $this->hasMany(UsuarioTokens::class, 'id_usuario');
 	}
 	
 	public static function table()

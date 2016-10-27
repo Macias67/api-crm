@@ -16,10 +16,19 @@ class EventServiceProvider extends ServiceProvider
 		'App\Events\NotificaUsuario' => [
 			'App\Listeners\SendPushNotification',
 			//'App\Listeners\PushNotificacionFirebase',
+		],
+		'App\Events\RegistraInicioSesion' => [
+			'App\Listeners\LogSesionFireBase'
 		]
 	];
 	
-	
+	/**
+	 * The subscriber classes to register.
+	 *
+	 * @var array
+	 */
+	protected $subscribe = [
+	];
 	
 	/**
 	 * Register any other events for your application.

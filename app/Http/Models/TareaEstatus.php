@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TareaEstatus extends Model
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	
 	const ASIGNADO   = 1;
 	const REASIGNADO = 2;

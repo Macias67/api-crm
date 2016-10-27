@@ -6,7 +6,7 @@ use Zizaco\Entrust\EntrustRole;
 
 class Roles extends EntrustRole
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo

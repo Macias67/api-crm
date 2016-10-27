@@ -53,11 +53,13 @@ class SendPushNotification implements ShouldQueue
 		/**
 		 * @TODO Sustituir por el user_id de la var notificacion
 		 */
-		$userNotif = UserApp::find(1); // Siempre a mi tel
-		if ($userNotif->device_token)
+		$user = UserApp::find(1); // Siempre a mi
+		$tokens = $user->deviceTokens()->pluck('token');
+		
+		if (!$tokens->isEmpty())
 		{
-			FCM::sendTo($userNotif->device_token, $option, $notification, $data);
-			FCM::sendTo('cStzzXu9BPE:APA91bGGXZXBePy5eDT5LaldJYReaayvEfFQt9a7C5a5r887wXJvo9SdImc2ebWfWgHBNd-GJuKuBNCVtX0VxHNqkF-WhIUQdXImz7eGjwtR8LBGLgfTSbclaus_ipkKcOetjIHDTnyR', $option, $notification, $data);
+			//@TODO Tener un log de notificaciones exitosas
+			$downstreamResponse = FCM::sendTo($tokens->toArray(), $option, $notification, $data);
 		}
 	}
 }

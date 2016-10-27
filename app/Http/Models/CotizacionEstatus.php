@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CotizacionEstatus extends Model
 {
-	use SyncsWithFirebase;
+	//use SyncsWithFirebase;
 	
 	const PORPAGAR  = 1;
 	const REVISION  = 2;
