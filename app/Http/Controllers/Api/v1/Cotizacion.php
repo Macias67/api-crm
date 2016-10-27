@@ -108,11 +108,11 @@ class Cotizacion extends Controller
 			 * @TODO enviar email y notificacion al cliente con detalles de la cotizacion
 			 *
 			 */
-			$notificacion = new FBNotification('Se ha enviado nueva cotización');
-			$notificacion->setMensaje('Se ha enviado una nueva cotización a nombre de '.$cotizacion->contacto->usuario->nombreCompleto().'.')
-				->setTipo(FBNotification::INFO);
-
-			event(new NotificaUsuario($notificacion));
+//			$notificacion = new FBNotification('Se ha enviado nueva cotización');
+//			$notificacion->setMensaje('Se ha enviado una nueva cotización a nombre de '.$cotizacion->contacto->usuario->nombreCompleto().'.')
+//				->setTipo(FBNotification::INFO);
+//
+//			event(new NotificaUsuario($notificacion));
 			
 			DB::commit();
 			

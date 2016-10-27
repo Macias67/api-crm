@@ -2,23 +2,27 @@
 
 namespace App\Events;
 
-use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 
-class RegistraInicioSesion extends Event
+class LoginUserEvent extends Event
 {
 	use SerializesModels;
 	
-	public $data;
+	/**
+	 * The authenticated user.
+	 *
+	 * @var \App\Http\Models\UserApp $user
+	 */
+	public $user;
 	
 	/**
 	 * Create a new event instance.
 	 *
-	 * @param $data
+	 * @param $user
 	 */
-	public function __construct($data)
+	public function __construct($user)
 	{
-		$this->data = $data;
+		$this->user = $user;
 	}
 	
 	/**

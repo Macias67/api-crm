@@ -2,6 +2,11 @@
 
 namespace App\Http\Models;
 
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\OptionsPriorities;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+
 class FBNotification
 {
 	const INFO    = 'info';
@@ -9,167 +14,61 @@ class FBNotification
 	const WARNING = 'warning';
 	const ERROR   = 'error';
 	
-	private $titulo    = null;
-	private $mensaje   = null;
-	private $timestamp = null;
-	private $tipo      = null;
-	private $visto     = false;
-	private $user_id   = null;
-	private $group = null;
+	private $payloadNotificationBuilder;
+	private $payloadDataBuilder;
+	private $optionsBuilder;
+	private $optionsPriorities;
+	
 	
 	/**
-	 * FBNotification constructor.
-	 *
-	 * @param null $titulo
+	 * @return \LaravelFCM\Message\PayloadNotificationBuilder
 	 */
-	public function __construct($titulo = null)
+	public function getPayloadNotificationBuilder()
 	{
-		$this->titulo = $titulo;
-		$this->timestamp = time();
-	}
-	
-	/**
-	 * @return null
-	 */
-	public function getTitulo()
-	{
-		return $this->titulo;
-	}
-	
-	/**
-	 * @param null $titulo
-	 *
-	 * @return $this
-	 */
-	public function setTitulo($titulo)
-	{
-		$this->titulo = $titulo;
+		if (is_null($this->payloadNotificationBuilder))
+		{
+			return $this->payloadNotificationBuilder = new PayloadNotificationBuilder();
+		}
 		
-		return $this;
+		return $this->payloadNotificationBuilder;
 	}
 	
 	/**
-	 * @return null
+	 * @return \LaravelFCM\Message\PayloadDataBuilder
 	 */
-	public function getMensaje()
+	public function getPayloadDataBuilder()
 	{
-		return $this->mensaje;
-	}
-	
-	/**
-	 * @param null $mensaje
-	 *
-	 * @return $this
-	 */
-	public function setMensaje($mensaje)
-	{
-		$this->mensaje = $mensaje;
+		if (is_null($this->payloadDataBuilder))
+		{
+			return $this->payloadDataBuilder = new PayloadDataBuilder();
+		}
 		
-		return $this;
+		return $this->payloadDataBuilder;
 	}
 	
 	/**
-	 * @return null
+	 * @return \LaravelFCM\Message\OptionsBuilder
 	 */
-	public function getTimestamp()
+	public function getOptionsBuilder()
 	{
-		return $this->timestamp;
-	}
-	
-	/**
-	 * @param null $timestamp
-	 *
-	 * @return $this
-	 */
-	public function setTimestamp($timestamp)
-	{
-		$this->timestamp = $timestamp;
+		if (is_null($this->optionsBuilder))
+		{
+			return $this->optionsBuilder = new OptionsBuilder();
+		}
 		
-		return $this;
+		return $this->optionsBuilder;
 	}
 	
 	/**
-	 * @return null
+	 * @return \LaravelFCM\Message\OptionsPriorities
 	 */
-	public function getTipo()
+	public function getOptionsPriorities()
 	{
-		return $this->tipo;
-	}
-	
-	/**
-	 * @param null $tipo
-	 *
-	 * @return $this
-	 */
-	public function setTipo($tipo)
-	{
-		$this->tipo = $tipo;
+		if (is_null($this->optionsPriorities))
+		{
+			return $this->optionsPriorities = new OptionsPriorities();
+		}
 		
-		return $this;
+		return $this->optionsPriorities;
 	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isVisto()
-	{
-		return $this->visto;
-	}
-	
-	/**
-	 * @param boolean $visto
-	 *
-	 * @return $this
-	 */
-	public function setVisto($visto)
-	{
-		$this->visto = $visto;
-		
-		return $this;
-	}
-	
-	/**
-	 * @return null
-	 */
-	public function getUserId()
-	{
-		return $this->user_id;
-	}
-	
-	/**
-	 * @param null $user_id
-	 */
-	public function setUserId($user_id)
-	{
-		$this->user_id = $user_id;
-	}
-	
-	/**
-	 * @return null
-	 */
-	public function getGroup()
-	{
-		return $this->group;
-	}
-	
-	/**
-	 * @param null $group
-	 */
-	public function setGroup($group)
-	{
-		$this->group = $group;
-	}
-	
-	public function toArray()
-	{
-		return [
-			'mensaje'   => $this->mensaje,
-			'titulo'    => $this->titulo,
-			'tipo'      => $this->tipo,
-			'visto'     => $this->visto,
-			'timestamp' => $this->timestamp
-		];
-	}
-	
-	
 }

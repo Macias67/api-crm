@@ -3,17 +3,14 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Events\LogInicioSesion;
-use App\Events\NotificaUsuario;
-use App\Events\RegistraInicioSesion;
+use App\Events\LoginUserEvent;
 use App\Events\UsuarioEntro;
 use App\Http\Controllers\Controller;
-use App\Http\Models\FBNotification;
 use App\Http\Models\UserApp;
 use App\Http\Requests\LoginRequest;
 use App\Transformers\UserAppTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
-use Jenssegers\Agent\Agent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -33,7 +30,6 @@ class Auth extends Controller
 	
 	public function authenticate(LoginRequest $request)
 	{
-		
 		// grab credentials from the request
 		$credentials = $request->only('email', 'password');
 		try
@@ -47,32 +43,9 @@ class Auth extends Controller
 			{
 				$usuario = UserApp::where($request->only(['email']))->first();
 				$usuario->token = $token;
+
+				event(new LoginUserEvent($usuario));
 				
-				$tipo = ($usuario->ejecutivo) ? 'El ejecutivo' : 'El contacto';
-				
-				$notificacion = new FBNotification($usuario->nombreCompleto() . ' acaba de entrar al sistema');
-				$notificacion->setMensaje($tipo . ' ' . $usuario->nombreCompleto() . ' entro al sistema a las ' . date('h:i A', $notificacion->getTimestamp()))
-				             ->setTipo(FBNotification::INFO);
-				
-				$agent = new Agent();
-				
-				$data = [
-					'usuario'   => [
-						'id'          => $request->user()->id,
-						'nombre'      => $request->user()->nombreCompleto(),
-						'ip'          => $request->ip(),
-						'dispositivo' => ($agent->isDesktop()) ? 'pc' : 'móvil',
-						'plataforma'  => $agent->platform(),
-						'browser'     => $agent->browser(),
-						'datetime'    => date('d-m-Y H:i:s')
-					],
-					'ejecutivo' => $request->user()->ejecutivo
-				];
-				
-				event(new NotificaUsuario($notificacion));
-				event(new RegistraInicioSesion($data));
-				
-				// all good so return the token
 				return $this->response->item($usuario, new UserAppTransformer());
 			}
 		}

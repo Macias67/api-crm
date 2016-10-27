@@ -34,27 +34,30 @@ class CotizacionObserver
 	public function created(Cotizacion $cotizacion)
 	{
 		
-		if ($cotizacion->estatus->id == CotizacionEstatus::PORPAGAR)
+		switch ($cotizacion->estatus->id)
 		{
-			if (is_null($this->firebaseClient))
-			{
-				$this->firebaseClient = new FirebaseLib(config('services.firebase.database_url'), config('services.firebase.secret'));
-			}
-			
-			$child = 'porpagar';
-			
-			$path = self::PARENT . '/' . $child;
-			
-			$cotizacion = $cotizacion->fresh();
-			$data = [
-				'id'        => $cotizacion->id,
-				'cliente'   => $cotizacion->cliente->razonsocial,
-				'ejecutivo' => $cotizacion->ejecutivo->usuario->nombreCompleto(),
-				'creado'    => $cotizacion->created_at->getTimestamp(),
-			]
-			;
-			$this->firebaseClient->push($path, $data);
+			case CotizacionEstatus::PORPAGAR:
+				$child = 'porpagar';
+				break;
+			default:
+				$child = 'porpagar';
+				break;
 		}
 		
+		if (is_null($this->firebaseClient))
+		{
+			$this->firebaseClient = new FirebaseLib(config('services.firebase.database_url'), config('services.firebase.secret'));
+		}
+		
+		$path = self::PARENT . '/' . $child . '/' . $cotizacion->getKey();
+		
+		$cotizacion = $cotizacion->fresh();
+		$data = [
+			'cliente'   => $cotizacion->cliente->razonsocial,
+			'ejecutivo' => $cotizacion->ejecutivo->usuario->nombreCompleto(),
+			'creado'    => $cotizacion->created_at->getTimestamp(),
+		];
+		
+		$this->firebaseClient->set($path, $data);
 	}
 }

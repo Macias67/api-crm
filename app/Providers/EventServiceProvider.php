@@ -13,13 +13,7 @@ class EventServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $listen = [
-		'App\Events\NotificaUsuario' => [
-			'App\Listeners\SendPushNotification',
-			//'App\Listeners\PushNotificacionFirebase',
-		],
-		'App\Events\RegistraInicioSesion' => [
-			'App\Listeners\LogSesionFireBase'
-		]
+		
 	];
 	
 	/**
@@ -28,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $subscribe = [
+		'App\Listeners\LoginEventSuscriber'
 	];
 	
 	/**

@@ -1,54 +1,25 @@
 <?php
+/**
+ * User: Luis Macias
+ * Date: 27/10/2016
+ * Time: 03:37 PM
+ */
 
 namespace App\Listeners;
 
-use App\Events\NotificaUsuario;
 use App\Http\Models\UserApp;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use LaravelFCM\Facades\FCM;
-use LaravelFCM\Message\OptionsBuilder;
-use LaravelFCM\Message\PayloadDataBuilder;
-use LaravelFCM\Message\PayloadNotificationBuilder;
 
-class SendPushNotification implements ShouldQueue
+trait SendPushNotification
 {
 	/**
-	 * Create the event listener.
-	 *
+	 * @param \App\Http\Models\FBNotification $fbNotification
 	 */
-	public function __construct()
+	private function sendPushNotification($fbNotification)
 	{
-		//
-	}
-	
-	/**
-	 * Handle the event.
-	 *
-	 * @param  NotificaUsuario $event
-	 *
-	 * @return void
-	 */
-	public function handle(NotificaUsuario $event)
-	{
-		$notification = $event->notificacion;
-		
-		$optionBuiler = new OptionsBuilder();
-		$optionBuiler->setTimeToLive(60 * 20);
-		
-		$notificationBuilder = new PayloadNotificationBuilder($notification->getTitulo());
-		$notificationBuilder->setBody($notification->getMensaje())
-		                    ->setSound('default');
-		
-		$dataBuilder = new PayloadDataBuilder();
-		$dataBuilder->addData([
-			'expiry_date' => date('d/m/Y', $notification->getTimestamp()),
-			'discount'    => (rand(1, 10) / 10),
-			'tipo'        => $notification->getTipo()
-		]);
-		
-		$option = $optionBuiler->build();
-		$notification = $notificationBuilder->build();
-		$data = $dataBuilder->build();
+		$option = $fbNotification->getOptionsBuilder()->build();
+		$notification = $fbNotification->getPayloadNotificationBuilder()->build();
+		$data = $fbNotification->getPayloadDataBuilder()->build();
 		
 		/**
 		 * @TODO Sustituir por el user_id de la var notificacion
