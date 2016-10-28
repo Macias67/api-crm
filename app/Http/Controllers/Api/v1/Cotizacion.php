@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\CotizacionEvent;
 use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Clientes;
@@ -105,14 +106,10 @@ class Cotizacion extends Controller
 			}
 						
 			/**
-			 * @TODO enviar email y notificacion al cliente con detalles de la cotizacion
+			 * @TODO enviar email y notificacion a contactos del cliente con detalles de la cotización.
 			 *
 			 */
-//			$notificacion = new FBNotification('Se ha enviado nueva cotización');
-//			$notificacion->setMensaje('Se ha enviado una nueva cotización a nombre de '.$cotizacion->contacto->usuario->nombreCompleto().'.')
-//				->setTipo(FBNotification::INFO);
-//
-//			event(new NotificaUsuario($notificacion));
+			event(new CotizacionEvent($cotizacion));
 			
 			DB::commit();
 			

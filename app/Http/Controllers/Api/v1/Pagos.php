@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Events\CasoPorAsignar;
 use App\Events\ContactoSubePago;
 use App\Events\NotificaUsuario;
+use App\Events\Pago\PagoSubido;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoCotizacion;
@@ -94,11 +95,7 @@ class Pagos extends Controller
 			/**
 			 * @TODO Push Notification en la app. Notificar al usuario de Ventas
 			 */
-			$notificacion = new FBNotification('Nuevo pago para validar de ' . $cotizacion->cliente->razonsocial);
-			$notificacion->setMensaje('El contacto ' . $pago->contacto->usuario->nombreCompleto() . ' de la empresa ' . $cotizacion->cliente->razonsocial . ' ha subido un nuevo pago para validarse.')
-			             ->setTipo(FBNotification::INFO);
-			
-			event(new NotificaUsuario($notificacion));
+			event(new PagoSubido($pago));
 			
 			// Solo se sube pago
 			return $this->response->created();
@@ -182,6 +179,10 @@ class Pagos extends Controller
 	/**
 	 * @TODO Hacer un request para validar que el usuario puede validar el pago
 	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param                          $idCotizacion
+	 * @param                          $id
+	 *
 	 * @return \Dingo\Api\Http\Response|void
 	 */
 	public function validaPago(Request $request, $idCotizacion, $id)
@@ -264,12 +265,7 @@ class Pagos extends Controller
 							/**
 							 * @TODO Push Notification al asignador de casos.
 							 */
-							$notificacion = new FBNotification('Nuevo caso en espera de asignación.');
-							$notificacion->setMensaje('Se ha abierto un nuevo caso para el cliente ' . $caso->cliente->razonsocial . ' en espera de asignación de líder.')
-							             ->setTipo(FBNotification::INFO);
-							
-							event(new NotificaUsuario($notificacion));
-							
+														
 							return $this->response->item($caso, new CasoTransformer());
 						}
 						else

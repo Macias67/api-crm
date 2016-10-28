@@ -78,12 +78,7 @@ class CasoLider extends Controller
 			/**
 			 * @TODO Enviar correo al cliente y ejecutivo de asignacion de caso y notificar en la app.
 			 */
-			$notificacion = new FBNotification('Se te ha asignado nuevo caso.');
-			$notificacion->setMensaje('Ahora eres líder del caso #' . $caso->id . ' del cliente ' . $caso->cliente->razonsocial . '.')
-			             ->setTipo(FBNotification::INFO);
-			
-			event(new NotificaUsuario($notificacion));
-			
+						
 			return $this->response->item($caso->casoLider, new CasoLiderTransformer());
 		}
 		catch (\Exception $e)

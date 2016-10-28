@@ -13,7 +13,9 @@ class EventServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $listen = [
-		
+		'App\Events\CotizacionEvent' => [
+			'App\Listeners\Cotizacion\SendPushNotification'
+		]
 	];
 	
 	/**
@@ -22,7 +24,8 @@ class EventServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $subscribe = [
-		'App\Listeners\LoginEventSuscriber'
+		'App\Listeners\LoginEventSuscriber',
+		'App\Listeners\Pago\PagoEventSuscriber'
 	];
 	
 	/**

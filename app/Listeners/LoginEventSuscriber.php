@@ -30,8 +30,8 @@ class LoginEventSuscriber
 		$notificacion = new FBNotification();
 		
 		$notificacion->getPayloadNotificationBuilder()
-		             ->setTitle($usuario->nombreCompleto() . ' acaba de entrar al sistema')
-		             ->setBody($tipo . ' ' . $usuario->nombreCompleto() . ' entro al sistema a las ' . date('h:i A'))
+		             ->setTitle($tipo . ' ' . $usuario->nombreCompleto() . ' ha entrado al sistema.')
+		             ->setBody($tipo . ' ' . $usuario->nombreCompleto() . ' entró al sistema a las ' . date('h:i A') . '.')
 		             ->setSound('default');
 		
 		$notificacion->getPayloadDataBuilder()->addData([
