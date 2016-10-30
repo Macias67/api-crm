@@ -50,6 +50,6 @@ class UsuarioTokens extends Model
 	 */
 	public function usuario()
 	{
-		return $this->belongsTo(UserApp::class);
+		return $this->belongsTo(UserApp::class, 'id_usuario');
 	}
 }

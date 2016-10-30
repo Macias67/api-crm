@@ -30,6 +30,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		$api->resource('logs', 'Log');
 		
 		/**
+		 * Tokens
+		 */
+		$api->resource('tokens', 'Tokens');
+		
+		/**
 		 * Cotizacion
 		 */
 		$api->post('cotizaciones/datatable', 'Cotizacion@datatable');

@@ -19,7 +19,7 @@ class UnidadTransformer extends TransformerAbstract
 			'unidad' => $unidad->unidad,
 			'plural' => $unidad->plural,
 			'abreviatura' => $unidad->abreviatura,
-			'online' => (boolean)$unidad->online,
+			'online' => $unidad->online,
 		];
 		
 		return $data;
