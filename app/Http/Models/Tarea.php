@@ -36,7 +36,8 @@ class Tarea extends Model
 		'fecha_inicio',
 		'fecha_tentativa_cierre',
 		'fecha_cierre',
-		'duracion_minutos',
+		'duracion_tentativa_segundos',
+		'duracion_real_segundos',
 		'habilitado',
 	];
 	
@@ -46,9 +47,10 @@ class Tarea extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'avance' => 'integer',
-		'duracion_minutos'    => 'integer',
-		'habilitado'    => 'boolean',
+		'avance'           => 'integer',
+		'duracion_tentativa_segundos' => 'integer',
+		'duracion_real_segundos' => 'integer',
+		'habilitado'       => 'boolean',
 	];
 	
 	/**
@@ -59,9 +61,9 @@ class Tarea extends Model
 	protected $dates = [
 		'created_at',
 		'updated_at',
-	        'fecha_inicio',
-	        'fecha_tentativa_cierre',
-	        'fecha_cierre'
+		'fecha_inicio',
+		'fecha_tentativa_cierre',
+		'fecha_cierre'
 	];
 	
 	public static function table()
@@ -87,6 +89,16 @@ class Tarea extends Model
 	public function ejecutivo()
 	{
 		return $this->belongsTo(Ejecutivo::class, 'id_ejecutivo');
+	}
+	
+	/**
+	 * Una Tarea tiene muchos TareaTiempos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function tiempos()
+	{
+		return $this->hasMany(TareaTiempos::class, 'id_tarea');
 	}
 	
 	/**

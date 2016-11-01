@@ -14,6 +14,24 @@ class TareaTransformer extends TransformerAbstract
 {
 	public function transform(Tarea $tarea)
 	{
+		
+		$dTiempos = [];
+		$tiempos = $tarea->tiempos;
+		if ($tiempos->count() > 0)
+		{
+			foreach ($tiempos as $tiempo)
+			{
+				$data = [
+					'id'          => $tiempo->id,
+					'fechaInicio' => $tiempo->fecha_inicio->getTimestamp(),
+					'fechaFin'    => $tiempo->fecha_fin->getTimestamp(),
+					'duracionSegundos'    => $tiempo->duracion_segundos
+				];
+				
+				array_push($dTiempos, $data);
+			}
+		}
+		
 		$notas_publicos = [];
 		$notas_privados = [];
 		$todas = [];
@@ -25,16 +43,17 @@ class TareaTransformer extends TransformerAbstract
 			{
 				$archivos = [];
 				$dArchivos = $nota->archivos;
-				foreach ($dArchivos as $index => $dArchivo) {
+				foreach ($dArchivos as $index => $dArchivo)
+				{
 					$archivos[$index] = [
-						'id' => $dArchivo->id,
+						'id'          => $dArchivo->id,
 						'downloadUrl' => $dArchivo->download_url,
 						'contentType' => $dArchivo->content_type,
-						'path' => $dArchivo->full_path,
-						'md5hash' => $dArchivo->md5hash,
-						'nombre' => $dArchivo->name,
-						'tamano' => $dArchivo->size,
-						'creado' => $dArchivo->created_at->getTimestamp()
+						'path'        => $dArchivo->full_path,
+						'md5hash'     => $dArchivo->md5hash,
+						'nombre'      => $dArchivo->name,
+						'tamano'      => $dArchivo->size,
+						'creado'      => $dArchivo->created_at->getTimestamp()
 					];
 				}
 				
@@ -42,11 +61,11 @@ class TareaTransformer extends TransformerAbstract
 					'id'          => $nota->id,
 					'nota'        => $nota->nota,
 					'publico'     => $nota->publico,
-					'avance'     => $nota->avance,
+					'avance'      => $nota->avance,
 					'habilitado'  => $nota->habilitado,
 					'creada'      => $nota->created_at->getTimestamp(),
 					'actualizada' => $nota->updated_at->getTimestamp(),
-				        'archivos' => $archivos
+					'archivos'    => $archivos
 				];
 				
 				if ($nota->publico == 1)
@@ -63,21 +82,21 @@ class TareaTransformer extends TransformerAbstract
 		}
 		
 		$data = [
-			'id'                => $tarea->id,
-			'ejecutivo'         => [
+			'id'                     => $tarea->id,
+			'ejecutivo'              => [
 				'id'     => $tarea->ejecutivo->id,
 				'nombre' => $tarea->ejecutivo->usuario->nombreCompleto(),
 				'avatar' => $tarea->ejecutivo->avatar,
 				'color'  => $tarea->ejecutivo->color,
 				'class'  => $tarea->ejecutivo->class,
 			],
-			'estatus'           => [
+			'estatus'                => [
 				'id'      => $tarea->estatus->id,
 				'estatus' => $tarea->estatus->estatus,
 				'class'   => $tarea->estatus->class,
 				'color'   => $tarea->estatus->color,
 			],
-			'caso'              => [
+			'caso'                   => [
 				'id'      => $tarea->caso->id,
 				'avance'  => $tarea->caso->avance,
 				'cliente' => [
@@ -96,20 +115,22 @@ class TareaTransformer extends TransformerAbstract
 					'color'   => $tarea->caso->estatus->color
 				]
 			],
-			'titulo'            => $tarea->titulo,
-			'descripcion'       => $tarea->descripcion,
-			'avance'            => $tarea->avance,
-			'fecha_inicio'   => (is_null($tarea->fecha_inicio)) ? null :  $tarea->fecha_inicio->getTimestamp(),
-			'fecha_tentativa_cierre'      => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
-			'fecha_cierre'      => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
-			'duracion_minutos' => $tarea->duracion_minutos,
-			'notas'             => [
+			'titulo'                 => $tarea->titulo,
+			'descripcion'            => $tarea->descripcion,
+			'avance'                 => $tarea->avance,
+			'fecha_inicio'           => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
+			'fecha_tentativa_cierre' => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
+			'fecha_cierre'           => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
+			'duracion_tentativa_segundos'      => $tarea->duracion_tentativa_segundos,
+			'duracion_real_segundos'      => $tarea->duracion_real_segundos,
+			'tiempos'                => $dTiempos,
+			'notas'                  => [
 				'publicas' => $notas_publicos,
 				'privadas' => $notas_privados,
 				'todas'    => $todas
 			],
-			'habilitado'        => $tarea->habilitado,
-			'created_at'        => $tarea->created_at->getTimestamp()
+			'habilitado'             => $tarea->habilitado,
+			'created_at'             => $tarea->created_at->getTimestamp()
 		];
 		
 		return $data;

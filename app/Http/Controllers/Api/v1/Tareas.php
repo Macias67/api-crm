@@ -123,7 +123,7 @@ class Tareas extends Controller
 				
 				$tarea->fecha_inicio = $request->get('fechainicio');
 				$tarea->fecha_tentativa_cierre = $request->get('fechatentativacierre');
-				$tarea->duracion_minutos = $request->get('duracionminutos');
+				$tarea->duracion_tentativa_segundos = $request->get('duraciontentativasegundos');
 				$tarea->save();
 				
 				/**

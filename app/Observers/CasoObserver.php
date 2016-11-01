@@ -7,7 +7,6 @@
 
 namespace App\Observers;
 
-
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
 use Firebase\FirebaseLib;

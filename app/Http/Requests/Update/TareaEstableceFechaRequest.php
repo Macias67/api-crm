@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Update;
 
-use App\Http\Requests\Request;
+use Dingo\Api\Http\FormRequest as Request;
 
 class TareaEstableceFechaRequest extends Request
 {
@@ -26,7 +26,7 @@ class TareaEstableceFechaRequest extends Request
 	{
 		return [
 			'fechainicio'          => 'required|date|date_format:Y-m-d H:i:s',
-			'duracionminutos'      => 'required|integer',
+			'duraciontentativasegundos'      => 'required|integer',
 			'fechatentativacierre' => 'required|date|date_format:Y-m-d H:i:s',
 		];
 	}

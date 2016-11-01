@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Caso;
-use App\Http\Models\CasoEstatus;
-use App\Http\Models\TareaEstatus;
-use App\Http\Requests\Create\TareaRequest;
-use App\Transformers\CasoTransformer;
+use App\Http\Models\Tarea;
+use App\Http\Requests\Create\TareaTiemposRequest;
+use App\Transformers\TareaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CasoTareas extends Controller
+class TareaTiempos extends Controller
 {
 	use Helpers;
 	
@@ -39,43 +37,37 @@ class CasoTareas extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param \App\Http\Requests\Create\TareaRequest $request
-	 * @param                                        $idCaso
+	 * @param \App\Http\Requests\Create\TareaTiemposRequest $request
+	 * @param int                                           $idTarea
 	 *
-	 * @return \Illuminate\Http\Response
+	 * @return \Dingo\Api\Http\Response|void
 	 */
-	public function store(TareaRequest $request, $idCaso)
+	public function store(TareaTiemposRequest $request, $idTarea)
 	{
+		DB::beginTransaction();
 		try
 		{
-			$caso = Caso::find($idCaso);
+			$tarea = Tarea::find($idTarea);
 			
-			DB::beginTransaction();
-			
-			 $caso->tareas()->create([
-				'id_ejecutivo' => $request->get('ejecutivo'),
-				'id_estatus'   => TareaEstatus::ASIGNADO,
-				'titulo'       => $request->get('titulo'),
-				'descripcion'  => $request->get('descripcion'),
-			]);
-			
-			/**
-			 * Si empieza a asignar tareas, cambio el estatus del caso y registro fecha de inicio
-			 */
-			if ($caso->estatus_id == CasoEstatus::ASIGNADO)
+			if (is_null($tarea))
 			{
-				$caso->estatus_id = CasoEstatus::PROCESO;
-				$caso->fecha_inicio = date('Y-m-d H:i:s', time());
-				$caso->save();
+				return $this->response->errorNotFound('El id del la tarea no existe.');
 			}
-			
-			DB::commit();
-			
-			/**
-			 * @TODO Enviar correo al ejecutivo de asignacion de tarea y notificar en la app.
-			 */
+			else
+			{
+				$tarea->tiempos()->create([
+					'fecha_inicio'      => $request->get('inicio'),
+					'fecha_fin'         => $request->get('fin'),
+					'duracion_segundos' => $request->get('duracion')
+				]);
 				
-			return $this->response->item($caso, new CasoTransformer());
+				$tarea->duracion_real_segundos = $tarea->duracion_real_segundos + $request->get('duracion');
+				$tarea->save();
+				
+				DB::commit();
+				
+				return $this->response->item($tarea->fresh(), new TareaTransformer());
+			}
 		}
 		catch (\Exception $e)
 		{

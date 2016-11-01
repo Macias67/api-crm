@@ -93,6 +93,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			 * TareaNotas
 			 */
 			$api->resource('notas', 'TareaNotas');
+			
+			/**
+			 * TareaTiempos
+			 */
+			$api->resource('tiempos', 'TareaTiempos');
 		});
 		
 		/**

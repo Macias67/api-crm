@@ -1,54 +1,37 @@
--- MySQL Workbench Synchronization
--- Generated: 2016-10-29 12:13
--- Model: New Model
--- Version: 1.0
--- Project: Name of the project
--- Author: Luis
+-- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `api-crm` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+-- -----------------------------------------------------
+-- Schema api-crm
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `api-crm` ;
 
+-- -----------------------------------------------------
+-- Schema api-crm
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `api-crm` DEFAULT CHARACTER SET utf8 ;
+SHOW WARNINGS;
+USE `api-crm` ;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_departamentos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ec_departamentos` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `area` VARCHAR(100) NOT NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   UNIQUE INDEX `area_UNIQUE` (`area` ASC)  COMMENT '')
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+DEFAULT CHARACTER SET = utf8;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`ec_ejecutivos` (
-  `id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `oficina_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `departamento_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `color` VARCHAR(45) NOT NULL COMMENT '',
-  `class` VARCHAR(45) NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  INDEX `oficina_idx` (`oficina_id` ASC)  COMMENT '',
-  INDEX `departamento_idx` (`departamento_id` ASC)  COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  CONSTRAINT `ec_ejecutivos_oficinas_fk`
-    FOREIGN KEY (`oficina_id`)
-    REFERENCES `api-crm`.`ec_oficinas` (`id`)
-    ON UPDATE CASCADE,
-  CONSTRAINT `ec_ejecutivos_departamentos_fk`
-    FOREIGN KEY (`departamento_id`)
-    REFERENCES `api-crm`.`ec_departamentos` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `ec_ejecutivos_user_app_fk`
-    FOREIGN KEY (`id`)
-    REFERENCES `api-crm`.`usr_usuarios` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_oficinas`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ec_oficinas` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `calle` VARCHAR(45) NOT NULL COMMENT '',
@@ -67,19 +50,120 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_oficinas` (
   PRIMARY KEY (`id`)  COMMENT '',
   UNIQUE INDEX `email_UNIQUE` (`email` ASC)  COMMENT '')
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+DEFAULT CHARACTER SET = utf8;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`usr_usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`usr_usuarios` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `nombre` VARCHAR(45) NOT NULL COMMENT '',
+  `apellido` VARCHAR(45) NOT NULL COMMENT '',
+  `ejecutivo` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `avatar` VARCHAR(100) NOT NULL COMMENT '',
+  `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
+  `email` VARCHAR(60) NOT NULL COMMENT '',
+  `password` VARCHAR(100) NOT NULL COMMENT '',
+  `remember_token` VARCHAR(100) NULL COMMENT '',
+  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC)  COMMENT '',
+  INDEX `login_idx` (`email` ASC, `password` ASC, `ejecutivo` ASC)  COMMENT '')
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_ejecutivos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`ec_ejecutivos` (
+  `id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `oficina_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `departamento_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `color` VARCHAR(45) NOT NULL COMMENT '',
+  `class` VARCHAR(45) NOT NULL COMMENT '',
+  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
+  INDEX `oficina_idx` (`oficina_id` ASC)  COMMENT '',
+  INDEX `departamento_idx` (`departamento_id` ASC)  COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  CONSTRAINT `ec_ejecutivos_oficinas_fk`
+    FOREIGN KEY (`oficina_id`)
+    REFERENCES `api-crm`.`ec_oficinas` (`id`)
+    ON UPDATE CASCADE,
+  CONSTRAINT `ec_ejecutivos_departamentos_fk`
+    FOREIGN KEY (`departamento_id`)
+    REFERENCES `api-crm`.`ec_departamentos` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `ec_ejecutivos_user_app_fk`
+    FOREIGN KEY (`id`)
+    REFERENCES `api-crm`.`usr_usuarios` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`password_resets`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`password_resets` (
   `email` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
   `token` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
-  `created_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
+  `created_at` TIMESTAMP NULL COMMENT '',
   INDEX `password_resets_email_index` (`email` ASC)  COMMENT '',
   INDEX `password_resets_token_index` (`token` ASC)  COMMENT '')
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_permisos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`ec_permisos` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `display_name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `description` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `created_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
+  `updated_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  UNIQUE INDEX `permissions_name_unique` (`name` ASC)  COMMENT '')
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`ec_roles` (
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `display_name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `description` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `created_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
+  `updated_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  UNIQUE INDEX `roles_name_unique` (`name` ASC)  COMMENT '')
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_permisos_roles`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ec_permisos_roles` (
   `permission_id` INT(10) UNSIGNED NOT NULL COMMENT '',
   `role_id` INT(10) UNSIGNED NOT NULL COMMENT '',
@@ -99,19 +183,11 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`ec_permisos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
-  `display_name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
-  `description` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
-  `created_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
-  `updated_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  UNIQUE INDEX `permissions_name_unique` (`name` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_roles_user`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ec_roles_user` (
   `user_id` INT(10) UNSIGNED NOT NULL COMMENT '',
   `role_id` INT(10) UNSIGNED NOT NULL COMMENT '',
@@ -131,21 +207,13 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`ec_roles` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
-  `display_name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
-  `description` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
-  `created_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
-  `updated_at` TIMESTAMP NULL DEFAULT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  UNIQUE INDEX `roles_name_unique` (`name` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`cl_clientes`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cl_clientes` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `razonsocial` VARCHAR(100) NOT NULL COMMENT '',
   `rfc` VARCHAR(13) NOT NULL COMMENT '',
   `prospecto` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
@@ -163,8 +231,8 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cl_clientes` (
   `estado` VARCHAR(45) NOT NULL COMMENT '',
   `pais` VARCHAR(45) NOT NULL COMMENT '',
   `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   UNIQUE INDEX `razonsocial_UNIQUE` (`razonsocial` ASC)  COMMENT '',
   UNIQUE INDEX `rfc_UNIQUE` (`rfc` ASC)  COMMENT '',
@@ -172,16 +240,19 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cl_clientes` (
   INDEX `prospecto_INDEX` (`prospecto` ASC)  COMMENT '',
   INDEX `distribuidor_INDEX` (`distribuidor` ASC)  COMMENT '',
   INDEX `online_INDEX` (`online` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cl_contactos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cl_contactos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_cliente` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `telefono` VARCHAR(45) NULL DEFAULT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_cliente` INT UNSIGNED NOT NULL COMMENT '',
+  `telefono` VARCHAR(45) NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cl_contactos_clientes_fk_idx` (`id_cliente` ASC)  COMMENT '',
   CONSTRAINT `cl_contactos_clientes_fk`
@@ -194,24 +265,43 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cl_contactos` (
     REFERENCES `api-crm`.`usr_usuarios` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ct_cotizacion_estatus`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_estatus` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `estatus` VARCHAR(45) NOT NULL COMMENT '',
+  `class` VARCHAR(45) NOT NULL COMMENT '',
+  `color` VARCHAR(45) NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  UNIQUE INDEX `estatus_UNIQUE` (`estatus` ASC)  COMMENT '',
+  UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '',
+  UNIQUE INDEX `class_UNIQUE` (`class` ASC)  COMMENT '')
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ct_cotizacion`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `cliente_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `ejecutivo_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `contacto_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `oficina_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `estatus_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `cliente_id` INT UNSIGNED NOT NULL COMMENT '',
+  `ejecutivo_id` INT UNSIGNED NOT NULL COMMENT '',
+  `contacto_id` INT UNSIGNED NOT NULL COMMENT '',
+  `oficina_id` INT UNSIGNED NOT NULL COMMENT '',
+  `estatus_id` INT UNSIGNED NOT NULL COMMENT '',
   `vencimiento` DATE NOT NULL COMMENT '',
   `cxc` TINYINT(1) NOT NULL COMMENT '',
   `subtotal` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `iva` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `total` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `ct_cotizacion_clientes_fk_idx` (`cliente_id` ASC)  COMMENT '',
   INDEX `ct_cotizacion_ejecutivo_fk_idx` (`ejecutivo_id` ASC)  COMMENT '',
@@ -243,35 +333,55 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion` (
     REFERENCES `api-crm`.`ct_cotizacion_estatus` (`id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_bancos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ec_bancos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `banco` VARCHAR(45) NOT NULL COMMENT '',
   `sucursal` VARCHAR(45) NOT NULL COMMENT '',
   `cta` VARCHAR(45) NOT NULL COMMENT '',
   `titular` VARCHAR(60) NOT NULL COMMENT '',
   `cib` VARCHAR(18) NOT NULL COMMENT '',
   `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_unidad_productos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`ec_unidad_productos` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `unidad` VARCHAR(45) NOT NULL COMMENT '',
+  `plural` VARCHAR(45) NOT NULL COMMENT '',
+  `abreviatura` VARCHAR(45) NOT NULL COMMENT '',
+  `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '')
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ec_productos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ec_productos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `codigo` VARCHAR(20) NOT NULL COMMENT '',
   `producto` VARCHAR(100) NOT NULL COMMENT '',
   `descripcion` TEXT NOT NULL COMMENT '',
-  `id_unidad` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id_unidad` INT UNSIGNED NOT NULL COMMENT '',
   `precio` FLOAT(2) NOT NULL COMMENT '',
   `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC)  COMMENT '',
   UNIQUE INDEX `producto_UNIQUE` (`producto` ASC)  COMMENT '',
@@ -281,34 +391,26 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_productos` (
     REFERENCES `api-crm`.`ec_unidad_productos` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`ec_unidad_productos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `unidad` VARCHAR(45) NOT NULL COMMENT '',
-  `plural` VARCHAR(45) NOT NULL COMMENT '',
-  `abreviatura` VARCHAR(45) NOT NULL COMMENT '',
-  `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`ct_cotizacion_productos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_productos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_cotizacion` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `id_producto` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `cantidad` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_cotizacion` INT UNSIGNED NOT NULL COMMENT '',
+  `id_producto` INT UNSIGNED NOT NULL COMMENT '',
+  `cantidad` INT UNSIGNED NOT NULL COMMENT '',
   `precio` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `descuento` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `subtotal` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `iva` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `total` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `habilitado` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cotizacion_producto_idx` (`id_producto` ASC)  COMMENT '',
   INDEX `producto_cotizacion_idx` (`id_cotizacion` ASC)  COMMENT '',
@@ -322,16 +424,19 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_productos` (
     REFERENCES `api-crm`.`ct_cotizacion` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ct_cotizacion_bancos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_bancos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_cotizacion` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `id_banco` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_cotizacion` INT UNSIGNED NOT NULL COMMENT '',
+  `id_banco` INT UNSIGNED NOT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cotizacion_INDEX` (`id_cotizacion` ASC)  COMMENT '',
   INDEX `banco_INDEX` (`id_banco` ASC)  COMMENT '',
@@ -345,33 +450,23 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_bancos` (
     REFERENCES `api-crm`.`ec_bancos` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_estatus` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `estatus` VARCHAR(45) NOT NULL COMMENT '',
-  `class` VARCHAR(45) NOT NULL COMMENT '',
-  `color` VARCHAR(45) NOT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  UNIQUE INDEX `estatus_UNIQUE` (`estatus` ASC)  COMMENT '',
-  UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '',
-  UNIQUE INDEX `class_UNIQUE` (`class` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`ct_cotizacion_pagos`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_pagos` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `cotizacion_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `contacto_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `cotizacion_id` INT UNSIGNED NOT NULL COMMENT '',
+  `contacto_id` INT UNSIGNED NOT NULL COMMENT '',
   `cantidad` FLOAT(2) NOT NULL COMMENT '',
   `tipo` ENUM('abono', 'total') NOT NULL DEFAULT 'abono' COMMENT '',
-  `comentario` TEXT(250) NULL DEFAULT NULL COMMENT '',
+  `comentario` TEXT(250) NULL COMMENT '',
   `valido` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   UNIQUE INDEX `id_UNIQUE` (`id` ASC)  COMMENT '',
   INDEX `cotizacion_id_idx` (`cotizacion_id` ASC)  COMMENT '',
@@ -386,21 +481,24 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_pagos` (
     REFERENCES `api-crm`.`cl_contactos` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ct_cotizacion_comprobantes`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_comprobantes` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `pago_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `pago_id` INT UNSIGNED NOT NULL COMMENT '',
   `download_url` VARCHAR(250) NOT NULL COMMENT '',
   `content_type` VARCHAR(150) NOT NULL COMMENT '',
   `full_path` VARCHAR(150) NOT NULL COMMENT '',
   `md5hash` VARCHAR(150) NOT NULL COMMENT '',
   `name` VARCHAR(250) NOT NULL COMMENT '',
-  `size` INT(11) NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `size` INT NOT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `pago_id_idx` (`pago_id` ASC)  COMMENT '',
   CONSTRAINT `ct_cotizacion_pago_comprobante_fk`
@@ -408,21 +506,40 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_comprobantes` (
     REFERENCES `api-crm`.`ct_cotizacion_pagos` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_caso_estatus`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_estatus` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `estatus` VARCHAR(45) NOT NULL COMMENT '',
+  `class` VARCHAR(45) NOT NULL COMMENT '',
+  `color` VARCHAR(45) NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  UNIQUE INDEX `estatus_UNIQUE` (`estatus` ASC)  COMMENT '',
+  UNIQUE INDEX `class_UNIQUE` (`class` ASC)  COMMENT '',
+  UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '')
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_caso`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `cliente_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `estatus_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `cliente_id` INT UNSIGNED NOT NULL COMMENT '',
+  `estatus_id` INT UNSIGNED NOT NULL COMMENT '',
   `asignado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
-  `avance` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
+  `avance` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
   `fecha_inicio` DATETIME NULL DEFAULT NULL COMMENT '',
   `fecha_tentativa_cierre` DATETIME NULL DEFAULT NULL COMMENT '',
   `fecha_termino` DATETIME NULL DEFAULT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cs_caso_cliente_id_idx` (`cliente_id` ASC)  COMMENT '',
   INDEX `cs_caso_estatus_id_idx` (`estatus_id` ASC)  COMMENT '',
@@ -437,17 +554,20 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso` (
     REFERENCES `api-crm`.`cs_caso_estatus` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_caso_cotizacion`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_cotizacion` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `caso_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `cotizacion_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `fecha_validacion` DATETIME NULL DEFAULT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `caso_id` INT UNSIGNED NOT NULL COMMENT '',
+  `cotizacion_id` INT UNSIGNED NOT NULL COMMENT '',
+  `fecha_validacion` DATETIME NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cs_caso_cotizacion_caso_id_idx` (`caso_id` ASC)  COMMENT '',
   INDEX `cs_caso_cotizacion_cotizacion_id_idx` (`cotizacion_id` ASC)  COMMENT '',
@@ -463,28 +583,18 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_cotizacion` (
     REFERENCES `api-crm`.`ct_cotizacion` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_estatus` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `estatus` VARCHAR(45) NOT NULL COMMENT '',
-  `class` VARCHAR(45) NOT NULL COMMENT '',
-  `color` VARCHAR(45) NOT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  UNIQUE INDEX `estatus_UNIQUE` (`estatus` ASC)  COMMENT '',
-  UNIQUE INDEX `class_UNIQUE` (`class` ASC)  COMMENT '',
-  UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_caso_lider`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_lider` (
-  `caso_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `ejecutivo_lider_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `caso_id` INT UNSIGNED NOT NULL COMMENT '',
+  `ejecutivo_lider_id` INT UNSIGNED NOT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   INDEX `cs_caso_lider_ejecutivo_id_idx` (`ejecutivo_lider_id` ASC)  COMMENT '',
   PRIMARY KEY (`caso_id`)  COMMENT '',
   CONSTRAINT `cs_caso_lider_ejecutivo_fk`
@@ -497,18 +607,21 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_lider` (
     REFERENCES `api-crm`.`cs_caso` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_caso_reasignacion_lider`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_reasignacion_lider` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `caso_id` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `lider_old` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `lider_new` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `caso_id` INT UNSIGNED NOT NULL COMMENT '',
+  `lider_old` INT UNSIGNED NOT NULL COMMENT '',
+  `lider_new` INT UNSIGNED NOT NULL COMMENT '',
   `motivo` TEXT NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cs_caso_reasignacion_old` (`lider_old` ASC)  COMMENT '',
   INDEX `cs_caso_reasignacion_new` (`lider_new` ASC)  COMMENT '',
@@ -528,34 +641,15 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_reasignacion_lider` (
     REFERENCES `api-crm`.`cs_caso` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_tarea` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `nota` TEXT NOT NULL COMMENT '',
-  `publico` TINYINT(1) NOT NULL COMMENT '',
-  `avance` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
-  `habilitado` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  INDEX `cs_nota_tarea_idx` (`id_tarea` ASC)  COMMENT '',
-  INDEX `cs_nota_publico_idx` (`publico` ASC)  COMMENT '',
-  INDEX `cs_nota_habilitado_idx` (`habilitado` ASC)  COMMENT '',
-  CONSTRAINT `cs_nota_tarea_fk`
-    FOREIGN KEY (`id_tarea`)
-    REFERENCES `api-crm`.`cs_tarea` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_tarea_estatus`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_estatus` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `estatus` VARCHAR(45) NOT NULL COMMENT '',
   `class` VARCHAR(45) NOT NULL COMMENT '',
   `color` VARCHAR(45) NOT NULL COMMENT '',
@@ -563,25 +657,29 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_estatus` (
   UNIQUE INDEX `estatus_UNIQUE` (`estatus` ASC)  COMMENT '',
   UNIQUE INDEX `class_UNIQUE` (`class` ASC)  COMMENT '',
   UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_tarea`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_caso` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `id_ejecutivo` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `id_estatus` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_caso` INT UNSIGNED NOT NULL COMMENT '',
+  `id_ejecutivo` INT UNSIGNED NOT NULL COMMENT '',
+  `id_estatus` INT UNSIGNED NOT NULL COMMENT '',
   `titulo` VARCHAR(140) NOT NULL COMMENT '',
   `descripcion` TEXT NOT NULL COMMENT '',
   `avance` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
-  `fecha_inicio` DATETIME NULL DEFAULT NULL COMMENT '',
-  `fecha_tentativa_cierre` DATETIME NULL DEFAULT NULL COMMENT '',
-  `fecha_cierre` DATETIME NULL DEFAULT NULL COMMENT '',
-  `duracion_minutos` INT(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
+  `fecha_inicio` DATETIME NULL COMMENT '',
+  `fecha_tentativa_cierre` DATETIME NULL COMMENT '',
+  `fecha_cierre` DATETIME NULL COMMENT '',
+  `duracion_tentativa_segundos` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
+  `duracion_real_segundos` INT NOT NULL DEFAULT 0 COMMENT '',
   `habilitado` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   INDEX `cs_tarea_caso_id_idx` (`id_caso` ASC)  COMMENT '',
   INDEX `cs_tarea_ejecutivo_id_idx` (`id_ejecutivo` ASC)  COMMENT '',
   INDEX `cs_tarea_estatus_id_idx` (`id_estatus` ASC)  COMMENT '',
@@ -603,21 +701,49 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea` (
     REFERENCES `api-crm`.`cs_tarea_estatus` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_nota`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_tarea` INT UNSIGNED NOT NULL COMMENT '',
+  `nota` TEXT NOT NULL COMMENT '',
+  `publico` TINYINT(1) NOT NULL COMMENT '',
+  `avance` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
+  `habilitado` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `cs_nota_tarea_idx` (`id_tarea` ASC)  COMMENT '',
+  INDEX `cs_nota_publico_idx` (`publico` ASC)  COMMENT '',
+  INDEX `cs_nota_habilitado_idx` (`habilitado` ASC)  COMMENT '',
+  CONSTRAINT `cs_nota_tarea_fk`
+    FOREIGN KEY (`id_tarea`)
+    REFERENCES `api-crm`.`cs_tarea` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_nota_archivo`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota_archivo` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_nota` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_nota` INT UNSIGNED NOT NULL COMMENT '',
   `download_url` VARCHAR(250) NOT NULL COMMENT '',
   `content_type` VARCHAR(150) NOT NULL COMMENT '',
   `full_path` VARCHAR(150) NOT NULL COMMENT '',
   `md5hash` VARCHAR(150) NOT NULL COMMENT '',
   `name` VARCHAR(250) NOT NULL COMMENT '',
-  `size` INT(11) NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `size` INT NOT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cs_nota_archivo_id_nota_idx` (`id_nota` ASC)  COMMENT '',
   CONSTRAINT `cs_nota_archivo_nota_fk`
@@ -625,72 +751,59 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota_archivo` (
     REFERENCES `api-crm`.`cs_nota` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`pl_poliza`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`pl_poliza` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_actividad` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_tarea` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `actividad` VARCHAR(200) NOT NULL COMMENT '',
-  `hecho` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_tarea_tiempos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_tiempos` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_tarea` INT UNSIGNED NOT NULL COMMENT '',
   `fecha_inicio` DATETIME NOT NULL COMMENT '',
   `fecha_fin` DATETIME NOT NULL COMMENT '',
-  `duracion` INT(10) UNSIGNED NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `duracion_segundos` INT UNSIGNED NOT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cs_tarea_actividad_id_tarea` (`id_tarea` ASC)  COMMENT '',
   INDEX `cs_tarea_actividad_fecha_inicio` (`fecha_inicio` ASC)  COMMENT '',
-  INDEX `cs_tarea_actividad_hecho` (`hecho` ASC)  COMMENT '',
   CONSTRAINT `cs_tarea_actividad_tarea_actividad_fg`
     FOREIGN KEY (`id_tarea`)
     REFERENCES `api-crm`.`cs_tarea` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `api-crm`.`usr_usuarios` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `nombre` VARCHAR(45) NOT NULL COMMENT '',
-  `apellido` VARCHAR(45) NOT NULL COMMENT '',
-  `ejecutivo` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
-  `avatar` VARCHAR(100) NOT NULL COMMENT '',
-  `online` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
-  `email` VARCHAR(60) NOT NULL COMMENT '',
-  `password` VARCHAR(100) NOT NULL COMMENT '',
-  `remember_token` VARCHAR(100) NULL DEFAULT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  PRIMARY KEY (`id`)  COMMENT '',
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC)  COMMENT '',
-  INDEX `login_idx` (`email` ASC, `password` ASC, `ejecutivo` ASC)  COMMENT '')
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`ag_agenda`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`ag_agenda` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `ejecutivo_id` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `ejecutivo_id` INT UNSIGNED NOT NULL COMMENT '',
   `titulo` VARCHAR(140) NOT NULL COMMENT '',
   `descripcion` TEXT NOT NULL COMMENT '',
   `allDay` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
   `start` DATETIME NOT NULL COMMENT '',
-  `end` DATETIME NULL DEFAULT NULL COMMENT '',
-  `url` VARCHAR(145) NULL DEFAULT NULL COMMENT '',
+  `end` DATETIME NULL COMMENT '',
+  `url` VARCHAR(145) NULL COMMENT '',
   `notificado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
-  `referencia` VARCHAR(25) NULL DEFAULT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `referencia` VARCHAR(25) NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `ag_agenda_ejecutivo_idx` (`ejecutivo_id` ASC)  COMMENT '',
   INDEX `ag_agenda_start_idx` (`start` ASC, `end` ASC)  COMMENT '',
@@ -699,16 +812,19 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ag_agenda` (
     REFERENCES `api-crm`.`ec_ejecutivos` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`usr_usuario_tokens`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `api-crm`.`usr_usuario_tokens` (
-  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
-  `id_usuario` INT(10) UNSIGNED NOT NULL COMMENT '',
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_usuario` INT UNSIGNED NOT NULL COMMENT '',
   `token` VARCHAR(250) NOT NULL COMMENT '',
-  `created_at` DATETIME NULL DEFAULT NULL COMMENT '',
-  `updated_at` DATETIME NULL DEFAULT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
   UNIQUE INDEX `token_UNIQUE` (`token` ASC)  COMMENT '',
   INDEX `usr_usuarios_token_usuario` (`id_usuario` ASC)  COMMENT '',
@@ -717,10 +833,9 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`usr_usuario_tokens` (
     REFERENCES `api-crm`.`usr_usuarios` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
+ENGINE = InnoDB;
 
+SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

@@ -40,8 +40,7 @@ class ResetDB extends Command
 		$firebaseClient = new FirebaseLib(config('services.firebase.database_url'), config('services.firebase.secret'));
 		$firebaseClient->delete('/');
 		
-		shell_exec('mysql --user=root --password= --database=api-crm < database/borradb.sql');
-		shell_exec('mysql --user=root --password= --database=api-crm < database/creaesquema.sql');
+		shell_exec('mysql --user=root --password= < database/reset-scheme.sql');
 		$this->call('db:seed', []);
 	}
 }

@@ -36,7 +36,7 @@ class NotaRequest extends Request
 				'archivo.url'         => 'required|active_url',
 				'archivo.contentType' => 'required',
 				'archivo.fullPath'    => 'required',
-				'archivo.hash'        => 'required|unique:cs_nota_archivo,md5hash',
+				'archivo.hash'        => 'required',
 				'archivo.name'        => 'required',
 				'archivo.size'        => 'required|integer',
 			];
