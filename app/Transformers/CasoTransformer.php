@@ -116,34 +116,55 @@ class CasoTransformer extends TransformerAbstract
 					}
 				}
 				
+				$recordatorios = $tarea->agenda;
+				$dAgenda = [];
+				if ($recordatorios->count() > 0)
+				{
+					foreach ($recordatorios as $recordatorio)
+					{
+						$data = [
+							'id'               => $recordatorio->id,
+							'start'            => $recordatorio->start->getTimestamp(),
+							'end'              => $recordatorio->end->getTimestamp(),
+							'duracionSegundos' => $recordatorio->duracion_segundos,
+							'notificado'       => $recordatorio->notificado
+						];
+						
+						array_push($dAgenda, $data);
+					}
+				}
+				
 				$tareas[$index] = [
-					'id'                     => $tarea->id,
-					'ejecutivo'              => [
+					'id'                          => $tarea->id,
+					'ejecutivo'                   => [
 						'id'     => $tarea->ejecutivo->usuario->id,
 						'nombre' => $tarea->ejecutivo->usuario->nombreCompleto(),
 						'avatar' => $tarea->ejecutivo->usuario->avatar,
 						'color'  => $tarea->ejecutivo->color,
 						'class'  => $tarea->ejecutivo->class,
 					],
-					'estatus'                => [
+					'estatus'                     => [
 						'id'      => $tarea->estatus->id,
 						'estatus' => $tarea->estatus->estatus,
 						'class'   => $tarea->estatus->class,
 						'color'   => $tarea->estatus->color,
 					],
-					'titulo'                 => $tarea->titulo,
-					'descripcion'            => $tarea->descripcion,
-					'avance'                 => $tarea->avance,
-					'fecha_inicio'           => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
-					'fecha_tentativa_cierre' => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
-					'fecha_cierre'           => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
-					'duracion_minutos'       => $tarea->duracion_minutos,
-					'notas'                  => [
+					'titulo'                      => $tarea->titulo,
+					'descripcion'                 => $tarea->descripcion,
+					'avance'                      => $tarea->avance,
+					'fecha_inicio'                => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
+					'fecha_tentativa_precierre'   => (is_null($tarea->fecha_tentativa_precierre)) ? null : $tarea->fecha_tentativa_precierre->getTimestamp(),
+					'fecha_precierre'             => (is_null($tarea->fecha_precierre)) ? null : $tarea->fecha_precierre->getTimestamp(),
+					'fecha_cierre'                => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
+					'duracion_tentativa_segundos' => $tarea->duracion_tentativa_segundos,
+					'duracion_real_segundos'      => $tarea->duracion_real_segundos,
+					'notas'                       => [
 						'publicas' => $notas_publicos,
 						'privadas' => $notas_privados
 					],
-					'habilitado'             => $tarea->habilitado,
-					'creado'                 => $tarea->created_at->getTimestamp()
+					'agenda'                      => $dAgenda,
+					'habilitado'                  => $tarea->habilitado,
+					'creado'                      => $tarea->created_at->getTimestamp()
 				];
 			}
 		}

@@ -13,7 +13,6 @@ DROP SCHEMA IF EXISTS `api-crm` ;
 -- Schema api-crm
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `api-crm` DEFAULT CHARACTER SET utf8 ;
-SHOW WARNINGS;
 USE `api-crm` ;
 
 -- -----------------------------------------------------
@@ -27,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_departamentos` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_oficinas`
@@ -52,7 +50,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_oficinas` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`usr_usuarios`
@@ -75,7 +72,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`usr_usuarios` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_ejecutivos`
@@ -108,7 +104,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_ejecutivos` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`password_resets`
@@ -123,7 +118,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_permisos`
@@ -141,7 +135,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_roles`
@@ -159,7 +152,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_permisos_roles`
@@ -183,7 +175,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_roles_user`
@@ -207,7 +198,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cl_clientes`
@@ -242,7 +232,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cl_clientes` (
   INDEX `online_INDEX` (`online` ASC)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cl_contactos`
@@ -267,7 +256,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cl_contactos` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ct_cotizacion_estatus`
@@ -283,7 +271,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_estatus` (
   UNIQUE INDEX `class_UNIQUE` (`class` ASC)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ct_cotizacion`
@@ -335,7 +322,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_bancos`
@@ -353,7 +339,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_bancos` (
   PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_unidad_productos`
@@ -367,7 +352,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_unidad_productos` (
   PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ec_productos`
@@ -393,7 +377,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ec_productos` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ct_cotizacion_productos`
@@ -426,7 +409,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_productos` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ct_cotizacion_bancos`
@@ -452,7 +434,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_bancos` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ct_cotizacion_pagos`
@@ -483,7 +464,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_pagos` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ct_cotizacion_comprobantes`
@@ -508,7 +488,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_comprobantes` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_caso_estatus`
@@ -524,7 +503,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_estatus` (
   UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_caso`
@@ -536,8 +514,9 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso` (
   `asignado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
   `avance` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
   `fecha_inicio` DATETIME NULL DEFAULT NULL COMMENT '',
-  `fecha_tentativa_cierre` DATETIME NULL DEFAULT NULL COMMENT '',
-  `fecha_termino` DATETIME NULL DEFAULT NULL COMMENT '',
+  `fecha_tentativa_precierre` DATETIME NULL DEFAULT NULL COMMENT '',
+  `fecha_precierre` DATETIME NULL DEFAULT NULL COMMENT '',
+  `fecha_cierre` DATETIME NULL DEFAULT NULL COMMENT '',
   `created_at` DATETIME NULL COMMENT '',
   `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
@@ -556,7 +535,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_caso_cotizacion`
@@ -585,7 +563,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_cotizacion` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_caso_lider`
@@ -609,7 +586,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_lider` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_caso_reasignacion_lider`
@@ -643,7 +619,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_reasignacion_lider` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_tarea_estatus`
@@ -659,7 +634,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_estatus` (
   UNIQUE INDEX `color_UNIQUE` (`color` ASC)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_tarea`
@@ -676,16 +650,16 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea` (
   `fecha_tentativa_cierre` DATETIME NULL COMMENT '',
   `fecha_cierre` DATETIME NULL COMMENT '',
   `duracion_tentativa_segundos` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
-  `duracion_real_segundos` INT NOT NULL DEFAULT 0 COMMENT '',
-  `habilitado` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
+  `duracion_real_segundos` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
+  `activo` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '',
   `created_at` DATETIME NULL COMMENT '',
   `updated_at` DATETIME NULL COMMENT '',
   INDEX `cs_tarea_caso_id_idx` (`id_caso` ASC)  COMMENT '',
   INDEX `cs_tarea_ejecutivo_id_idx` (`id_ejecutivo` ASC)  COMMENT '',
   INDEX `cs_tarea_estatus_id_idx` (`id_estatus` ASC)  COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
-  INDEX `cs_tarea_habilitado_idx` (`habilitado` ASC)  COMMENT '',
-  INDEX `cs_tarea_titulo_idx` (`titulo` ASC, `habilitado` ASC)  COMMENT '',
+  INDEX `cs_tarea_habilitado_idx` (`activo` ASC)  COMMENT '',
+  INDEX `cs_tarea_titulo_idx` (`titulo` ASC, `activo` ASC)  COMMENT '',
   CONSTRAINT `cs_tarea_caso_fk`
     FOREIGN KEY (`id_caso`)
     REFERENCES `api-crm`.`cs_caso` (`id`)
@@ -703,7 +677,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_nota`
@@ -728,7 +701,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_nota_archivo`
@@ -753,7 +725,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota_archivo` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`pl_poliza`
@@ -763,7 +734,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`pl_poliza` (
   PRIMARY KEY (`id`)  COMMENT '')
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`cs_tarea_tiempos`
@@ -786,7 +756,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_tiempos` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`ag_agenda`
@@ -798,10 +767,10 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ag_agenda` (
   `descripcion` TEXT NOT NULL COMMENT '',
   `allDay` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
   `start` DATETIME NOT NULL COMMENT '',
-  `end` DATETIME NULL COMMENT '',
+  `end` DATETIME NOT NULL COMMENT '',
+  `duracion_segundos` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '',
   `url` VARCHAR(145) NULL COMMENT '',
   `notificado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
-  `referencia` VARCHAR(25) NULL COMMENT '',
   `created_at` DATETIME NULL COMMENT '',
   `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
@@ -814,7 +783,6 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ag_agenda` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
 
 -- -----------------------------------------------------
 -- Table `api-crm`.`usr_usuario_tokens`
@@ -835,7 +803,29 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`usr_usuario_tokens` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`ag_tarea_agenda`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`ag_tarea_agenda` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_tarea` INT UNSIGNED NOT NULL COMMENT '',
+  `start` DATETIME NOT NULL COMMENT '',
+  `end` DATETIME NOT NULL COMMENT '',
+  `duracion_segundos` INT UNSIGNED NOT NULL COMMENT '',
+  `notificado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `ag_agenda_tarea_id_tarea_idx` (`id_tarea` ASC)  COMMENT '',
+  INDEX `ag_agenda_tarea_starend_indx` (`start` ASC, `end` ASC)  COMMENT '',
+  CONSTRAINT `ag_agenda_tarea_tarea_fk`
+    FOREIGN KEY (`id_tarea`)
+    REFERENCES `api-crm`.`cs_tarea` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

@@ -24,8 +24,9 @@ class Caso extends Model
 		'asignado',
 		'avance',
 		'fecha_inicio',
-		'fecha_tentativa_cierre',
-		'fecha_termino',
+		'fecha_tentativa_precierre',
+		'fecha_precierre',
+		'fecha_cierre',
 		'created_at',
 		'updated_at'
 	];
@@ -36,8 +37,7 @@ class Caso extends Model
 	 * @var array
 	 */
 	protected $casts = [
-		'avance' => 'integer',
-		'fecha_tentativa_cierre' => 'date',
+		'avance'   => 'integer',
 		'asignado' => 'boolean'
 	];
 	
@@ -48,7 +48,9 @@ class Caso extends Model
 	 */
 	protected $dates = [
 		'fecha_inicio',
-		'fecha_termino',
+		'fecha_tentativa_precierre',
+		'fecha_precierre',
+		'fecha_cierre',
 		'created_at',
 		'updated_at'
 	];

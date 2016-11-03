@@ -22,10 +22,10 @@ class TareaTransformer extends TransformerAbstract
 			foreach ($tiempos as $tiempo)
 			{
 				$data = [
-					'id'          => $tiempo->id,
-					'fechaInicio' => $tiempo->fecha_inicio->getTimestamp(),
-					'fechaFin'    => $tiempo->fecha_fin->getTimestamp(),
-					'duracionSegundos'    => $tiempo->duracion_segundos
+					'id'               => $tiempo->id,
+					'fechaInicio'      => $tiempo->fecha_inicio->getTimestamp(),
+					'fechaFin'         => $tiempo->fecha_fin->getTimestamp(),
+					'duracionSegundos' => $tiempo->duracion_segundos
 				];
 				
 				array_push($dTiempos, $data);
@@ -81,22 +81,40 @@ class TareaTransformer extends TransformerAbstract
 			}
 		}
 		
+		$recordatorios = $tarea->agenda;
+		$dAgenda = [];
+		if ($recordatorios->count() > 0)
+		{
+			foreach ($recordatorios as $recordatorio)
+			{
+				$data = [
+					'id'               => $recordatorio->id,
+					'start'            => $recordatorio->start->getTimestamp(),
+					'end'              => $recordatorio->end->getTimestamp(),
+					'duracionSegundos' => $recordatorio->duracion_segundos,
+					'notificado'       => $recordatorio->notificado
+				];
+				
+				array_push($dAgenda, $data);
+			}
+		}
+		
 		$data = [
-			'id'                     => $tarea->id,
-			'ejecutivo'              => [
+			'id'                          => $tarea->id,
+			'ejecutivo'                   => [
 				'id'     => $tarea->ejecutivo->id,
 				'nombre' => $tarea->ejecutivo->usuario->nombreCompleto(),
 				'avatar' => $tarea->ejecutivo->avatar,
 				'color'  => $tarea->ejecutivo->color,
 				'class'  => $tarea->ejecutivo->class,
 			],
-			'estatus'                => [
+			'estatus'                     => [
 				'id'      => $tarea->estatus->id,
 				'estatus' => $tarea->estatus->estatus,
 				'class'   => $tarea->estatus->class,
 				'color'   => $tarea->estatus->color,
 			],
-			'caso'                   => [
+			'caso'                        => [
 				'id'      => $tarea->caso->id,
 				'avance'  => $tarea->caso->avance,
 				'cliente' => [
@@ -115,22 +133,23 @@ class TareaTransformer extends TransformerAbstract
 					'color'   => $tarea->caso->estatus->color
 				]
 			],
-			'titulo'                 => $tarea->titulo,
-			'descripcion'            => $tarea->descripcion,
-			'avance'                 => $tarea->avance,
-			'fecha_inicio'           => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
-			'fecha_tentativa_cierre' => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
-			'fecha_cierre'           => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
-			'duracion_tentativa_segundos'      => $tarea->duracion_tentativa_segundos,
+			'titulo'                      => $tarea->titulo,
+			'descripcion'                 => $tarea->descripcion,
+			'avance'                      => $tarea->avance,
+			'fecha_inicio'                => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
+			'fecha_tentativa_cierre'      => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
+			'fecha_cierre'                => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
+			'duracion_tentativa_segundos' => $tarea->duracion_tentativa_segundos,
 			'duracion_real_segundos'      => $tarea->duracion_real_segundos,
-			'tiempos'                => $dTiempos,
-			'notas'                  => [
+			'tiempos'                     => $dTiempos,
+			'notas'                       => [
 				'publicas' => $notas_publicos,
 				'privadas' => $notas_privados,
 				'todas'    => $todas
 			],
-			'habilitado'             => $tarea->habilitado,
-			'created_at'             => $tarea->created_at->getTimestamp()
+			'agenda'                      => $dAgenda,
+			'habilitado'                  => $tarea->habilitado,
+			'created_at'                  => $tarea->created_at->getTimestamp()
 		];
 		
 		return $data;

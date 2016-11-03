@@ -14,7 +14,6 @@ class TareaEstatus extends Model
 	const PROCESO    = 3;
 	const CERRADO    = 4;
 	const SUSPENDIDO = 5;
-	const CANCELADO  = 6;
 	
 	/**
 	 * Nombre de la tabla usada por el modelo

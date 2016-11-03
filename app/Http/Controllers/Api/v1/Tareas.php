@@ -19,6 +19,8 @@ class Tareas extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
@@ -108,7 +110,8 @@ class Tareas extends Controller
 		//
 	}
 	
-	public function asignaFechas(TareaEstableceFechaRequest $request, $id) {
+	public function asignaFechas(TareaEstableceFechaRequest $request, $id)
+	{
 		$tarea = Tarea::find($id);
 		
 		if (is_null($tarea))
@@ -129,15 +132,12 @@ class Tareas extends Controller
 				/**
 				 * @TODO Calcular las fechas de todas las tareas y establecer fecha tentativa de cierre del caso
 				 */
-				$ultimaFechaTarea = $tarea->caso->tareas()->orderBy('fecha_tentativa_cierre', 'desc')->get();
-				
-				if (!$ultimaFechaTarea->isEmpty())
+				$tareasActivas = $tarea->caso->tareas()->activas();
+				if ($tareasActivas->where('fecha_tentativa_cierre', '<>', null)->count() == $tareasActivas->count())
 				{
-					$tarea->caso->fecha_tentativa_cierre = date('Y-m-d H:i:s', $ultimaFechaTarea->first()->fecha_tentativa_cierre->getTimestamp());
+					$tarea->caso->fecha_tentativa_precierre = $tareasActivas->max('fecha_tentativa_cierre');
 					$tarea->caso->save();
 				}
-				
-				
 				
 				DB::commit();
 				

@@ -43,13 +43,6 @@ class TareaStatusSeeder extends Seeder
 		\App\Http\Models\TareaEstatus::create([
 			'id'      => 5,
 			'estatus' => 'Suspendido',
-			'color'   => '#2F353B',
-			'class'   => 'dark'
-		]);
-		
-		\App\Http\Models\TareaEstatus::create([
-			'id'      => 6,
-			'estatus' => 'Cancelado',
 			'color'   => '#D91E18',
 			'class'   => 'red-thunderbird'
 		]);

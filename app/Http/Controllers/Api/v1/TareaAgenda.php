@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Agenda as AgendaModel;
-use App\Http\Requests\Create\AgendaRequest;
-use App\QueryBuilder\AgendaQueryBuilder;
-use App\Transformers\AgendaTransformer;
+use App\Http\Models\Tarea;
+use App\Http\Requests\TareaAgendaRequest;
+use App\QueryBuilder\TareaAgendaQueryBuilder;
+use App\Transformers\TareaAgendaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class Agenda extends Controller
+class TareaAgenda extends Controller
 {
 	use Helpers;
 	
@@ -24,9 +24,10 @@ class Agenda extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$queryBuilder = new AgendaQueryBuilder(new AgendaModel(), $request);
+		$queryBuilder = new TareaAgendaQueryBuilder(new \App\Http\Models\TareaAgenda(), $request);
+		$query = $queryBuilder->build()->get();
 		
-		return $this->response->collection($queryBuilder->build()->get(), new AgendaTransformer());
+		return $this->response->collection($query, new TareaAgendaTransformer());
 	}
 	
 	/**
@@ -42,26 +43,36 @@ class Agenda extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param \App\Http\Requests\Create\AgendaRequest $request
+	 * @param \App\Http\Requests\TareaAgendaRequest $request
+	 *
+	 * @param int                                   $idTarea
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(AgendaRequest $request)
+	public function store(TareaAgendaRequest $request, $idTarea)
 	{
+		
 		DB::beginTransaction();
 		try
 		{
-			$agenda = AgendaModel::create([
-				'ejecutivo_id' => $request->get('ejecutivo'),
-				'titulo'       => $request->get('titulo'),
-				'descripcion'  => $request->get('descripcion'),
-				'start'        => $request->get('start'),
-				'end'          => $request->get('end'),
-				'url'          => $request->get('url'),
-				'referencia'   => $request->get('referencia')
-			]);
+			$tarea = Tarea::find($idTarea);
 			
-			DB::commit();
+			if (is_null($tarea))
+			{
+				return $this->response->errorNotFound('El ID de la tarea no existe.');
+			}
+			else
+			{
+				$agenda = $tarea->agenda()->create([
+					'start'             => $request->get('start'),
+					'end'               => $request->get('end'),
+					'duracion_segundos' => $request->get('duracionSegundos'),
+				]);
+				
+				DB::commit();
+				
+				return $this->response->item($agenda->fresh(), new TareaAgendaTransformer())->setStatusCode(201);
+			}
 		}
 		catch (\Exception $e)
 		{
@@ -117,17 +128,6 @@ class Agenda extends Controller
 	 */
 	public function destroy($id)
 	{
-		$agenda = AgendaModel::find($id);
-		
-		if (is_null($agenda))
-		{
-			return $this->response->errorNotFound('El ID del evento  no existe.');
-		}
-		else
-		{
-			$agenda->delete();
-			
-			return $this->response->noContent();
-		}
+		//
 	}
 }

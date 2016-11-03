@@ -36,9 +36,10 @@ class Tarea extends Model
 		'fecha_inicio',
 		'fecha_tentativa_cierre',
 		'fecha_cierre',
+		'fecha_cierre',
 		'duracion_tentativa_segundos',
 		'duracion_real_segundos',
-		'habilitado',
+		'activo',
 	];
 	
 	/**
@@ -50,7 +51,7 @@ class Tarea extends Model
 		'avance'           => 'integer',
 		'duracion_tentativa_segundos' => 'integer',
 		'duracion_real_segundos' => 'integer',
-		'habilitado'       => 'boolean',
+		'activo'       => 'boolean',
 	];
 	
 	/**
@@ -102,6 +103,16 @@ class Tarea extends Model
 	}
 	
 	/**
+	 * Una Tarea tiene muchos AgendaTarea
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function agenda()
+	{
+		return $this->hasMany(TareaAgenda::class, 'id_tarea');
+	}
+	
+	/**
 	 * Una Tarea pertence a TareaEstatus
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -119,5 +130,18 @@ class Tarea extends Model
 	public function notas()
 	{
 		return $this->hasMany(Nota::class, 'id_tarea');
+	}
+	
+	/**
+	 * Scope para obtener las tareas activas.
+	 *
+	 * @param $query
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function scopeActivas($query)
+	{
+		return $query->where('activo', true);
 	}
 }

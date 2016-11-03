@@ -4,29 +4,23 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Agenda extends Model
+class TareaAgenda extends Model
 {
-	//use SyncsWithFirebase;
-	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
-	protected $table = 'ag_agenda';
+	protected $table = 'cs_tarea_agenda';
 	
 	protected $primaryKey = 'id';
 	
 	protected $fillable = [
 		'id',
-		'ejecutivo_id',
-		'titulo',
-		'descripcion',
-		'allDay',
+		'id_tarea',
 		'start',
 		'end',
 		'duracion_segundos',
-		'url',
 		'notificado',
 		'created_at',
 		'updated_at'
@@ -39,7 +33,6 @@ class Agenda extends Model
 	 */
 	protected $casts = [
 		'duracion_segundos' => 'integer',
-		'allDay'            => 'boolean',
 		'notificado'        => 'boolean',
 	];
 	
@@ -65,8 +58,8 @@ class Agenda extends Model
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function ejecutivo()
+	public function tarea()
 	{
-		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_id');
+		return $this->belongsTo(Tarea::class, 'id_tarea');
 	}
 }

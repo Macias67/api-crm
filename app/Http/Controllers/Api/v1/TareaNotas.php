@@ -189,12 +189,46 @@ class TareaNotas extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int $id
+	 * @param  int $idTarea
+	 * @param  int $idNota
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy($idTarea, $idNota)
 	{
-		//
+		try
+		{
+			DB::beginTransaction();
+			
+			$tarea = Tarea::find($idTarea);
+			
+			if (is_null($tarea))
+			{
+				return $this->response->errorNotFound('El ID de la tarea no existe.');
+			}
+			else
+			{
+				$nota = $tarea->notas->where('id', (int)$idNota);
+				if (!$nota->isEmpty())
+				{
+					$nota->first()->delete();
+					
+					return $this->response->noContent();
+				}
+				else
+				{
+					return $this->response->errorNotFound('El ID de la nota no existe.');
+				}
+			}
+			
+			DB::commit();
+			
+		}
+		catch (\Exception $e)
+		{
+			DB::rollback();
+			
+			return $this->response->error($e->getMessage(), 500);
+		}
 	}
 }

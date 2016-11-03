@@ -90,6 +90,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			$api->put('fechas', 'Tareas@asignaFechas');
 			
 			/**
+			 * TareaAgenda
+			 */
+			$api->resource('agenda', 'TareaAgenda');
+			
+			/**
 			 * TareaNotas
 			 */
 			$api->resource('notas', 'TareaNotas');
