@@ -6,9 +6,11 @@ use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
 use App\Http\Models\CasoEstatus;
 use App\Http\Models\FBNotification;
+use App\Http\Models\Nota;
 use App\Http\Models\Tarea;
 use App\Http\Models\TareaEstatus;
-use App\Http\Requests\Create\NotaRequest;
+use App\Http\Requests\NotaRequest;
+use App\Transformers\NotaTransformer;
 use App\Transformers\TareaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -51,7 +53,7 @@ class TareaNotas extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param \App\Http\Requests\Create\NotaRequest|\Illuminate\Http\Request $request
+	 * @param \App\Http\Requests\Create\NotaRequest                          $request
 	 *
 	 * @param                                                                $idTarea
 	 *
@@ -181,9 +183,29 @@ class TareaNotas extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(NotaRequest $request, $idTarea, $idNota)
 	{
-		//
+		try
+		{
+			$nota = Nota::find($idNota);
+			
+			DB::beginTransaction();
+			
+			$nota->avance = $request->get('avance');
+			$nota->nota = $request->get('nota');
+			$nota->publico = $request->get('publico');
+			$nota->save();
+			
+			DB::commit();
+			
+			return $this->response->item($nota, new NotaTransformer());
+		}
+		catch (\Exception $e)
+		{
+			DB::rollback();
+			
+			return $this->response->error($e->getMessage(), 500);
+		}
 	}
 	
 	/**
@@ -196,39 +218,25 @@ class TareaNotas extends Controller
 	 */
 	public function destroy($idTarea, $idNota)
 	{
-		try
+		$tarea = Tarea::find($idTarea);
+		
+		if (is_null($tarea))
 		{
-			DB::beginTransaction();
-			
-			$tarea = Tarea::find($idTarea);
-			
-			if (is_null($tarea))
+			return $this->response->errorNotFound('El ID de la tarea no existe.');
+		}
+		else
+		{
+			$nota = $tarea->notas->where('id', (int)$idNota);
+			if (!$nota->isEmpty())
 			{
-				return $this->response->errorNotFound('El ID de la tarea no existe.');
+				$nota->first()->delete();
+				
+				return $this->response->noContent();
 			}
 			else
 			{
-				$nota = $tarea->notas->where('id', (int)$idNota);
-				if (!$nota->isEmpty())
-				{
-					$nota->first()->delete();
-					
-					return $this->response->noContent();
-				}
-				else
-				{
-					return $this->response->errorNotFound('El ID de la nota no existe.');
-				}
+				return $this->response->errorNotFound('El ID de la nota no existe.');
 			}
-			
-			DB::commit();
-			
-		}
-		catch (\Exception $e)
-		{
-			DB::rollback();
-			
-			return $this->response->error($e->getMessage(), 500);
 		}
 	}
 }

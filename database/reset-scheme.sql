@@ -673,8 +673,8 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea` (
   CONSTRAINT `cs_tarea_estatus_fk`
     FOREIGN KEY (`id_estatus`)
     REFERENCES `api-crm`.`cs_tarea_estatus` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -721,8 +721,8 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_nota_archivo` (
   CONSTRAINT `cs_nota_archivo_nota_fk`
     FOREIGN KEY (`id_nota`)
     REFERENCES `api-crm`.`cs_nota` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -805,9 +805,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `api-crm`.`ag_tarea_agenda`
+-- Table `api-crm`.`cs_tarea_agenda`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `api-crm`.`ag_tarea_agenda` (
+CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_agenda` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `id_tarea` INT UNSIGNED NOT NULL COMMENT '',
   `start` DATETIME NOT NULL COMMENT '',

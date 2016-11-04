@@ -153,8 +153,7 @@ class CasoTransformer extends TransformerAbstract
 					'descripcion'                 => $tarea->descripcion,
 					'avance'                      => $tarea->avance,
 					'fecha_inicio'                => (is_null($tarea->fecha_inicio)) ? null : $tarea->fecha_inicio->getTimestamp(),
-					'fecha_tentativa_precierre'   => (is_null($tarea->fecha_tentativa_precierre)) ? null : $tarea->fecha_tentativa_precierre->getTimestamp(),
-					'fecha_precierre'             => (is_null($tarea->fecha_precierre)) ? null : $tarea->fecha_precierre->getTimestamp(),
+					'fecha_tentativa_cierre'      => (is_null($tarea->fecha_tentativa_cierre)) ? null : $tarea->fecha_tentativa_cierre->getTimestamp(),
 					'fecha_cierre'                => (is_null($tarea->fecha_cierre)) ? null : $tarea->fecha_cierre->getTimestamp(),
 					'duracion_tentativa_segundos' => $tarea->duracion_tentativa_segundos,
 					'duracion_real_segundos'      => $tarea->duracion_real_segundos,
@@ -189,9 +188,10 @@ class CasoTransformer extends TransformerAbstract
 			'avance'               => $caso->avance,
 			'lider'                => $ejecutivo,
 			'tareas'               => $tareas,
-			'fechainicio'          => (is_null($caso->fecha_inicio)) ? null : $caso->fecha_inicio->getTimestamp(),
-			'fechatentativacierre' => (is_null($caso->fecha_tentativa_cierre)) ? null : $caso->fecha_tentativa_cierre->getTimestamp(),
-			'fechatermino'         => (is_null($caso->fecha_termino)) ? null : $caso->fecha_termino->getTimestamp(),
+			'fecha_inicio'          => (is_null($caso->fecha_inicio)) ? null : $caso->fecha_inicio->getTimestamp(),
+			'fecha_precierre'          => (is_null($caso->fecha_precierre)) ? null : $caso->fecha_precierre->getTimestamp(),
+			'fecha_tentativa_precierre' => (is_null($caso->fecha_tentativa_precierre)) ? null : $caso->fecha_tentativa_precierre->getTimestamp(),
+			'fecha_cierre' => (is_null($caso->fecha_cierre)) ? null : $caso->fecha_cierre->getTimestamp(),
 			'registro'             => $caso->created_at->getTimestamp()
 		];
 		

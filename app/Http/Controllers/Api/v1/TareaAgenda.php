@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Tarea;
+use App\Http\Models\TareaAgenda as TareaAgendaModel;
 use App\Http\Requests\TareaAgendaRequest;
 use App\QueryBuilder\TareaAgendaQueryBuilder;
 use App\Transformers\TareaAgendaTransformer;
@@ -22,9 +23,10 @@ class TareaAgenda extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(Request $request)
+	public function index(Request $request, $idTarea)
 	{
-		$queryBuilder = new TareaAgendaQueryBuilder(new \App\Http\Models\TareaAgenda(), $request);
+		//TareaAgendaModel::find($idTarea
+		$queryBuilder = new TareaAgendaQueryBuilder(new TareaAgendaModel(), $request);
 		$query = $queryBuilder->build()->get();
 		
 		return $this->response->collection($query, new TareaAgendaTransformer());

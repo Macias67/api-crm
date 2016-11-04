@@ -135,7 +135,7 @@ class Tareas extends Controller
 				$tareasActivas = $tarea->caso->tareas()->activas();
 				if ($tareasActivas->where('fecha_tentativa_cierre', '<>', null)->count() == $tareasActivas->count())
 				{
-					$tarea->caso->fecha_tentativa_precierre = $tareasActivas->max('fecha_tentativa_cierre');
+					$tarea->caso->fecha_tentativa_precierre = $tareasActivas->get()->max('fecha_tentativa_cierre')->format('Y-m-d H:i:s');
 					$tarea->caso->save();
 				}
 				

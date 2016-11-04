@@ -148,7 +148,7 @@ class TareaTransformer extends TransformerAbstract
 				'todas'    => $todas
 			],
 			'agenda'                      => $dAgenda,
-			'habilitado'                  => $tarea->habilitado,
+			'activo'                  => $tarea->activo,
 			'created_at'                  => $tarea->created_at->getTimestamp()
 		];
 		
