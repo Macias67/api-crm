@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Http\Models\Caso;
 use App\Http\Models\Cotizacion;
+use App\Http\Models\Tarea;
 use App\Observers\CasoObserver;
 use App\Observers\CotizacionObserver;
+use App\Observers\TareaObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
 	{
 		Cotizacion::observe(CotizacionObserver::class);
 		Caso::observe(CasoObserver::class);
+		Tarea::observe(TareaObserver::class);
 	}
 	
 	/**

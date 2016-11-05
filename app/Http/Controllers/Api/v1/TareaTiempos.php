@@ -61,7 +61,7 @@ class TareaTiempos extends Controller
 					'duracion_segundos' => $request->get('duracion')
 				]);
 				
-				$tarea->duracion_real_segundos = $tarea->duracion_real_segundos + $request->get('duracion');
+				$tarea->duracion_real_segundos += $request->get('duracion');
 				$tarea->save();
 				
 				DB::commit();

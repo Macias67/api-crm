@@ -827,6 +827,57 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_agenda` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_caso_encuesta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`cs_caso_encuesta` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_caso` INT UNSIGNED NOT NULL COMMENT '',
+  `id_contacto` INT UNSIGNED NULL COMMENT '',
+  `respondida` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `respuestas_json` TEXT NULL COMMENT '',
+  `puntaje` FLOAT(2) NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `cs_caso_encuesta_id_caso_idx` (`id_caso` ASC)  COMMENT '',
+  INDEX `cs_caso_encuesta_id_contacto_idx` (`id_contacto` ASC)  COMMENT '',
+  UNIQUE INDEX `id_caso_UNIQUE` (`id_caso` ASC)  COMMENT '',
+  CONSTRAINT `cs_caso_encuesta_caso`
+    FOREIGN KEY (`id_caso`)
+    REFERENCES `api-crm`.`cs_caso` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `cs_caso_encuesta_contacto`
+    FOREIGN KEY (`id_contacto`)
+    REFERENCES `api-crm`.`cl_contactos` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `api-crm`.`cs_tarea_reasignacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea_reasignacion` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
+  `id_tarea` INT UNSIGNED NOT NULL COMMENT '',
+  `ejecutivo_old` INT UNSIGNED NOT NULL COMMENT '',
+  `ejecutivo_new` INT UNSIGNED NOT NULL COMMENT '',
+  `motivo` TEXT NOT NULL COMMENT '',
+  `created_at` DATETIME NULL COMMENT '',
+  `updated_at` DATETIME NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `cs_tarea_actividad_id_tarea` (`id_tarea` ASC)  COMMENT '',
+  INDEX `cs_tarea_actividad_fecha_inicio` (`ejecutivo_old` ASC)  COMMENT '',
+  CONSTRAINT `cs_tarea_actividad_tarea_actividad_fg0`
+    FOREIGN KEY (`id_tarea`)
+    REFERENCES `api-crm`.`cs_tarea` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

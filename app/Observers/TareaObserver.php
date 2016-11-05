@@ -13,6 +13,7 @@ use App\Http\Models\TareaEstatus;
 
 class TareaObserver
 {
+	
 	/**
 	 * Listen to the Caso created event.
 	 *
@@ -26,6 +27,7 @@ class TareaObserver
 		 */
 	}
 	
+	
 	/**
 	 * Listen to the Caso updated event.
 	 *
@@ -37,7 +39,7 @@ class TareaObserver
 	 * @param \App\Http\Models\Tarea $tarea
 	 *
 	 */
-	public function addedNota(Tarea $tarea)
+	public function saving(Tarea $tarea)
 	{
 		if ($tarea->activo)
 		{
@@ -46,29 +48,35 @@ class TareaObserver
 			if ($tarea->avance < 100 && in_array($tarea->id_estatus, $estatus))
 			{
 				$caso = $tarea->caso;
-				$tareasCaso = $caso->tareas->activas();
+				$tareasActivasCaso = $caso->tareas->where('activo', true);
 				
 				$tarea->id_estatus = TareaEstatus::PROCESO;
-				$caso->avance = (int)($tareasCaso->sum('avance') / $tareasCaso->count());
-				
+				// Resto el avance de esta tarea a la sumatoria, porque este valor no esta actualizado.
+				$diferencia = $tareasActivasCaso->sum('avance') - $tareasActivasCaso->where('id', $tarea->id)->pluck('avance')->first();
+				// Se suma $tarea->avance porque en este momento aún no se guarda en la BD.
+				$caso->avance = (int)(($diferencia + $tarea->avance) / $tareasActivasCaso->count());
 				$caso->save();
-				$tarea->save();
 			}
 			else if ($tarea->avance == 100)
 			{
 				$tarea->id_estatus = TareaEstatus::CERRADO;
 				$tarea->fecha_cierre = date('Y-m-d H:i:s');
-				$tarea->save();
 				
 				$caso = $tarea->fresh()->caso;
-				$tareasActivasCaso = $caso->tareas->activas();
+				$tareasActivasCaso = $caso->tareas->where('activo', true);
 				
 				if ($tareasActivasCaso->where('id_estatus', TareaEstatus::CERRADO)->where('avance', 100)->count() == $tareasActivasCaso->count())
 				{
-					$caso->fecha_termino = date('Y-m-d H:i:s');
+					$caso->fecha_precierre = date('Y-m-d H:i:s');
 					$caso->estatus_id = CasoEstatus::PRECIERRE;
-					$caso->avance = (int)($tareasActivasCaso->sum('avance') / $tareasActivasCaso->count());
+					
+					// Resto el avance de esta tarea a la sumatoria, porque este valor no esta actualizado.
+					$diferencia = $tareasActivasCaso->sum('avance') - $tareasActivasCaso->where('id', $tarea->id)->pluck('avance')->first();
+					// Se suma $tarea->avance porque en este momento aún no se guarda en la BD.
+					$caso->avance = (int)(($diferencia + $tarea->avance) / $tareasActivasCaso->count());
+					$caso->encuesta()->create();
 					$caso->save();
+					
 					// @TODO Enviar correo al cliente y notificacion PUSH avisan que se PRECERRO el caso
 				}
 			}

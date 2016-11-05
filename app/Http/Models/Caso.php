@@ -86,6 +86,16 @@ class Caso extends Model
 	}
 	
 	/**
+	 * Un Caso tiene un CasoEncuesta
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function encuesta()
+	{
+		return $this->hasOne(CasoEncuesta::class, 'id_caso');
+	}
+	
+	/**
 	 * Un Caso tiene muchos Tarea
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
