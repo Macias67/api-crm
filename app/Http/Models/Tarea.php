@@ -103,6 +103,16 @@ class Tarea extends Model
 	}
 	
 	/**
+	 * Una Tarea tiene muchos TareaTiempos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function reasignaciones()
+	{
+		return $this->hasMany(TareaReasignacion::class, 'id_tarea');
+	}
+	
+	/**
 	 * Una Tarea tiene muchos AgendaTarea
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany

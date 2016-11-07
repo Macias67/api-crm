@@ -14,7 +14,7 @@ class TareaTransformer extends TransformerAbstract
 {
 	public function transform(Tarea $tarea)
 	{
-		
+		// Tiempos
 		$dTiempos = [];
 		$tiempos = $tarea->tiempos;
 		if ($tiempos->count() > 0)
@@ -32,6 +32,7 @@ class TareaTransformer extends TransformerAbstract
 			}
 		}
 		
+		// Notas
 		$notas_publicos = [];
 		$notas_privados = [];
 		$todas = [];
@@ -81,6 +82,7 @@ class TareaTransformer extends TransformerAbstract
 			}
 		}
 		
+		// Agenda
 		$recordatorios = $tarea->agenda;
 		$dAgenda = [];
 		if ($recordatorios->count() > 0)
@@ -96,6 +98,31 @@ class TareaTransformer extends TransformerAbstract
 				];
 				
 				array_push($dAgenda, $data);
+			}
+		}
+		
+		//Reasignaciones
+		$reasignaciones = $tarea->reasignaciones()->orderBy('created_at', 'desc')->get();
+		$dReasignaciones = [];
+		if ($reasignaciones->count() > 0)
+		{
+			foreach ($reasignaciones as $reasignacion)
+			{
+				$data = [
+					'id'       => $reasignacion->id,
+					'anterior' => [
+						'id'     => $reasignacion->anterior->id,
+						'nombre' => $reasignacion->anterior->usuario->nombreCompleto()
+					],
+					'actual'   => [
+						'id'     => $reasignacion->actual->id,
+						'nombre' => $reasignacion->actual->usuario->nombreCompleto()
+					],
+					'motivo'   => $reasignacion->motivo,
+					'fecha'    => $reasignacion->created_at->getTimestamp()
+				];
+				
+				array_push($dReasignaciones, $data);
 			}
 		}
 		
@@ -148,7 +175,8 @@ class TareaTransformer extends TransformerAbstract
 				'todas'    => $todas
 			],
 			'agenda'                      => $dAgenda,
-			'activo'                  => $tarea->activo,
+			'reasignaciones' => $dReasignaciones,
+			'activo'                      => $tarea->activo,
 			'created_at'                  => $tarea->created_at->getTimestamp()
 		];
 		

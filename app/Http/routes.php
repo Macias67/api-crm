@@ -90,6 +90,16 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			$api->put('fechas', 'Tareas@asignaFechas');
 			
 			/**
+			 * Cambia estatus de la  tarea
+			 */
+			$api->put('cambia-estatus', 'Tareas@cambiaEstatus');
+			
+			/**
+			 * Reasgina tarea
+			 */
+			$api->put('reasgina', 'Tareas@reasgina');
+			
+			/**
 			 * TareaAgenda
 			 */
 			$api->resource('agenda', 'TareaAgenda');

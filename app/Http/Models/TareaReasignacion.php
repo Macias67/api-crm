@@ -2,16 +2,19 @@
 
 namespace App\Http\Models;
 
+use App\Http\Models\Mutators\MTareaReasignacion;
 use Illuminate\Database\Eloquent\Model;
 
 class TareaReasignacion extends Model
 {
+	use MTareaReasignacion;
+	
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
-	protected $table = 'ct_tarea_reasignacion';
+	protected $table = 'cs_tarea_reasignacion';
 	
 	protected $primaryKey = 'id';
 	
@@ -38,5 +41,35 @@ class TareaReasignacion extends Model
 	public static function table()
 	{
 		return with(new static)->getTable();
+	}
+	
+	/**
+	 * Una TareaReasignacion pertence a Tarea
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function tarea()
+	{
+		return $this->belongsTo(Tarea::class, 'id_tarea');
+	}
+	
+	/**
+	 * Una TareaReasignacion pertence a Ejecutivo
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function anterior()
+	{
+		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_old');
+	}
+	
+	/**
+	 * Una TareaReasignacion pertence a Ejecutivo
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function actual()
+	{
+		return $this->belongsTo(Ejecutivo::class, 'ejecutivo_new');
 	}
 }

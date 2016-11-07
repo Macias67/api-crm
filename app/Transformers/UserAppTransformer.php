@@ -53,6 +53,8 @@ class UserAppTransformer extends TransformerAbstract
 		{
 			$infoEjecutivo = $user->infoEjecutivo;
 			$data['ejecutivo'] = [
+				'color'  => $infoEjecutivo->color,
+				'class'  => $infoEjecutivo->class,
 				'oficina'      => [
 					'calle'     => $infoEjecutivo->oficina->calle,
 					'numero'    => $infoEjecutivo->oficina->numero,

@@ -24,6 +24,6 @@ class TareaQueryBuilder extends QueryBuilder
 	
 	public function filterByEstatus($query, $name)
 	{
-		return $query->where('id_estatus', $name);
+		return $query->orWhere('id_estatus', $name);
 	}
 }

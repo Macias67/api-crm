@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Tarea;
+use App\Http\Models\TareaEstatus;
+use App\Http\Requests\Tarea\TareaCambiaEstatusRequest;
+use App\Http\Requests\Tarea\TareaReasginaRequest;
+use App\Http\Requests\TareaRequest;
 use App\Http\Requests\Update\TareaEstableceFechaRequest;
 use App\Http\Requests\Update\TareaUpdateRequest;
 use App\QueryBuilder\TareaQueryBuilder;
+use App\Transformers\TareaReasignacionTransformer;
 use App\Transformers\TareaTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -88,14 +93,36 @@ class Tareas extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param \App\Http\Requests\Update\TareaUpdateRequest $request
-	 * @param  int                                         $id
+	 * @param \App\Http\Requests\TareaRequest $request
+	 * @param  int                            $idTarea
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(TareaUpdateRequest $request, $id)
+	public function update(TareaRequest $request, $idTarea)
 	{
 		
+		$tarea = Tarea::find($idTarea);
+		$tarea->id_estatus = $request->estatus;
+		$tarea->titulo = $request->titulo;
+		$tarea->descripcion = $request->descripcion;
+		$tarea->avance = $request->avance;
+		
+		$tarea->fecha_inicio = $request->fechainicio;
+		$tarea->fecha_tentativa_cierre = $request->fechatentativacierre;
+		$tarea->duracion_tentativa_segundos = $request->duracionsegundos;
+		/**
+		 * @TODO Calcular las fechas de todas las tareas y establecer fecha tentativa de cierre del caso
+		 */
+		$tareasActivas = $tarea->caso->tareas()->activas();
+		if ($tareasActivas->where('fecha_tentativa_cierre', '<>', null)->count() == $tareasActivas->count())
+		{
+			$tarea->caso->fecha_tentativa_precierre = $tareasActivas->get()->max('fecha_tentativa_cierre')->format('Y-m-d H:i:s');
+			$tarea->caso->save();
+		}
+		
+		$tarea->save();
+		
+		return $this->response->item($tarea, new TareaTransformer());
 	}
 	
 	/**
@@ -110,6 +137,12 @@ class Tareas extends Controller
 		//
 	}
 	
+	/**
+	 * @param \App\Http\Requests\Update\TareaEstableceFechaRequest $request
+	 * @param int                                                  $id
+	 *
+	 * @return \Dingo\Api\Http\Response|void
+	 */
 	public function asignaFechas(TareaEstableceFechaRequest $request, $id)
 	{
 		$tarea = Tarea::find($id);
@@ -141,7 +174,6 @@ class Tareas extends Controller
 				
 				DB::commit();
 				
-				
 				return $this->response->item($tarea, new TareaTransformer());
 			}
 			catch (\Exception $e)
@@ -151,5 +183,52 @@ class Tareas extends Controller
 				return $this->response->error($e->getMessage(), 500);
 			}
 		}
+	}
+	
+	
+	/**
+	 * Reasgina la tarea a otro ejecutivo
+	 *
+	 * @param \App\Http\Requests\Tarea\TareaReasginaRequest $request
+	 * @param int                                           $idTarea
+	 *
+	 * @return \Dingo\Api\Http\Response
+	 */
+	public function reasgina(TareaReasginaRequest $request, $idTarea)
+	{
+		$tarea = Tarea::find($idTarea);
+		
+		$reasginacion = $tarea->reasignaciones()->create([
+			'ejecutivo_old' => $tarea->ejecutivo->id,
+			'ejecutivo_new' => $request->ejecutivo,
+			'motivo'        => $request->motivo
+		]);
+		
+		$tarea->id_ejecutivo = $request->ejecutivo;
+		$tarea->id_estatus = TareaEstatus::REASIGNADO;
+		$tarea->save();
+		
+		/**
+		 * @TODO Notifica los cambios
+		 */
+		
+		return $this->response->item($reasginacion, new TareaReasignacionTransformer())->statusCode(201);
+	}
+	
+	/**
+	 * Cambia el estatus de la tarea
+	 *
+	 * @param \App\Http\Requests\Tarea\TareaCambiaEstatusRequest $request
+	 * @param int                                                $idTarea
+	 *
+	 * @return \Dingo\Api\Http\Response
+	 */
+	public function cambiaEstatus(TareaCambiaEstatusRequest $request, $idTarea)
+	{
+		$tarea = Tarea::find($idTarea);
+		$tarea->id_estatus = $request->estatus;
+		$tarea->save();
+		
+		return $this->response->item($tarea, new TareaTransformer())->statusCode(201);
 	}
 }

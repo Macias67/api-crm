@@ -43,7 +43,7 @@ class TareaObserver
 	{
 		if ($tarea->activo)
 		{
-			$estatus = [TareaEstatus::ASIGNADO, TareaEstatus::REASIGNADO, TareaEstatus::PROCESO, TareaEstatus::SUSPENDIDO];
+			$estatus = [TareaEstatus::ASIGNADO, TareaEstatus::PROCESO];
 			
 			if ($tarea->avance < 100 && in_array($tarea->id_estatus, $estatus))
 			{
@@ -74,7 +74,7 @@ class TareaObserver
 					$diferencia = $tareasActivasCaso->sum('avance') - $tareasActivasCaso->where('id', $tarea->id)->pluck('avance')->first();
 					// Se suma $tarea->avance porque en este momento aún no se guarda en la BD.
 					$caso->avance = (int)(($diferencia + $tarea->avance) / $tareasActivasCaso->count());
-					$caso->encuesta()->create();
+					$caso->encuesta()->create([]);
 					$caso->save();
 					
 					// @TODO Enviar correo al cliente y notificacion PUSH avisan que se PRECERRO el caso
