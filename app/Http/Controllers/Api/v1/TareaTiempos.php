@@ -105,13 +105,27 @@ class TareaTiempos extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request $request
+	 * @param  int                      $idTarea
 	 * @param  int                      $id
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Request $request, $idTarea, $id)
 	{
-		//
+		$tarea = Tarea::find($idTarea);
+		$tiempo = $tarea->tiempos()->where('id', $id)->get()->first();
+		
+		$tareaSegundos = $tarea->duracion_real_segundos - $tiempo->duracion_segundos;
+		$tarea->duracion_real_segundos = $tareaSegundos + $request->duracionSegundos;
+		
+		$tiempo->fecha_inicio = $request->fechaInicio;
+		$tiempo->duracion_segundos = $request->duracionSegundos;
+		$tiempo->fecha_fin = $request->fechaFin;
+		
+		$tarea->save();
+		$tiempo->save();
+		
+		return $this->response->noContent();
 	}
 	
 	/**

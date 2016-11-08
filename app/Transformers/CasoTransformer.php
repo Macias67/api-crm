@@ -83,6 +83,28 @@ class CasoTransformer extends TransformerAbstract
 			];
 		}
 		
+		$reasignaciones = [];
+		if ($caso->reasignaciones->count() > 0)
+		{
+			$dReasignaciones = $caso->reasignaciones;
+			foreach ($dReasignaciones as $index => $reasignacion)
+			{
+				$reasignaciones[$index] = [
+					'id'       => $reasignacion->id,
+					'anterior' => [
+						'id'     => $reasignacion->anterior->lider->id,
+						'nombre' => $reasignacion->anterior->lider->usuario->nombreCompleto()
+					],
+					'actual'   => [
+						'id'     => $reasignacion->actual->lider->id,
+						'nombre' => $reasignacion->actual->lider->usuario->nombreCompleto()
+					],
+					'motivo'   => $reasignacion->motivo,
+					'fecha'    => $reasignacion->created_at->getTimestamp()
+				];
+			}
+		}
+		
 		$tareas = [];
 		if (count($caso->tareas) > 0)
 		{
@@ -169,30 +191,31 @@ class CasoTransformer extends TransformerAbstract
 		}
 		
 		$data = [
-			'id'                   => $caso->id,
-			'cliente'              => [
+			'id'                        => $caso->id,
+			'cliente'                   => [
 				'id'           => $caso->cliente->id,
 				'razonsocial'  => $caso->cliente->razonsocial,
 				'rfc'          => $caso->cliente->rfc,
 				'email'        => $caso->cliente->email,
 				'distribuidor' => $caso->cliente->distribuidor,
 			],
-			'estatus'              => [
+			'estatus'                   => [
 				'id'      => $caso->estatus->id,
 				'estatus' => $caso->estatus->estatus,
 				'class'   => $caso->estatus->class,
 				'color'   => $caso->estatus->color
 			],
-			'cotizacion'           => $cotizacion,
-			'asignado'             => $caso->asignado,
-			'avance'               => $caso->avance,
-			'lider'                => $ejecutivo,
-			'tareas'               => $tareas,
-			'fecha_inicio'          => (is_null($caso->fecha_inicio)) ? null : $caso->fecha_inicio->getTimestamp(),
-			'fecha_precierre'          => (is_null($caso->fecha_precierre)) ? null : $caso->fecha_precierre->getTimestamp(),
+			'cotizacion'                => $cotizacion,
+			'asignado'                  => $caso->asignado,
+			'avance'                    => $caso->avance,
+			'lider'                     => $ejecutivo,
+			'reasginaciones'            => $reasignaciones,
+			'tareas'                    => $tareas,
+			'fecha_inicio'              => (is_null($caso->fecha_inicio)) ? null : $caso->fecha_inicio->getTimestamp(),
+			'fecha_precierre'           => (is_null($caso->fecha_precierre)) ? null : $caso->fecha_precierre->getTimestamp(),
 			'fecha_tentativa_precierre' => (is_null($caso->fecha_tentativa_precierre)) ? null : $caso->fecha_tentativa_precierre->getTimestamp(),
-			'fecha_cierre' => (is_null($caso->fecha_cierre)) ? null : $caso->fecha_cierre->getTimestamp(),
-			'registro'             => $caso->created_at->getTimestamp()
+			'fecha_cierre'              => (is_null($caso->fecha_cierre)) ? null : $caso->fecha_cierre->getTimestamp(),
+			'registro'                  => $caso->created_at->getTimestamp()
 		];
 		
 		return $data;

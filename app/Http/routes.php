@@ -68,6 +68,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		$api->group(['prefix' => 'casos/{idCaso}'], function ($api)
 		{
 			/**
+			 * Reasgina caso
+			 */
+			$api->put('reasgina', 'Casos@reasgina');
+			
+			/**
 			 * Lider
 			 */
 			$api->resource('lider', 'CasoLider');
@@ -93,7 +98,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			 * Cambia estatus de la  tarea
 			 */
 			$api->put('cambia-estatus', 'Tareas@cambiaEstatus');
-			
+						
 			/**
 			 * Reasgina tarea
 			 */

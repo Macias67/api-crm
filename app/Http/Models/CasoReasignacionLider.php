@@ -41,4 +41,34 @@ class CasoReasignacionLider extends Model
 	{
 		return with(new static)->getTable();
 	}
+	
+	/**
+	 * Una CasoReasignacionLider pertence a Caso
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function caso()
+	{
+		return $this->belongsTo(Caso::class, 'caso_id');
+	}
+	
+	/**
+	 * Una CasoReasignacionLider pertence a CasoLider
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function anterior()
+	{
+		return $this->belongsTo(CasoLider::class, 'lider_old');
+	}
+	
+	/**
+	 * Una CasoReasignacionLider pertence a CasoLider
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function actual()
+	{
+		return $this->belongsTo(CasoLider::class, 'lider_new');
+	}
 }

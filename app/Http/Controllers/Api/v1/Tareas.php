@@ -13,6 +13,7 @@ use App\Http\Requests\Update\TareaUpdateRequest;
 use App\QueryBuilder\TareaQueryBuilder;
 use App\Transformers\TareaReasignacionTransformer;
 use App\Transformers\TareaTransformer;
+use Carbon\Carbon;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,7 +101,6 @@ class Tareas extends Controller
 	 */
 	public function update(TareaRequest $request, $idTarea)
 	{
-		
 		$tarea = Tarea::find($idTarea);
 		$tarea->id_estatus = $request->estatus;
 		$tarea->titulo = $request->titulo;
@@ -110,17 +110,30 @@ class Tareas extends Controller
 		$tarea->fecha_inicio = $request->fechainicio;
 		$tarea->fecha_tentativa_cierre = $request->fechatentativacierre;
 		$tarea->duracion_tentativa_segundos = $request->duracionsegundos;
+		$tarea->save();
+		
+		$tarea = $tarea->fresh();
 		/**
 		 * @TODO Calcular las fechas de todas las tareas y establecer fecha tentativa de cierre del caso
 		 */
 		$tareasActivas = $tarea->caso->tareas()->activas();
 		if ($tareasActivas->where('fecha_tentativa_cierre', '<>', null)->count() == $tareasActivas->count())
 		{
-			$tarea->caso->fecha_tentativa_precierre = $tareasActivas->get()->max('fecha_tentativa_cierre')->format('Y-m-d H:i:s');
+			$fechaPrecierreAnterior = Carbon::createFromFormat('Y-m-d H:i:s', $tarea->caso->fecha_tentativa_precierre)->timestamp;
+			$fechaCierre = $tareasActivas->get()->max('fecha_tentativa_cierre')->format('Y-m-d H:i:s');
+			$nuevaFechaCierre = Carbon::createFromFormat('Y-m-d H:i:s', $fechaCierre)->timestamp;
+			
+			$tarea->caso->fecha_tentativa_precierre = $fechaCierre;
 			$tarea->caso->save();
+			
+			/**
+			 * @TODO SI la fecha ha cambiado, enviar notificacion y correo al cliente e involucrados al caso avisando el cambio
+			 */
+			if ($fechaPrecierreAnterior != $nuevaFechaCierre)
+			{
+				
+			}
 		}
-		
-		$tarea->save();
 		
 		return $this->response->item($tarea, new TareaTransformer());
 	}

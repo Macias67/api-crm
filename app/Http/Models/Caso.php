@@ -96,6 +96,16 @@ class Caso extends Model
 	}
 	
 	/**
+	 * Un Caso tiene muchos CasoReasignacionLider
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function reasignaciones()
+	{
+		return $this->hasMany(CasoReasignacionLider::class, 'caso_id');
+	}
+	
+	/**
 	 * Un Caso tiene muchos Tarea
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
