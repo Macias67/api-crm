@@ -62,10 +62,11 @@ class CotizacionTransformer extends TransformerAbstract
 					'contacto_id'  => $pago->contacto->id,
 					'contacto'     => $pago->contacto->usuario->nombreCompleto(),
 					'cantidad'     => $pago->cantidad,
-					'tipo'     => $pago->tipo,
+					'tipo'         => $pago->tipo,
 					'comentario'   => (is_null($pago->comentario)) ? '' : $pago->comentario,
 					'fecha'        => $pago->created_at->getTimestamp(),
 					'valido'       => $pago->valido,
+					'revisado'     => $pago->revisado,
 					'comprobantes' => $dtComprobantres
 				];
 			}

@@ -59,7 +59,7 @@ class CasoReasignacionLider extends Model
 	 */
 	public function anterior()
 	{
-		return $this->belongsTo(CasoLider::class, 'lider_old');
+		return $this->belongsTo(Ejecutivo::class, 'lider_old');
 	}
 	
 	/**
@@ -69,6 +69,6 @@ class CasoReasignacionLider extends Model
 	 */
 	public function actual()
 	{
-		return $this->belongsTo(CasoLider::class, 'lider_new');
+		return $this->belongsTo(Ejecutivo::class, 'lider_new');
 	}
 }

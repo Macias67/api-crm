@@ -78,7 +78,10 @@ class CasoTransformer extends TransformerAbstract
 		if (!is_null($caso->casoLider))
 		{
 			$ejecutivo = [
+				'id'     => $caso->casoLider->lider->id,
 				'nombre' => $caso->casoLider->lider->usuario->nombreCompleto(),
+				'class' => $caso->casoLider->lider->class,
+				'color' => $caso->casoLider->lider->color,
 				'fecha'  => $caso->casoLider->created_at->getTimestamp()
 			];
 		}
@@ -86,18 +89,18 @@ class CasoTransformer extends TransformerAbstract
 		$reasignaciones = [];
 		if ($caso->reasignaciones->count() > 0)
 		{
-			$dReasignaciones = $caso->reasignaciones;
+			$dReasignaciones = $caso->reasignaciones()->orderBy('created_at', 'desc')->get();
 			foreach ($dReasignaciones as $index => $reasignacion)
 			{
 				$reasignaciones[$index] = [
 					'id'       => $reasignacion->id,
 					'anterior' => [
-						'id'     => $reasignacion->anterior->lider->id,
-						'nombre' => $reasignacion->anterior->lider->usuario->nombreCompleto()
+						'id'     => $reasignacion->anterior->id,
+						'nombre' => $reasignacion->anterior->usuario->nombreCompleto()
 					],
 					'actual'   => [
-						'id'     => $reasignacion->actual->lider->id,
-						'nombre' => $reasignacion->actual->lider->usuario->nombreCompleto()
+						'id'     => $reasignacion->actual->id,
+						'nombre' => $reasignacion->actual->usuario->nombreCompleto()
 					],
 					'motivo'   => $reasignacion->motivo,
 					'fecha'    => $reasignacion->created_at->getTimestamp()
@@ -197,6 +200,7 @@ class CasoTransformer extends TransformerAbstract
 				'razonsocial'  => $caso->cliente->razonsocial,
 				'rfc'          => $caso->cliente->rfc,
 				'email'        => $caso->cliente->email,
+				'telefono'        => $caso->cliente->telefono,
 				'distribuidor' => $caso->cliente->distribuidor,
 			],
 			'estatus'                   => [

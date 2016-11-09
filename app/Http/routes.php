@@ -70,7 +70,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			/**
 			 * Reasgina caso
 			 */
-			$api->put('reasgina', 'Casos@reasgina');
+			$api->put('cambia-estatus', 'Casos@cambiaEstatus');
+			
+			/**
+			 * Reasgina caso
+			 */
+			$api->put('reasigna', 'Casos@reasigna');
 			
 			/**
 			 * Lider

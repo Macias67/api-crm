@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
+use App\Http\Models\Tarea;
+use App\Http\Models\TareaEstatus;
 use App\Http\Requests\Caso\CasoReasginaRequest;
+use App\Http\Requests\Caso\CasoReasignacionRequest;
 use App\QueryBuilder\CasosQueryBuilder;
 use App\Transformers\CasoReasignacionTransformer;
 use App\Transformers\CasoTransformer;
@@ -119,10 +122,9 @@ class Casos extends Controller
 	 *
 	 * @return \Dingo\Api\Http\Response
 	 */
-	public function reasgina(CasoReasginaRequest $request, $idCaso)
+	public function reasigna(CasoReasginaRequest $request, $idCaso)
 	{
 		$caso = Caso::find($idCaso);
-		
 		$reasginacion = $caso->reasignaciones()->create([
 			'lider_old' => $caso->casoLider->lider->id,
 			'lider_new' => $request->ejecutivo,
@@ -131,6 +133,8 @@ class Casos extends Controller
 		
 		$caso->casoLider->ejecutivo_lider_id = $request->ejecutivo;
 		$caso->estatus_id = CasoEstatus::REASIGNADO;
+		
+		$caso->casoLider->save();
 		$caso->save();
 		
 		/**
@@ -138,6 +142,73 @@ class Casos extends Controller
 		 */
 		
 		return $this->response->item($reasginacion, new CasoReasignacionTransformer())->statusCode(201);
+	}
+	
+	/**
+	 * Cambia el estatus del Caso
+	 *
+	 * @param \App\Http\Requests\Caso\CasoReasignacionRequest $request
+	 * @param int                                             $idCaso
+	 *
+	 * @return \Dingo\Api\Http\Response
+	 */
+	public function cambiaEstatus(CasoReasignacionRequest $request, $idCaso)
+	{
+		$caso = Caso::find($idCaso);
+		$caso->estatus_id = $request->estatus;
 		
+		//Cambios en tarea
+		switch ($caso->estatus_id)
+		{
+			case CasoEstatus::PRECIERRE:
+			case CasoEstatus::CERRADO:
+				// Las tareas se cierran al 100%
+				Tarea::activas()
+				     ->where('id_caso', $caso->id)
+				     ->where(function ($query)
+				     {
+					     $query
+						     ->where('id_estatus', '<>', TareaEstatus::CERRADO)
+						     ->orWhere('avance', '<>', 100);
+				     })
+				     ->update([
+					     'id_estatus'   => TareaEstatus::CERRADO,
+					     'avance'       => 100,
+					     'fecha_cierre' => date('Y-m-d H:i:s'),
+				     ]);
+				
+				$caso->avance = 100;
+				$caso->fecha_precierre = date('Y-m-d H:i:s');
+				
+				if ($caso->estatus_id == CasoEstatus::PRECIERRE)
+				{
+					/**
+					 * @TODO Notifica a los ejecutivos que las tareas fueron cerradas y crea encuesta
+					 */
+				}
+				elseif ($caso->estatus_id == CasoEstatus::CERRADO)
+				{
+					$caso->fecha_cierre = date('Y-m-d H:i:s');
+					
+					/**
+					 * @TODO Notifica a los ejecutivos que las tareas fueron cerradas
+					 */
+				}
+				break;
+			case CasoEstatus::SUSPENDIDO:
+				/**
+				 * @TODO Notifica a los ejecutivos y cliente que el caso fue suspendido
+				 */
+				break;
+			case CasoEstatus::CANCELADO:
+				/**
+				 * @TODO Notifica a los ejecutivos y cliente que el caso fue cancelado
+				 */
+				break;
+		}
+		
+		$caso->save();
+		
+		return $this->response->item($caso->fresh(), new CasoTransformer())->statusCode(201);
 	}
 }

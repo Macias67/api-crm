@@ -39,7 +39,7 @@ class CotizacionPagoRequest extends Request
 			'archivo.url'         => 'required|active_url',
 			'archivo.contentType' => 'required',
 			'archivo.fullPath'    => 'required',
-			'archivo.hash'        => 'required|unique:ct_cotizacion_comprobantes,md5hash',
+			'archivo.hash'        => 'required',
 			'archivo.name'        => 'required',
 			'archivo.size'        => 'required|integer',
 		];

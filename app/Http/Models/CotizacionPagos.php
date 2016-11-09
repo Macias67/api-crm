@@ -26,6 +26,7 @@ class CotizacionPagos extends Model
 		'tipo',
 		'comentario',
 		'valido',
+		'revisado',
 		'created_at',
 		'updated_at'
 	];
@@ -37,7 +38,8 @@ class CotizacionPagos extends Model
 	 */
 	protected $casts = [
 		'cantidad' => 'float',
-		'valido'    => 'boolean'
+		'valido'   => 'boolean',
+		'revisado' => 'boolean'
 	];
 	
 	/**

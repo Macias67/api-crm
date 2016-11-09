@@ -17,11 +17,11 @@ class TareaReasignacionTransformer extends TransformerAbstract
 		return [
 			'id'       => $reasignacion->id,
 			'anterior' => [
-				'id' => $reasignacion->anterior->id,
+				'id'     => $reasignacion->anterior->id,
 				'nombre' => $reasignacion->anterior->usuario->nombreCompleto()
 			],
 			'actual'   => [
-				'id' => $reasignacion->actual->id,
+				'id'     => $reasignacion->actual->id,
 				'nombre' => $reasignacion->actual->usuario->nombreCompleto()
 			],
 			'motivo'   => $reasignacion->motivo,

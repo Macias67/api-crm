@@ -10,19 +10,19 @@ namespace App\Transformers;
 use App\Http\Models\CasoReasignacionLider;
 use League\Fractal\TransformerAbstract;
 
-class CasoReasignacionTransformer  extends TransformerAbstract
+class CasoReasignacionTransformer extends TransformerAbstract
 {
 	public function transform(CasoReasignacionLider $reasignacion)
 	{
 		$data = [
 			'id'       => $reasignacion->id,
 			'anterior' => [
-				'id'     => $reasignacion->anterior->lider->id,
-				'nombre' => $reasignacion->anterior->lider->usuario->nombreCompleto()
+				'id'     => $reasignacion->anterior->id,
+				'nombre' => $reasignacion->anterior->usuario->nombreCompleto()
 			],
 			'actual'   => [
-				'id'     => $reasignacion->actual->lider->id,
-				'nombre' => $reasignacion->actual->lider->usuario->nombreCompleto()
+				'id'     => $reasignacion->actual->id,
+				'nombre' => $reasignacion->actual->usuario->nombreCompleto()
 			],
 			'motivo'   => $reasignacion->motivo,
 			'fecha'    => $reasignacion->created_at->getTimestamp()

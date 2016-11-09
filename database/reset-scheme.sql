@@ -446,6 +446,7 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion_pagos` (
   `tipo` ENUM('abono', 'total') NOT NULL DEFAULT 'abono' COMMENT '',
   `comentario` TEXT(250) NULL COMMENT '',
   `valido` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
+  `revisado` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '',
   `created_at` DATETIME NULL COMMENT '',
   `updated_at` DATETIME NULL COMMENT '',
   PRIMARY KEY (`id`)  COMMENT '',
@@ -660,6 +661,7 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`cs_tarea` (
   PRIMARY KEY (`id`)  COMMENT '',
   INDEX `cs_tarea_habilitado_idx` (`activo` ASC)  COMMENT '',
   INDEX `cs_tarea_titulo_idx` (`titulo` ASC, `activo` ASC)  COMMENT '',
+  INDEX `cs_tarea_avance_idx` (`avance` ASC)  COMMENT '',
   CONSTRAINT `cs_tarea_caso_fk`
     FOREIGN KEY (`id_caso`)
     REFERENCES `api-crm`.`cs_caso` (`id`)
