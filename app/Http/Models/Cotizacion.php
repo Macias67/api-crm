@@ -28,6 +28,7 @@ class Cotizacion extends Model
 		'cxc',
 		'subtotal',
 		'iva',
+		'abono',
 		'total',
 		'created_at',
 		'updated_at'
@@ -43,6 +44,7 @@ class Cotizacion extends Model
 		'cxc'         => 'boolean',
 		'subtotal'    => 'float',
 		'iva'         => 'float',
+		'abono'       => 'float',
 		'total'       => 'float'
 	];
 	

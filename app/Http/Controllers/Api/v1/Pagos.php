@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Events\CasoPorAsignar;
 use App\Events\ContactoSubePago;
-use App\Events\NotificaUsuario;
 use App\Events\Pago\PagoSubido;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
@@ -12,7 +11,6 @@ use App\Http\Models\CasoCotizacion;
 use App\Http\Models\CasoEstatus;
 use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionEstatus;
-use App\Http\Models\FBNotification;
 use App\Http\Requests\Create\CotizacionPagoRequest;
 use App\Transformers\CasoTransformer;
 use App\Transformers\CotizacionPagosTransformer;
@@ -205,41 +203,43 @@ class Pagos extends Controller
 			{
 				try
 				{
-					$valido = $request->get('valido');
+					
+					/*
+					* Probablemente siempre será true
+					 * @TODO En el request validar que se mande un true o false
+					 *
+					 */
+					$valido = (bool)$request->get('valido');
 					
 					DB::beginTransaction();
 					
-					// SI el pago NO esta válido, entro al proceso
-					if ($pago->valido == false)
+					// SI el pago NO esta válido Y es valido el pago, entro al proceso
+					if ($pago->valido == false && $valido)
 					{
+						$pago->revisado = true;
 						$pago->valido = $valido;
 						$pago->save();
 						
 						/**
-						 * @TODO Revisar que todos los pagos estén validados para abrir nuevo caso
+						 * Reviso todos los pagos validos para que si es abono,
+						 * aumentar el valor a la cotización
 						 */
-						$pagos = $cotizacion->pagos;
-						$totalAPagar = 0;
-						foreach ($pagos as $pago)
-						{
-							if ($pago->valido)
-							{
-								$totalAPagar += $pago->cantidad;
-							}
-						}
+						$pagos = $cotizacion->fresh()->pagos;
+						$totalPagado = $pagos->where('valido', true)->sum('cantidad');
 						
 						// Cambio el estatus de la cotización segun la cantidad de pagos
-						if ($totalAPagar >= $cotizacion->total)
+						if ($totalPagado >= $cotizacion->total)
 						{
 							// La cotizacion la marco como pagada
 							$cotizacion->estatus_id = CotizacionEstatus::PAGADA;
 						}
-						elseif ($totalAPagar < $cotizacion->total)
+						elseif ($totalPagado < $cotizacion->total)
 						{
 							// La cotizacion la marco como abonada
 							$cotizacion->estatus_id = CotizacionEstatus::ABONADA;
 						}
 						
+						$cotizacion->abono = $totalPagado;
 						$cotizacion->save();
 						
 						// Busco en la tabla 'cs_caso_cotizacion' si ya hay un caso ligado a esta cotización
@@ -265,7 +265,7 @@ class Pagos extends Controller
 							/**
 							 * @TODO Push Notification al asignador de casos.
 							 */
-														
+							
 							return $this->response->item($caso, new CasoTransformer());
 						}
 						else
@@ -275,6 +275,16 @@ class Pagos extends Controller
 							// Solo valido un pago, sin crear caso
 							return $this->response->noContent();
 						}
+					}
+					elseif ($pago->valido == false && !$valido)
+					{
+						$pago->revisado = true;
+						$pago->save();
+						
+						DB::commit();
+						
+						// Solo valido un pago, sin crear caso
+						return $this->response->noContent();
 					}
 				}
 				catch (\Exception $e)

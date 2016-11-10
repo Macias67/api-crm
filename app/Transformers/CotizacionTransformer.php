@@ -111,7 +111,8 @@ class CotizacionTransformer extends TransformerAbstract
 			'cxc'         => $cotizacion->cxc,
 			'subtotal'    => $cotizacion->subtotal,
 			'iva'         => $cotizacion->iva,
-			'total'       => $cotizacion->total,
+			'abono'       => $cotizacion->abono,
+			'total'       => $cotizacion->total
 		];
 		
 		return $data;

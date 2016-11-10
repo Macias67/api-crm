@@ -231,6 +231,8 @@ class Tareas extends Controller
 	/**
 	 * Cambia el estatus de la tarea
 	 *
+	 * @TODO Validar la cotización este como PAGADA
+	 *
 	 * @param \App\Http\Requests\Tarea\TareaCambiaEstatusRequest $request
 	 * @param int                                                $idTarea
 	 *

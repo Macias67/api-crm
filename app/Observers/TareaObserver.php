@@ -31,6 +31,8 @@ class TareaObserver
 	/**
 	 * Listen to the Caso updated event.
 	 *
+	 * @TODO Validar la cotización este como PAGADA
+	 *
 	 * 1. Si la tarea esta ASIGNADO|REASIGNADO|PROCESO|SUSPENDIDO y avance es mayor  a 100, entonces
 	 * cambio el estatus de la tarea a PROCESO, calculo avance de todas las tareas activas.
 	 * 2. Si el avance esta al 100%, cierro tarea, reviso todas las tareas que esten

@@ -286,6 +286,7 @@ CREATE TABLE IF NOT EXISTS `api-crm`.`ct_cotizacion` (
   `cxc` TINYINT(1) NOT NULL COMMENT '',
   `subtotal` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `iva` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
+  `abono` FLOAT(2) NOT NULL COMMENT '',
   `total` FLOAT(2) UNSIGNED NOT NULL COMMENT '',
   `created_at` DATETIME NULL COMMENT '',
   `updated_at` DATETIME NULL COMMENT '',
