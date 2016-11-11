@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Models\Caso;
 use App\Http\Models\CasoEstatus;
 use App\Http\Models\TareaEstatus;
-use App\Http\Requests\Create\TareaRequest;
+use App\Http\Requests\TareaRequest;
 use App\Transformers\CasoTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -39,7 +39,7 @@ class CasoTareas extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param \App\Http\Requests\Create\TareaRequest $request
+	 * @param \App\Http\Requests\TareaRequest $request
 	 * @param                                        $idCaso
 	 *
 	 * @return \Illuminate\Http\Response

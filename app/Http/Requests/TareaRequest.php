@@ -14,13 +14,14 @@ class TareaRequest extends Request
 	 */
 	public function authorize()
 	{
-		$idTarea = $this->segment(3);
-		$tarea = Tarea::find($idTarea);
-		$idUser = $this->user()->id;
-		$lider = $tarea->caso->casoLider->lider->id;
-		$ejecutivoTarea = $tarea->ejecutivo->id;
+//		$idTarea = $this->segment(3);
+//		$tarea = Tarea::find($idTarea);
+//		$idUser = $this->user()->id;
+//		$lider = $tarea->caso->casoLider->lider->id;
+//		$ejecutivoTarea = $tarea->ejecutivo->id;
 		
-		return ($idUser == $lider || $idUser == $ejecutivoTarea);
+		//return ($idUser == $lider || $idUser == $ejecutivoTarea);
+		return true;
 	}
 	
 	/**

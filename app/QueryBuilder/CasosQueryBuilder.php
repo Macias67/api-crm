@@ -17,9 +17,14 @@ class CasosQueryBuilder extends QueryBuilder
 		             ->where('cs_caso_lider.ejecutivo_lider_id', $name);
 	}
 	
+	public function filterByCliente($query, $name)
+	{
+		return $query->where('cliente_id', $name);
+	}
+	
 	public function filterByEstatus($query, $name)
 	{
-		return $query->where('estatus_id', $name);
+		return $query->orWhere('estatus_id', $name);
 	}
 	
 	public function filterByRegistro($query, $name)
