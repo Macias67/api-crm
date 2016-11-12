@@ -86,6 +86,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 			 * CasoTareas
 			 */
 			$api->resource('tareas', 'CasoTareas');
+			
+			/**
+			 * CasoEncuesta
+			 */
+			$api->resource('encuestas', 'CasoEncuesta');
 		});
 		
 		/**

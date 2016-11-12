@@ -7,6 +7,7 @@
 
 namespace App\QueryBuilder;
 
+use App\Http\Models\CasoEncuesta;
 use Unlu\Laravel\Api\QueryBuilder;
 
 class CasosQueryBuilder extends QueryBuilder
@@ -15,6 +16,19 @@ class CasosQueryBuilder extends QueryBuilder
 	{
 		return $query->join('cs_caso_lider', 'cs_caso.id', '=', 'cs_caso_lider.caso_id')
 		             ->where('cs_caso_lider.ejecutivo_lider_id', $name);
+	}
+	
+	public function filterByRespondida($query, $name)
+	{
+		$this->orderBy = [
+			[
+				'column'    => CasoEncuesta::table() . '.id',
+				'direction' => 'desc'
+			]
+		];
+		$name = (filter_var($name, FILTER_VALIDATE_BOOLEAN)) ? 1 : 0;
+		return $query->join(CasoEncuesta::table(), 'cs_caso.id', '=', CasoEncuesta::table().'.id_caso')
+		             ->where(CasoEncuesta::table().'.respondida', $name);
 	}
 	
 	public function filterByCliente($query, $name)

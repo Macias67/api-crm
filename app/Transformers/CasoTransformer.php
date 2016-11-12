@@ -80,8 +80,8 @@ class CasoTransformer extends TransformerAbstract
 			$ejecutivo = [
 				'id'     => $caso->casoLider->lider->id,
 				'nombre' => $caso->casoLider->lider->usuario->nombreCompleto(),
-				'class' => $caso->casoLider->lider->class,
-				'color' => $caso->casoLider->lider->color,
+				'class'  => $caso->casoLider->lider->class,
+				'color'  => $caso->casoLider->lider->color,
 				'fecha'  => $caso->casoLider->created_at->getTimestamp()
 			];
 		}
@@ -193,6 +193,18 @@ class CasoTransformer extends TransformerAbstract
 			}
 		}
 		
+		$encuesta = [];
+		if (!$caso->encuesta()->get()->isEmpty())
+		{
+			$encuesta = [
+				'id' => $caso->encuesta->id,
+				'contacto' => $caso->encuesta->contacto->usuario->nombreCompleto(),
+				'respuestas' => $caso->encuesta->respuestas_json,
+			        'puntaje' => $caso->encuesta->puntaje,
+			        'fecha' => $caso->encuesta->created_at->timestamp
+			];
+		}
+		
 		$data = [
 			'id'                        => $caso->id,
 			'cliente'                   => [
@@ -200,7 +212,7 @@ class CasoTransformer extends TransformerAbstract
 				'razonsocial'  => $caso->cliente->razonsocial,
 				'rfc'          => $caso->cliente->rfc,
 				'email'        => $caso->cliente->email,
-				'telefono'        => $caso->cliente->telefono,
+				'telefono'     => $caso->cliente->telefono,
 				'distribuidor' => $caso->cliente->distribuidor,
 			],
 			'estatus'                   => [
@@ -214,6 +226,7 @@ class CasoTransformer extends TransformerAbstract
 			'avance'                    => $caso->avance,
 			'lider'                     => $ejecutivo,
 			'reasginaciones'            => $reasignaciones,
+			'encuesta'                  => $encuesta,
 			'tareas'                    => $tareas,
 			'fecha_inicio'              => (is_null($caso->fecha_inicio)) ? null : $caso->fecha_inicio->getTimestamp(),
 			'fecha_precierre'           => (is_null($caso->fecha_precierre)) ? null : $caso->fecha_precierre->getTimestamp(),

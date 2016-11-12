@@ -61,4 +61,14 @@ class CasoEncuesta extends Model
 	{
 		return $this->hasOne(Caso::class, 'id_caso');
 	}
+	
+	/**
+	 * Un CasoEncuesta tiene un Contacto
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function contacto()
+	{
+		return $this->belongsTo(Contactos::class, 'id_contacto');
+	}
 }
