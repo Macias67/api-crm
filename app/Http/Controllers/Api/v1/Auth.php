@@ -11,6 +11,7 @@ use App\Http\Requests\LoginRequest;
 use App\Transformers\UserAppTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as AuthFacade;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -35,18 +36,22 @@ class Auth extends Controller
 		try
 		{
 			// attempt to verify the credentials and create a token for the user
-			if (!$token = JWTAuth::attempt($credentials))
+			if (!AuthFacade::attempt($credentials))
 			{
 				throw new UnauthorizedHttpException(null, 'No se puede autenticar con este email  y contraseña.');
 			}
 			else
 			{
-				$usuario = UserApp::where($request->only(['email']))->first();
-				$usuario->token = $token;
-
+				$usuario = AuthFacade::user();
+				
+				$userTransformer = new UserAppTransformer();
+				$customClaims = ['user' => $userTransformer->transform($usuario)];
+				
+				$token = JWTAuth::fromUser($usuario, $customClaims);
+				
 				event(new LoginUserEvent($usuario));
 				
-				return $this->response->item($usuario, new UserAppTransformer());
+				return $this->response->array(['token' => $token]);
 			}
 		}
 		catch (JWTException $e)

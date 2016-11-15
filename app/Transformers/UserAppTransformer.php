@@ -56,18 +56,15 @@ class UserAppTransformer extends TransformerAbstract
 				'color'  => $infoEjecutivo->color,
 				'class'  => $infoEjecutivo->class,
 				'oficina'      => [
-					'calle'     => $infoEjecutivo->oficina->calle,
-					'numero'    => $infoEjecutivo->oficina->numero,
-					'colonia'   => $infoEjecutivo->oficina->colonia,
-					'cp'        => $infoEjecutivo->oficina->cp,
+					'id' => $infoEjecutivo->oficina->id,
 					'ciudad'    => $infoEjecutivo->oficina->ciudad,
-					'estado'    => $infoEjecutivo->oficina->estado,
-					'latitud'   => $infoEjecutivo->oficina->latitud,
-					'longitud'  => $infoEjecutivo->oficina->longitud,
 					'telefonos' => explode(',', $infoEjecutivo->oficina->telefonos),
 					'email'     => $infoEjecutivo->oficina->email,
 				],
-				'departamento' => $infoEjecutivo->departamento,
+				'departamento' => [
+					'id' => $infoEjecutivo->departamento->id,
+					'area' => $infoEjecutivo->departamento->area,
+				],
 			];
 		}
 		else if (!$user->ejecutivo && $user->infoContacto)
