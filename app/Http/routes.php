@@ -133,6 +133,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		/**
 		 * Clientes
 		 */
+		$api->post('clientes/datatable', 'Clientes@datatable');
 		$api->resource('clientes', 'Clientes');
 		$api->group(['prefix' => 'clientes/{id}'], function ($api)
 		{

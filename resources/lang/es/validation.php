@@ -34,7 +34,7 @@ return [
 	"different"            => ":attribute y :other deben ser diferentes.",
 	"digits"               => ":attribute debe tener :digits dígitos.",
 	"digits_between"       => ":attribute debe tener entre :min y :max dígitos.",
-	"email"                => ":attribute no es un correo válido",
+	"email"                => "El :attribute no es un correo válido",
 	"exists"               => ":attribute es inválido.",
 	"filled"               => "El campo :attribute es obligatorio.",
 	"image"                => ":attribute debe ser una imagen.",
@@ -42,9 +42,9 @@ return [
 	"integer"              => ":attribute debe ser un número entero.",
 	"ip"                   => ":attribute debe ser una dirección IP válida.",
 	"max"                  => [
-		"numeric" => ":attribute no debe ser mayor a :max.",
-		"file"    => ":attribute no debe ser mayor que :max kilobytes.",
-		"string"  => ":attribute no debe ser mayor que :max caracteres.",
+		"numeric" => "El campo :attribute no debe ser mayor a :max.",
+		"file"    => "El archivo :attribute no debe ser mayor que :max kilobytes.",
+		"string"  => "El campo :attribute no debe ser mayor que :max caracteres.",
 		"array"   => ":attribute no debe tener más de :max elementos.",
 	],
 	"mimes"                => ":attribute debe ser un archivo con formato: :values.",
@@ -72,7 +72,7 @@ return [
 	],
 	"string"               => "The :attribute must be a string.",
 	"timezone"             => "El :attribute debe ser una zona válida.",
-	"unique"               => ":attribute ya ha sido registrado.",
+	"unique"               => "El campo :attribute ya ha sido registrado.",
 	"url"                  => "El formato :attribute es inválido.",
 	/*
 	|--------------------------------------------------------------------------

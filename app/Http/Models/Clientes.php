@@ -89,6 +89,16 @@ class Clientes extends Model
 		return $this->hasMany(Caso::class, 'cliente_id');
 	}
 	
+	/**
+	 * Un Cliente tiene un ClienteRegistro
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\hasOne
+	 */
+	public function registro()
+	{
+		return $this->hasOne(ClienteRegistro::class, 'id_cliente');
+	}
+	
 	public static function table()
 	{
 		return with(new static)->getTable();

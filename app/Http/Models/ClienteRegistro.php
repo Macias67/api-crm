@@ -4,25 +4,23 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UsuarioTokens extends Model
+class ClienteRegistro extends Model
 {
 	/**
 	 * Nombre de la tabla usada por el modelo
 	 *
 	 * @var string
 	 */
-	protected $table = 'usr_usuario_fcm_tokens';
+	protected $table = 'cl_registro_clientes';
 	
 	protected $primaryKey = 'id';
 	
 	protected $fillable = [
 		'id',
-		'id_usuario',
-		'token',
-		'created_at',
-		'updated_at'
+		'id_cliente',
+		'id_ejecutivo'
 	];
-		
+	
 	/**
 	 * The attributes that should be mutated to dates.
 	 *
@@ -33,23 +31,18 @@ class UsuarioTokens extends Model
 		'updated_at'
 	];
 	
-	/**
-	 * Nombre de la tabla
-	 *
-	 * @return mixed
-	 */
 	public static function table()
 	{
 		return with(new static)->getTable();
 	}
 	
 	/**
-	 * Un UsuarioToken pertenece a un Usuario
+	 * Un ClienteRegistro pertenece a Ejecutivo
 	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return \Illuminate\Database\Eloquent\Relations\belongsTo
 	 */
-	public function usuario()
+	public function ejecutivo()
 	{
-		return $this->belongsTo(UserApp::class, 'id_usuario');
+		return $this->belongsTo(Ejecutivo::class, 'id_ejecutivo');
 	}
 }

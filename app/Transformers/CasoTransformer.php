@@ -197,12 +197,19 @@ class CasoTransformer extends TransformerAbstract
 		if (!$caso->encuesta()->get()->isEmpty())
 		{
 			$encuesta = [
-				'id' => $caso->encuesta->id,
-				'contacto' => $caso->encuesta->contacto->usuario->nombreCompleto(),
-				'respuestas' => $caso->encuesta->respuestas_json,
-			        'puntaje' => $caso->encuesta->puntaje,
-			        'fecha' => $caso->encuesta->created_at->timestamp
+				'id'         => $caso->encuesta->id,
+				'respondida' => $caso->encuesta->respondida
 			];
+			
+			if ($caso->encuesta->respondida)
+			{
+				array_push($encuesta, [
+					'contacto'   => $caso->encuesta->contacto->usuario->nombreCompleto(),
+					'respuestas' => $caso->encuesta->respuestas_json,
+					'puntaje'    => $caso->encuesta->puntaje,
+					'fecha'      => $caso->encuesta->created_at->timestamp
+				]);
+			}
 		}
 		
 		$data = [

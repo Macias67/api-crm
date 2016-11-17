@@ -22,7 +22,8 @@ class CasoReasignacionRequest extends Request
 		$password = $this->password;
 		
 		$lider = $caso->casoLider->lider->usuario;
-		return ($idUser == $lider->id && Hash::check($password, $lider->password));
+		
+		return (($idUser == $lider->id) && Hash::check($password, $lider->password));
 	}
 	
 	/**

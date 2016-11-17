@@ -218,6 +218,8 @@ return [
 		'JWTAuth'    => Tymon\JWTAuth\Facades\JWTAuth::class,
 		'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 		
+		'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+		
 		'API'      => Dingo\Api\Facade\API::class,
 		'APIRoute' => Dingo\Api\Facade\Route::class,
 		

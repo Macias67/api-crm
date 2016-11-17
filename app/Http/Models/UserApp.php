@@ -33,7 +33,7 @@ class UserApp extends Authenticatable
 		'apellido',
 		'ejecutivo',
 		'avatar',
-		'online',
+		'activo',
 		'email',
 		'created_at',
 		'updated_at'
@@ -56,7 +56,7 @@ class UserApp extends Authenticatable
 	 */
 	protected $casts = [
 		'ejecutivo' => 'boolean',
-		'online'    => 'boolean'
+		'activo'    => 'boolean'
 	];
 	
 	/**
@@ -117,5 +117,15 @@ class UserApp extends Authenticatable
 	public function nombreCompleto()
 	{
 		return $this->nombre . ' ' . $this->apellido;
+	}
+	
+	public function esEjecutivo()
+	{
+		return $this->ejecutivo;
+	}
+	
+	public function esActivo()
+	{
+		return $this->activo;
 	}
 }

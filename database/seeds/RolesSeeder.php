@@ -13,7 +13,7 @@ class RolesSeeder extends Seeder
 	public function run()
 	{
 		\App\Http\Models\Roles::create([
-			'name'         => 'EJECUTVO',
+			'name'         => 'EJECUTIVO',
 			'display_name' => 'Acceso a funciones de Ejecutivo',
 			'description'  => 'Acceso a funciones de Ejecutivo'
 		]);

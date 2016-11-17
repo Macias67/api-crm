@@ -14,48 +14,58 @@ class ClientesSeeder extends Seeder
 	{
 		$faker = Faker\Factory::create();
 		
-		\App\Http\Models\Clientes::create([
+		$cliente = \App\Http\Models\Clientes::create([
 			'razonsocial'  => 'EMPRESA DE MACIAS',
 			'rfc'          => 'AAA000AAAA123',
 			'prospecto'    => 0,
 			'distribuidor' => 0,
 			'email'        => 'luismacias.angulo@gmail.com',
 			'telefono'     => '3929418119',
-			'telefono2'    => '',
+			'telefono2'    => null,
 			'calle'        => 'Sócrates',
 			'noexterior'   => '244',
-			'nointerior'   => '',
+			'nointerior'   => null,
 			'colonia'      => 'Paso Blanco',
 			'cp'           => '47810',
 			'ciudad'       => 'Ocotlán',
-			'municipio'    => '',
+			'municipio'    => null,
 			'estado'       => 'Jalisco',
 			'pais'         => 'México',
 			'online'       => 1,
 		]);
 		
-		for ($i = 0; $i < 10; $i++)
+		$cliente->registro()->create([
+			'id_ejecutivo' => 1
+		]);
+		
+		for ($i = 0; $i < 2500; $i++)
 		{
-			\App\Http\Models\Clientes::create([
-				'razonsocial'  => mb_strtoupper($faker->company),
+			$prospecto = $faker->randomElement([0, 1]);
+			
+			$cliente = \App\Http\Models\Clientes::create([
+				'razonsocial'  => mb_strtoupper($faker->company).$faker->randomLetter.date('s'),
 				'rfc'          => mb_strtoupper(substr($faker->md5, 0, 13)),
-				'prospecto'    => $faker->randomElement([0, 1]),
-				'distribuidor' => $faker->randomElement([0, 1]),
+				'prospecto'    => $prospecto,
+				'distribuidor' => ($prospecto) ? 0 : $faker->randomElement([0, 1]),
 				'email'        => $faker->safeEmail,
 				'telefono'     => $faker->randomNumber(9) . $faker->randomNumber(1),
-				'telefono2'    => '',
+				'telefono2'    => null,
 				'calle'        => $faker->streetName,
 				'noexterior'   => $faker->buildingNumber,
-				'nointerior'   => '',
+				'nointerior'   => null,
 				'colonia'      => $faker->cityPrefix,
 				'cp'           => $faker->postcode,
 				'ciudad'       => $faker->city,
-				'municipio'    => '',
+				'municipio'    => null,
 				'estado'       => $faker->state,
 				'pais'         => 'México',
 				'online'       => 1,
 				'created_at'   => date('Y-m-d H:i:s'),
 				'updated_at'   => date('Y-m-d H:i:s')
+			]);
+			
+			$cliente->registro()->create([
+				'id_ejecutivo' => $faker->numberBetween(1, 3)
 			]);
 		}
 	}

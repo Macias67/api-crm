@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Models\Clientes as ClienteModel;
 use App\Http\Requests\Create\ClienteRequest;
+use App\QueryBuilder\ClienteQueryBuilder;
 use App\Transformers\ClienteTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Yajra\Datatables\Facades\Datatables;
 
 class Clientes extends Controller
 {
@@ -17,28 +18,16 @@ class Clientes extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param \Illuminate\Http\Request $request
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		if (Input::exists('q'))
-		{
-			$value = Input::get('q');
-			//$cliente = DB::table(ClienteModel::table())->where('razonsocial', $value)->first();
-			
-			$cliente = ClienteModel::where('razonsocial', 'like', '%' . $value . '%')
-			                       ->orWhere('rfc', 'like', '%' . $value . '%')
-			                       ->get();
-			
-			return $this->response->collection($cliente, new ClienteTransformer());
-			//dd($cliente);
-			
-			//return $this->response->item($cliente, new ClienteTransformer());
-		}
-		else
-		{
-			return $this->response->collection(ClienteModel::isOnline()->get(), new ClienteTransformer());
-		}
+		$queryBuilder = new ClienteQueryBuilder(new ClienteModel, $request);
+		$clientes = $queryBuilder->build()->get();
+		
+		return $this->response->collection($clientes, new ClienteTransformer());
 	}
 	
 	/**
@@ -60,25 +49,37 @@ class Clientes extends Controller
 	 */
 	public function store(ClienteRequest $request)
 	{
-		$cliente = ClienteModel::create($request->only([
-			'razonsocial',
-			'rfc',
-			'email',
-			'telefono',
-			'telefono2',
-			'tipo',
-			'calle',
-			'noexterior',
-			'nointerior',
-			'colonia',
-			'cp',
-			'ciudad',
-			'municipio',
-			'estado',
-			'pais'
-		]));
-		
-		return $this->response->item($cliente, new ClienteTransformer());
+		try
+		{
+			$cliente = ClienteModel::create($request->only([
+				'razonsocial',
+				'rfc',
+				'email',
+				'telefono',
+				'telefono2',
+				'tipo',
+				'calle',
+				'noexterior',
+				'nointerior',
+				'colonia',
+				'cp',
+				'ciudad',
+				'municipio',
+				'estado',
+				'pais'
+			]));
+			
+			$cliente->registro()->create([
+				'id_ejecutivo' => $request->user()->id
+			]);
+			
+			return $this->response->item($cliente, new ClienteTransformer());
+			
+		}
+		catch (\Exception $e)
+		{
+			throw new \Symfony\Component\HttpKernel\Exception\HttpException(500, $e->getMessage());
+		}
 	}
 	
 	/**
@@ -137,5 +138,9 @@ class Clientes extends Controller
 	public function destroy($id)
 	{
 		//
+	}
+	
+	public function datatable() {
+		return Datatables::eloquent(ClienteModel::query())->setTransformer(new ClienteTransformer())->make(true);
 	}
 }

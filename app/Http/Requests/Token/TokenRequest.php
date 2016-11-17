@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Create;
+namespace App\Http\Requests\Token;
 
 use Dingo\Api\Http\FormRequest as Request;
 
@@ -24,8 +24,7 @@ class TokenRequest extends Request
 	public function rules()
 	{
 		return [
-			'id_usuario' => 'required|integer|exists:usr_usuarios,id',
-			'token'      => 'required',
+			'fcm' => 'required',
 		];
 	}
 }
