@@ -24,7 +24,7 @@ class EjecutivoQueryBuilder extends QueryBuilder
 		
 		$name = (filter_var($name, FILTER_VALIDATE_BOOLEAN)) ? 1 : 0;
 		$q = $query->join(UserApp::table(), Ejecutivo::table() . '.id', '=', UserApp::table() . '.id')
-		           ->where(UserApp::table() . '.online', $name);
+		           ->where(UserApp::table() . '.activo', $name);
 		
 		return $q;
 	}

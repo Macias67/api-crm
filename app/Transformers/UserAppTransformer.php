@@ -44,7 +44,7 @@ class UserAppTransformer extends TransformerAbstract
 			'nombre'   => $user->nombre,
 			'apellido' => $user->apellido,
 			'avatar'   => $user->avatar,
-			'online'   => $user->online,
+			'activo'   => $user->activo,
 			'email'    => $user->email,
 			'roles'    => $dRoles
 		];

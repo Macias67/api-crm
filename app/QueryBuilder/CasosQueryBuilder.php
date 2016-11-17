@@ -38,7 +38,7 @@ class CasosQueryBuilder extends QueryBuilder
 	
 	public function filterByEstatus($query, $name)
 	{
-		return $query->orWhere('estatus_id', $name);
+		return $query->where('estatus_id', $name);
 	}
 	
 	public function filterByRegistro($query, $name)

@@ -37,7 +37,7 @@ class EjecutivoTransformer extends TransformerAbstract
 			'apellido'     => $ejecutivo->usuario->apellido,
 			'email'        => $ejecutivo->usuario->email,
 			'avatar'       => $ejecutivo->usuario->avatar,
-			'online'       => $ejecutivo->usuario->online,
+			'activo'       => $ejecutivo->usuario->activo,
 			'oficina'      => [
 				'calle'     => $oficina->calle,
 				'numero'    => $oficina->numero,
