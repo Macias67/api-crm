@@ -9,6 +9,7 @@ namespace App\Listeners;
 
 use App\Http\Models\FBNotification;
 use Firebase\FirebaseLib;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 
@@ -74,6 +75,23 @@ class LoginEventSuscriber
 	}
 	
 	/**
+	 * Envio de correo de prueba
+	 *
+	 * @param $event
+	 */
+	public function sendEmailTest($event)
+	{
+		$usuario = $event->user;
+		Mail::send('email.test', ['nombre' => $usuario->nombreCompleto()], function ($m) use ($usuario)
+		{
+			$m->from('hello@app.com', 'Your Application');
+			
+			$m->to($usuario->email, $usuario->nombreCompleto())->subject('Envío de correo desde Laravel.');
+		});
+		
+	}
+	
+	/**
 	 * Register the listeners for the subscriber.
 	 *
 	 * @param   \Illuminate\Events\Dispatcher $events
@@ -83,6 +101,11 @@ class LoginEventSuscriber
 		$events->listen(
 			'App\Events\LoginUserEvent',
 			'App\Listeners\LoginEventSuscriber@onUserLogin'
+		);
+		
+		$events->listen(
+			'App\Events\LoginUserEvent',
+			'App\Listeners\LoginEventSuscriber@sendEmailTest'
 		);
 	}
 }
