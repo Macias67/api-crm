@@ -2,7 +2,7 @@
 /vendor
 /node_modules
 Homestead.yaml
-#.env
+.env
 #.env.example
 
 composer.lock
