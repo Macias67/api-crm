@@ -28,7 +28,8 @@ class CotizacionProductos extends Model
 		'subtotal',
 		'iva',
 		'total',
-		'habilitado'
+		'habilitado',
+	        'descripcion'
 	];
 	
 	/**

@@ -103,9 +103,9 @@ class LoginEventSuscriber
 			'App\Listeners\LoginEventSuscriber@onUserLogin'
 		);
 		
-		$events->listen(
-			'App\Events\LoginUserEvent',
-			'App\Listeners\LoginEventSuscriber@sendEmailTest'
-		);
+//		$events->listen(
+//			'App\Events\LoginUserEvent',
+//			'App\Listeners\LoginEventSuscriber@sendEmailTest'
+//		);
 	}
 }

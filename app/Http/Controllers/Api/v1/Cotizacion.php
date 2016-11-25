@@ -3,23 +3,18 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Events\CotizacionEvent;
-use App\Events\NotificaUsuario;
 use App\Http\Controllers\Controller;
-use App\Http\Models\Clientes;
 use App\Http\Models\Cotizacion as CotizacionModel;
 use App\Http\Models\CotizacionBancos;
 use App\Http\Models\CotizacionEstatus;
 use App\Http\Models\CotizacionProductos;
-use App\Http\Models\FBNotification;
 use App\Http\Requests\Create\CotizacionRequest;
 use App\QueryBuilder\CotizacionQueryBuilder;
 use App\Transformers\CotizacionTransformer;
-use App\Transformers\Datatable\CotizacionDataTableTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Yajra\Datatables\Facades\Datatables;
 
 class Cotizacion extends Controller
 {
@@ -93,7 +88,8 @@ class Cotizacion extends Controller
 					'descuento'   => $producto['descuento'],
 					'subtotal'    => $producto['subtotal'],
 					'iva'         => $producto['iva'],
-					'total'       => $producto['total']
+					'total'       => $producto['total'],
+					'descripcion'       => $producto['descripcion']
 				]));
 			}
 			
@@ -104,7 +100,7 @@ class Cotizacion extends Controller
 					'id_banco' => $banco
 				]));
 			}
-						
+			
 			/**
 			 * @TODO enviar email y notificacion a contactos del cliente con detalles de la cotización.
 			 *
@@ -179,5 +175,13 @@ class Cotizacion extends Controller
 	public function destroy($id)
 	{
 		//
+	}
+	
+	public function pdf()
+	{
+		$pdf = App::make('dompdf.wrapper');
+		$pdf->loadView('cotizacion.cotizacion');
+		
+		return $pdf->stream();
 	}
 }

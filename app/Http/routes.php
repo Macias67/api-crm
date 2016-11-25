@@ -38,6 +38,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1', 'middleware' 
 		 * Cotizacion
 		 */
 		$api->post('cotizaciones/datatable', 'Cotizacion@datatable');
+		$api->get('cotizaciones/pdf', 'Cotizacion@pdf');
 		$api->resource('cotizaciones', 'Cotizacion');
 		$api->group(['prefix' => 'cotizaciones/{idCotizacion}'], function ($api)
 		{

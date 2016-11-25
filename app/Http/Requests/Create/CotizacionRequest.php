@@ -47,6 +47,7 @@ class CotizacionRequest extends Request
 			$rules['productos.' . $index . '.subtotal'] = 'required|numeric';
 			$rules['productos.' . $index . '.iva'] = 'required|numeric';
 			$rules['productos.' . $index . '.total'] = 'required|numeric';
+			$rules['productos.' . $index . '.descripcion'] = 'required';
 		}
 		foreach ($bancos as $index => $banco)
 		{
